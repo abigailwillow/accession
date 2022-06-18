@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour {
-    private void OnClick() {
-        // TODO: Implement raycasting to find the piece that the player is trying to select
-        Debug.Log("Clicked");
+    private PlayerInput input;
+
+    private void Awake() {
+        input = GetComponent<PlayerInput>();
     }
 
-    private void OnPoint(InputValue value) {
-        Debug.Log($"Pointed at {value.Get<Vector2>()}");
+    private void OnClick() {
+        // TODO: Implement raycasting to find the piece that the player is trying to select
+        Debug.Log($"Clicked {input.actions.FindAction("Point").ReadValue<Vector2>()}");
     }
 }
