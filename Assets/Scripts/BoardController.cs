@@ -1,26 +1,24 @@
-using System;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
-	public Corners corners;
-	public Grid grid = new Grid { width = 8, height = 8 };
+	[SerializeField] private Vector3 bottomLeftCorner;
+    public Vector3 BottomLeftCorner { get => bottomLeftCorner + transform.position; }
+	[SerializeField] private Vector3 topRightCorner;
+    public Vector3 TopRightCorner { get => topRightCorner + transform.position; }
+	public Vector2Int gridSize = new Vector2Int(8, 8);
 
-    private void OnDrawGizmosSelected() {
-        Gizmos.color = Color.red;
-		Gizmos.DrawRay(corners.bottomLeft, Vector3.up * 0.1f);
-		Gizmos.color = Color.green;
-        Gizmos.DrawRay(corners.topRight, Vector3.up * 0.1f);
+    private void Awake() {
+		Initialize();
 	}
 
-    [Serializable]
-    public struct Corners {
-        public Vector3 bottomLeft;
-        public Vector3 topRight;
+    private void Initialize() {
+        // TODO: Initialize the board
     }
 
-    [Serializable]
-    public struct Grid {
-        public int width;
-        public int height;
-    }
+	private void OnDrawGizmosSelected() {
+		Gizmos.color = Color.red;
+		Gizmos.DrawRay(BottomLeftCorner, Vector3.up * 0.1f);
+		Gizmos.color = Color.green;
+		Gizmos.DrawRay(TopRightCorner, Vector3.up * 0.1f);
+	}
 }
