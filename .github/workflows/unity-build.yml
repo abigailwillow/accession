@@ -14,7 +14,7 @@ jobs:
         
       # Cache
       - name: Cache repository
-      - uses: actions/cache@v2
+        uses: actions/cache@v2
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -33,7 +33,7 @@ jobs:
           
       # Upload
       - name: Upload build
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: Build
           path: build
