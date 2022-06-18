@@ -1,7 +1,5 @@
 {
     "FormattingOptions": {
-        "UseTabs": true,
-        
         "NewLinesForBracesInTypes": false,
         "NewLinesForBracesInMethods": false,
         "NewLinesForBracesInProperties": false,
