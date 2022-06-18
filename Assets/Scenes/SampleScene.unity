@@ -308,22 +308,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 537123944888393653, guid: 58c07ec007aea204d871605eec1bee03, type: 3}
-      propertyPath: topRightCorner.x
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 537123944888393653, guid: 58c07ec007aea204d871605eec1bee03, type: 3}
-      propertyPath: topRightCorner.z
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 537123944888393653, guid: 58c07ec007aea204d871605eec1bee03, type: 3}
-      propertyPath: bottomLeftCorner.x
-      value: -0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 537123944888393653, guid: 58c07ec007aea204d871605eec1bee03, type: 3}
-      propertyPath: bottomLeftCorner.z
-      value: -0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 5827774659825784232, guid: 58c07ec007aea204d871605eec1bee03, type: 3}
       propertyPath: m_Name
       value: Board
