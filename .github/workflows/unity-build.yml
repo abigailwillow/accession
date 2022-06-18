@@ -8,6 +8,7 @@ jobs:
   build:
     name: Build project
     runs-on: ubuntu-latest
+    environment: production
     steps:
       # Checkout
       - name: Checkout repository
