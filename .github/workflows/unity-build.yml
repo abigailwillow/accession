@@ -36,7 +36,6 @@ jobs:
           versioning: Semantic
           customParameters: -Development
           buildName: Accession
-          buildsPath: build
           
       # Upload
       - name: Upload build
