@@ -6,6 +6,7 @@ on:
     - '*'
 jobs:
   build:
+    # Build a win64 build and add it to a release using the latest tag's major and minor version and the amount of commits since the last version major or minor version increment as the patch version
     name: Build project
     runs-on: ubuntu-latest
     environment: production
