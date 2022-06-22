@@ -40,12 +40,21 @@ jobs:
           buildName: Accession
           
       # Upload
-      - name: Upload build artifact
+      - name: Upload build
         id: upload
         uses: actions/upload-artifact@v2
         with:
           name: Accession-${{ steps.build.outputs.buildVersion }}-win64
           path: build
+          
+      # Archive
+      - name: Archive build
+        id: archive
+        uses: thedoctor0/zip-release@main
+        with:
+          type: zip
+          filename: Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
+          directory: build
           
       # Release
       - name: Create release
@@ -55,4 +64,4 @@ jobs:
           name: ${{ steps.build.outputs.buildVersion }}
           tag_name: ${{ steps.build.outputs.buildVersion }}
           prerelease: true
-          files: build
+          files: Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
