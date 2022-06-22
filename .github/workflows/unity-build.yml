@@ -2,11 +2,11 @@ name: Unity - Build
 on: 
   workflow_dispatch:
   push:
-    tags:
-    - '*'
+    branches:
+    - stable
 jobs:
   build:
-    # Build a win64 build and add it to a release using the latest tag's major and minor version and the amount of commits since the last version major or minor version increment as the patch version
+    # Build a win64 build and add it to a release using the latest tag's major and minor version and the amount of commits since the last major or minor version increment as the patch version
     name: Build project
     runs-on: ubuntu-latest
     environment: production
@@ -15,6 +15,8 @@ jobs:
       - name: Checkout repository
         id: checkout
         uses: actions/checkout@v2
+        with:
+          ref: stable
         
       # Cache
       - name: Cache repository
