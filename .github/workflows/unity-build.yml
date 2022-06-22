@@ -35,10 +35,11 @@ jobs:
           targetPlatform: StandaloneWindows64
           versioning: Semantic
           customParameters: -Development
+          buildName: Accession
           
       # Upload
       - name: Upload build
         uses: actions/upload-artifact@v2
         with:
-          name: Accession-${{ steps.build.outputs.buildVersion }}
+          name: Accession-${{ steps.build.outputs.buildVersion }}-win64
           path: build
