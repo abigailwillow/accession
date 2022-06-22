@@ -45,7 +45,7 @@ jobs:
         uses: thedoctor0/zip-release@main
         with:
           type: zip
-          filename: Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
+          filename: ../../Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
           directory: build/StandaloneWindows64/
           
       # Release
