@@ -12,10 +12,12 @@ jobs:
     steps:
       # Checkout
       - name: Checkout repository
+        id: checkout
         uses: actions/checkout@v2
         
       # Cache
       - name: Cache repository
+        id: cache
         uses: actions/cache@v2
         with:
           path: Library
@@ -25,8 +27,8 @@ jobs:
       
       # Build
       - name: Build project
-        uses: game-ci/unity-builder@v2
         id: build
+        uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -38,7 +40,8 @@ jobs:
           buildName: Accession
           
       # Upload
-      - name: Upload build
+      - name: Upload build artifact
+        id: upload
         uses: actions/upload-artifact@v2
         with:
           name: Accession-${{ steps.build.outputs.buildVersion }}-win64
@@ -46,8 +49,8 @@ jobs:
           
       # Release
       - name: Create release
-        uses: actions/create-release@v1
         id: release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -55,13 +58,14 @@ jobs:
           release_name: ${{ steps.build.outputs.buildVersion }}
           prerelease: true
           
-      # Assets
+      # Asset
       - name: Upload release asset
+        id: asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ./Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
           asset_name: Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
+          asset_path: build
           asset_content_type: application/zip
