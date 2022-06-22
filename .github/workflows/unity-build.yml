@@ -43,3 +43,25 @@ jobs:
         with:
           name: Accession-${{ steps.build.outputs.buildVersion }}-win64
           path: build
+          
+      # Release
+      - name: Create release
+        uses: actions/create-release@v1
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.build.outputs.buildVersion }}
+          release_name: ${{ steps.build.outputs.buildVersion }}
+          prerelease: true
+          
+      # Assets
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: Accession-${{ steps.build.outputs.buildVersion }}-win64
+          asset_name: Accession-${{ steps.build.outputs.buildVersion }}-win64
+          asset_content_type: application/zip
