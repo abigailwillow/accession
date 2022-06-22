@@ -46,7 +46,7 @@ jobs:
         with:
           type: zip
           filename: Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
-          path: build/StandaloneWindows64/
+          directory: build/StandaloneWindows64/
           
       # Release
       - name: Create release
