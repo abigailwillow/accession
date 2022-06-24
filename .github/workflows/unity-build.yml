@@ -2,20 +2,25 @@ name: Unity - Build
 on: 
   workflow_dispatch:
   push:
-    tags:
-    - '*'
+    branches:
+    - stable
 jobs:
   build:
+    # Build a win64 build and add it to a release using the latest tag's major and minor version and the amount of commits since the last major or minor version increment as the patch version
     name: Build project
     runs-on: ubuntu-latest
     environment: production
     steps:
       # Checkout
       - name: Checkout repository
+        id: checkout
         uses: actions/checkout@v2
+        with:
+          ref: stable
         
       # Cache
       - name: Cache repository
+        id: cache
         uses: actions/cache@v2
         with:
           path: Library
@@ -25,6 +30,7 @@ jobs:
       
       # Build
       - name: Build project
+        id: build
         uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -32,10 +38,25 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
+          versioning: Semantic
+          customParameters: -Development
+          buildName: Accession
           
-      # Upload
-      - name: Upload build
-        uses: actions/upload-artifact@v2
+      # Archive
+      - name: Archive build
+        id: archive
+        uses: thedoctor0/zip-release@main
         with:
-          name: Build
-          path: build
+          type: zip
+          filename: ../../Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
+          directory: build/StandaloneWindows64/
+          
+      # Release
+      - name: Create release
+        id: release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.build.outputs.buildVersion }}
+          tag_name: ${{ steps.build.outputs.buildVersion }}
+          prerelease: true
+          files: Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
