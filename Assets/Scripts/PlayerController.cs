@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour {
     private PlayerInput input;
     new private Camera camera;
-    private Piece selectedPiece;
 
     private void Awake() {
         input = GetComponent<PlayerInput>();
@@ -19,19 +18,8 @@ public class PlayerController : MonoBehaviour {
         Ray ray = camera.ScreenPointToRay(pointerPosition);
         Physics.Raycast(ray, out RaycastHit hit);
         if (hit.collider != null && hit.collider.TryGetComponent(out Piece piece)) {
-            if (selectedPiece == null) {
-                selectedPiece = piece.Select();
-            } else if (selectedPiece == piece) {
-                selectedPiece = selectedPiece.Deselect();
-            } else {
-                selectedPiece.Deselect();
-                selectedPiece = piece.Select();
-            }
-        } else {
-            if (selectedPiece != null) {
-                selectedPiece = selectedPiece.Deselect();
-            }
+            piece.GetComponentInParent<BoardController>().SelectPiece(piece);
         }
-        Debug.DrawRay(ray.origin, ray.direction, Color.red, 1f);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 0.25f);
     }
 }

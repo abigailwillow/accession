@@ -17,12 +17,17 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
     [SerializeField] private GameObject piecePrefab;
     private Transform[,] grid;
+    private Piece selectedPiece;
 
-    private void Awake() {
-        Initialize();
+    public void SelectPiece(Piece piece) {
+        if (selectedPiece != null) {
+            selectedPiece.Deselect();
+        }
+        selectedPiece = piece;
+        piece.Select();
     }
 
-    private void Initialize() {
+    private void Awake() {
         grid = new Transform[gridSize.x, gridSize.y];
         Vector3 distance = TopRightCorner - BottomLeftCorner;
         Vector3 cellSize = new Vector3(distance.x / gridSize.x, 0, distance.z / gridSize.y);
@@ -33,6 +38,7 @@ public class BoardController : MonoBehaviour {
                 GameObject cell = new GameObject($"Cell ({x}, {y})");
                 cell.transform.position = position;
                 cell.transform.SetParent(transform);
+                Instantiate(piecePrefab, cell.transform, false);
                 grid[x, y] = cell.transform;
             }
         }
