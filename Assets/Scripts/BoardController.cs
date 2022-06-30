@@ -14,7 +14,8 @@ public class BoardController : MonoBehaviour {
     /// </summary>
     public Vector3 TopRightCorner { get => topRightCorner + transform.position; }
     [Tooltip("The amount of rows and columns on the board.")]
-    public Vector2Int gridSize = new Vector2Int(8, 8);
+    [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
+    [SerializeField] private GameObject piecePrefab;
     private Transform[,] grid;
 
     private void Awake() {
