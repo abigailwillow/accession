@@ -16,6 +16,7 @@ public class BoardController : MonoBehaviour {
     [Tooltip("The amount of rows and columns on the board.")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
     [SerializeField] private GameObject piecePrefab;
+    [SerializeField] private GameObject cellPrefab;
     private Transform[,] grid;
     private Piece selectedPiece;
 
