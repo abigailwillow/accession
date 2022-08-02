@@ -46,10 +46,9 @@ public class BoardController : MonoBehaviour {
     }
 
     private void OnDrawGizmosSelected() {
+        Vector3 boardSize = TopRightCorner - BottomLeftCorner;
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(BottomLeftCorner, Vector3.up * 0.1f);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(TopRightCorner, Vector3.up * 0.1f);
+        Gizmos.DrawWireCube(transform.position, new Vector3(boardSize.x, 0, boardSize.z));
 
         if (grid != null) {
             Gizmos.color = Color.blue;
