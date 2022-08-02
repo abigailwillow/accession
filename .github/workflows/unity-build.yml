@@ -31,7 +31,7 @@ jobs:
       # Build
       - name: Build project
         id: build
-        uses: game-ci/unity-builder@v2
+        uses: game-ci/unity-builder@202e87933ba11380f4cbee431e7ebb638f9684ef
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
