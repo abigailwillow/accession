@@ -17,10 +17,10 @@ public class Cell : MonoBehaviour {
     /// Whether or not this cell contains a correctly placed piece.
     /// </summary>
     public bool completed => piece.color == renderer.material.color;
-    private new Renderer renderer;
+    public new Renderer renderer { get; private set; }
 
     public void Awake() {
-        renderer = GetComponent<Renderer>();
+        renderer = GetComponentInChildren<Renderer>();
     }
 
     public void Initialize() {
