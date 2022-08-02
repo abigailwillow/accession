@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
@@ -17,6 +18,7 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
     [SerializeField] private GameObject piecePrefab;
     [SerializeField] private GameObject cellPrefab;
+    [SerializeField] private ColorTheme colors;
     private Transform[,] grid;
     private Piece selectedPiece;
 

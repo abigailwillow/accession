@@ -49,3 +49,4 @@ MonoBehaviour:
   gridSize: {x: 8, y: 8}
   piecePrefab: {fileID: 8170920892290080715, guid: c2f4d12d7eefeb0488e044e64fff6508, type: 3}
   cellPrefab: {fileID: 4606292359148403791, guid: 9d6667d568156cb478bca07302f73b9b, type: 3}
+  colors: {fileID: 11400000, guid: 7286cf6e47963de46a264c0462d2f42c, type: 2}
