@@ -38,11 +38,7 @@ public class BoardController : MonoBehaviour {
                 piece.name = $"Piece ({x}, {y})";
                 grid[x, y] = cell.transform;
 
-                if ((x + y) % 2 == 1) {
-                    cell.GetComponent<Cell>().renderer.material.color = colors.lightCell;
-                } else {
-                    cell.GetComponent<Cell>().renderer.material.color = colors.darkCell;
-                }
+                cell.GetComponent<Cell>().renderer.material.color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
             }
         }
     }
