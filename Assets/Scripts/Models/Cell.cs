@@ -1,9 +1,12 @@
 using UnityEngine;
 
 public class Cell : MonoBehaviour {
+    [Tooltip("The size of this piece.")]
+    [SerializeField] private Vector2 size;
     /// <summary>
-    /// The piece that is currently occupying this cell, null if empty.
+    /// The size of this cell.
     /// </summary>
+    public Vector3 Size { get => size.XZ(); }
     public Piece piece { get; private set; }
     /// <summary>
     /// The coordinates of this cell on the board.
@@ -29,5 +32,10 @@ public class Cell : MonoBehaviour {
 
     public void SetColor(Color color) {
         renderer.material.color = color;
+    }
+
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, Size);
     }
 }

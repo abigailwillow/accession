@@ -1,19 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
-    [Tooltip("The coordinates of the bottom left corner of the board in local space.")]
-    [SerializeField] private Vector2 bottomLeftCorner;
     /// <summary>
-    /// The coordinates of the bottom left corner of the board in local space.
+    /// The size of this board.
     /// </summary>
-    public Vector3 BottomLeftCorner { get => bottomLeftCorner.XZ() + transform.position; }
-    [Tooltip("The coordinates of the top right corner of the board in local space.")]
-    [SerializeField] private Vector2 topRightCorner;
-    /// <summary>
-    /// The coordinates of the top right corner of the board in local space.
-    /// </summary>
-    public Vector3 TopRightCorner { get => topRightCorner.XZ() + transform.position; }
+    public Vector3 BoardSize { get => new Vector3(cell.Size.x * gridSize.x, 0, cell.Size.z * gridSize.y); }
     [Tooltip("The amount of rows and columns on the board.")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
     [SerializeField] private GameObject piecePrefab;
@@ -21,6 +12,7 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private ColorTheme colors;
     private Transform[,] grid;
     private Piece selectedPiece;
+    private Cell cell;
 
     public void SelectPiece(Piece piece) {
         if (selectedPiece != null) {
@@ -31,20 +23,22 @@ public class BoardController : MonoBehaviour {
     }
 
     private void Awake() {
+        cell = cellPrefab.GetComponent<Cell>();
+
         grid = new Transform[gridSize.x, gridSize.y];
-        Vector3 boardSize = TopRightCorner - BottomLeftCorner;
-        Vector3 cellSize = new Vector3(boardSize.x / gridSize.x, 0, boardSize.z / gridSize.y);
+        Vector3 cellSize = cell.Size;
+        Vector3 leftBottomCorner = transform.position - BoardSize / 2;
         Vector3 offset = cellSize / 2;
         for (int x = 0; x < gridSize.x; x++) {
             for (int y = 0; y < gridSize.y; y++) {
-                Vector3 position = new Vector3(BottomLeftCorner.x + cellSize.x * x, 0, BottomLeftCorner.z + cellSize.z * y) + offset;
+                Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + offset;
                 GameObject cell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
                 GameObject piece = Instantiate(piecePrefab, cell.transform, false);
                 cell.name = $"Cell ({x}, {y})";
                 piece.name = $"Piece ({x}, {y})";
                 grid[x, y] = cell.transform;
 
-                if ((x + y) % 2 == 0) {
+                if ((x + y) % 2 == 1) {
                     cell.GetComponent<Cell>().renderer.material.color = colors.lightCell;
                 } else {
                     cell.GetComponent<Cell>().renderer.material.color = colors.darkCell;
@@ -54,9 +48,9 @@ public class BoardController : MonoBehaviour {
     }
 
     private void OnDrawGizmosSelected() {
-        Vector3 boardSize = TopRightCorner - BottomLeftCorner;
+        cell = cell ?? cellPrefab.GetComponent<Cell>();
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, boardSize);
+        Gizmos.DrawWireCube(transform.position, BoardSize);
 
         if (grid != null) {
             for (int x = 0; x < grid.GetLength(0); x++) {
