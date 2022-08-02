@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53d177dc3521e34cbc2148c22e5f4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomLeftCorner: {x: -0.4, y: 0, z: -0.4}
-  topRightCorner: {x: 0.4, y: 0, z: 0.4}
+  bottomLeftCorner: {x: -0.4, y: -0.4}
+  topRightCorner: {x: 0.4, y: 0.4}
   gridSize: {x: 8, y: 8}
   piecePrefab: {fileID: 8170920892290080715, guid: c2f4d12d7eefeb0488e044e64fff6508, type: 3}
   cellPrefab: {fileID: 4606292359148403791, guid: 9d6667d568156cb478bca07302f73b9b, type: 3}
