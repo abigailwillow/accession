@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour {
     [Tooltip("The size of this piece.")]
-    [SerializeField] private Vector2 size;
+    [SerializeField] private Vector2 _size;
     /// <summary>
     /// The size of this cell.
     /// </summary>
-    public Vector3 Size { get => size.XZ(); }
+    public Vector3 size { get => _size.XZ(); }
+    /// <summary>
+    /// The piece that occupies this cell, or null if empty.
+    /// </summary>
     public Piece piece { get; private set; }
     /// <summary>
     /// The coordinates of this cell on the board.
@@ -26,8 +29,15 @@ public class Cell : MonoBehaviour {
         renderer = GetComponentInChildren<Renderer>();
     }
 
-    public void Initialize() {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="coordinates">The coordinates of this cell.</param>
+    /// <param name="piece">The piece that occupies this cell, or null if empty.</param>
+    public void Initialize(Vector2Int coordinates, Piece piece) {
         // TODO: Initialize everything needed for the cell.
+        this.coordinates = coordinates;
+        this.piece = piece;
     }
 
     public void SetColor(Color color) {
@@ -36,6 +46,6 @@ public class Cell : MonoBehaviour {
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, Size);
+        Gizmos.DrawWireCube(transform.position, size);
     }
 }

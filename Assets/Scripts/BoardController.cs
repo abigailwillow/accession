@@ -4,7 +4,7 @@ public class BoardController : MonoBehaviour {
     /// <summary>
     /// The size of this board.
     /// </summary>
-    public Vector3 BoardSize { get => new Vector3(cell.Size.x * gridSize.x, 0, cell.Size.z * gridSize.y); }
+    public Vector3 BoardSize { get => new Vector3(cell.size.x * gridSize.x, 0, cell.size.z * gridSize.y); }
     [Tooltip("The amount of rows and columns on the board.")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
     [SerializeField] private GameObject piecePrefab;
@@ -14,19 +14,49 @@ public class BoardController : MonoBehaviour {
     private Piece selectedPiece;
     private Cell cell;
 
-    public void SelectPiece(Piece piece) {
+    /// <summary>
+    /// Tries to select the given GameObject. Returns false if nothing was selected.
+    /// </summary>
+    /// <param name="selectedObject">The GameObject to try and select.</param>
+    /// <returns>True if either a cell or piece was selected.</returns>
+    public bool TrySelect(GameObject selectedObject) {
+        bool selected = false;
+        if (selectedObject.TryGetComponent<Cell>(out Cell cell)) {
+            Select(cell);
+            selected = true;
+        } else if (selectedObject.TryGetComponent<Piece>(out Piece piece)) {
+            Select(piece);
+            selected = true;
+        }
+        return selected;
+    }
+
+    private void Select(Piece piece) {
         if (selectedPiece != null) {
-            selectedPiece.Deselect();
+            selectedPiece.SetColor(colors.white);
         }
         selectedPiece = piece;
-        piece.Select();
+        piece.SetColor(colors.redPiece);
+    }
+
+    private void Select(Cell cell) {
+        // TODO: Select the cell.
+        cell.SetColor(colors.redPiece);
+        throw new System.NotImplementedException();
+    }
+
+    public void MovePiece(Piece piece, Cell cell) {
+        if (piece.coordinates == cell.coordinates) {
+            return;
+        }
+        // TODO: Implement rules on where pieces can and can't move
     }
 
     private void Awake() {
         cell = cellPrefab.GetComponent<Cell>();
 
         grid = new Transform[gridSize.x, gridSize.y];
-        Vector3 cellSize = cell.Size;
+        Vector3 cellSize = cell.size;
         Vector3 leftBottomCorner = transform.position - BoardSize / 2;
         Vector3 offset = cellSize / 2;
         for (int x = 0; x < gridSize.x; x++) {

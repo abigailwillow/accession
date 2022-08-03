@@ -10,4 +10,5 @@ public class ColorTheme : ScriptableObject {
     public Color magentaPiece;
     public Color yellowPiece;
     public Color cyanPiece;
+    public Color white;
 }
