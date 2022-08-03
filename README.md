@@ -1,6 +1,6 @@
 # Accession
 
-Accession is a turn-based strategy game
+Accession is a turn-based strategy game.
 
 ## Technical Details
 
