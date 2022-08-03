@@ -4,7 +4,7 @@ public class BoardController : MonoBehaviour {
     /// <summary>
     /// The size of this board.
     /// </summary>
-    public Vector3 BoardSize { get => new Vector3(cell.size.x * gridSize.x, 0, cell.size.z * gridSize.y); }
+    public Vector3 BoardSize { get => new Vector3(prefabCellComponent.size.x * gridSize.x, 0, prefabCellComponent.size.z * gridSize.y); }
     [Tooltip("The amount of rows and columns on the board.")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
     [SerializeField] private GameObject piecePrefab;
@@ -12,7 +12,7 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private ColorTheme colors;
     private Transform[,] grid;
     private Piece selectedPiece;
-    private Cell cell;
+    private Cell prefabCellComponent;
 
     /// <summary>
     /// Tries to select the given GameObject. Returns false if nothing was selected.
@@ -53,28 +53,28 @@ public class BoardController : MonoBehaviour {
     }
 
     private void Awake() {
-        cell = cellPrefab.GetComponent<Cell>();
+        prefabCellComponent = cellPrefab.GetComponent<Cell>();
 
         grid = new Transform[gridSize.x, gridSize.y];
-        Vector3 cellSize = cell.size;
+        Vector3 cellSize = prefabCellComponent.size;
         Vector3 leftBottomCorner = transform.position - BoardSize / 2;
         Vector3 offset = cellSize / 2;
         for (int x = 0; x < gridSize.x; x++) {
             for (int y = 0; y < gridSize.y; y++) {
                 Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + offset;
-                GameObject cell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                GameObject piece = Instantiate(piecePrefab, cell.transform, false);
-                cell.name = $"Cell ({x}, {y})";
-                piece.name = $"Piece ({x}, {y})";
-                grid[x, y] = cell.transform;
+                GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
+                GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
+                spawnedCell.name = $"Cell ({x}, {y})";
+                spawnedPiece.name = $"Piece ({x}, {y})";
+                grid[x, y] = spawnedCell.transform;
 
-                cell.GetComponent<Cell>().renderer.material.color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
+                spawnedCell.GetComponent<Cell>().renderer.material.color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
             }
         }
     }
 
     private void OnDrawGizmosSelected() {
-        cell = cell ?? cellPrefab.GetComponent<Cell>();
+        prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<Cell>();
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position, BoardSize);
 
