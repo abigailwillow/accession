@@ -63,9 +63,12 @@ public class BoardController : MonoBehaviour {
             for (int y = 0; y < gridSize.y; y++) {
                 Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + offset;
                 GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                spawnedCell.name = $"Cell ({x}, {y})";
-                spawnedPiece.name = $"Piece ({x}, {y})";
+
+                // TODO: REMOVE AFTER DEBUGGING!
+                if ((x + y) % 7 == 0) {
+                    GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);   
+                }
+
                 grid[x, y] = spawnedCell.transform;
 
                 spawnedCell.GetComponent<Cell>().renderer.material.color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;

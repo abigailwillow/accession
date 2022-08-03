@@ -6,6 +6,7 @@ public class Piece : MonoBehaviour {
 
     public void Initialize(Vector2Int coordinates, Color color) {
         // TODO: Initialize everything needed for the piece.
+        this.name = $"Piece ({coordinates.x}, {coordinates.y})";
         this.coordinates = coordinates;
         this.color = color;
     }

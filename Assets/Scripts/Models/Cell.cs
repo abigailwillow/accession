@@ -36,6 +36,7 @@ public class Cell : MonoBehaviour {
     /// <param name="piece">The piece that occupies this cell, or null if empty.</param>
     public void Initialize(Vector2Int coordinates, Piece piece) {
         // TODO: Initialize everything needed for the cell.
+        this.name = $"Cell ({coordinates.x}, {coordinates.y})";
         this.coordinates = coordinates;
         this.piece = piece;
     }
