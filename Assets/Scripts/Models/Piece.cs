@@ -9,7 +9,7 @@ public class Piece : MonoBehaviour {
     public Piece Initialize(Vector2Int coordinates, Color color) {
         // TODO: Initialize everything needed for the piece.
 
-        this.name = $"Piece ({coordinates.x}, {coordinates.y})";
+        this.name = $"Piece ({color})";
         this.coordinates = coordinates;
         this.defaultColor = color;
 

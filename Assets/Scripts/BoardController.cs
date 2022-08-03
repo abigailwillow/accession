@@ -52,7 +52,8 @@ public class BoardController : MonoBehaviour {
 
         if (selectedPiece != null) {
             cell.MovePieceHere(selectedPiece);
-            selectedPiece = null;
+            Deselect(selectedPiece);
+            Deselect(cell);
         }
 
         selectedCell = cell;
