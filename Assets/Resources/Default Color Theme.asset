@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd60acc972a2fb4bb25214f4c601b64, type: 3}
   m_Name: Default Color Theme
   m_EditorClassIdentifier: 
-  lightCell: {r: 0.8901961, g: 0.75686276, b: 0.43529412, a: 0}
-  darkCell: {r: 0.72156864, g: 0.54509807, b: 0.2901961, a: 0}
-  redPiece: {r: 1, g: 0.25, b: 0.25, a: 0}
-  greenPiece: {r: 0.25, g: 1, b: 0.25, a: 0}
-  bluePiece: {r: 0.25, g: 0.25, b: 1, a: 0}
-  magentaPiece: {r: 1, g: 0.25, b: 1, a: 0}
-  yellowPiece: {r: 1, g: 1, b: 0.25, a: 0}
-  cyanPiece: {r: 0.25, g: 1, b: 1, a: 0}
+  lightCell: {r: 0.8901961, g: 0.75686276, b: 0.43529412, a: 1}
+  darkCell: {r: 0.72156864, g: 0.54509807, b: 0.2901961, a: 1}
+  redPiece: {r: 1, g: 0.25, b: 0.25, a: 1}
+  greenPiece: {r: 0.25, g: 1, b: 0.25, a: 1}
+  bluePiece: {r: 0.25, g: 0.25, b: 1, a: 1}
+  magentaPiece: {r: 1, g: 0.25, b: 1, a: 1}
+  yellowPiece: {r: 1, g: 1, b: 0.25, a: 1}
+  cyanPiece: {r: 0.25, g: 1, b: 1, a: 1}
+  white: {r: 1, g: 1, b: 1, a: 1}

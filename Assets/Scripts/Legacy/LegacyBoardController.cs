@@ -22,13 +22,13 @@ public class LegacyBoardController : MonoBehaviour {
     private Transform[,] grid;
     private Piece selectedPiece;
 
-    public void SelectPiece(Piece piece) {
-        if (selectedPiece != null) {
-            selectedPiece.Deselect();
-        }
-        selectedPiece = piece;
-        piece.Select();
-    }
+    // public void SelectPiece(Piece piece) {
+    //     if (selectedPiece != null) {
+    //         selectedPiece.Deselect();
+    //     }
+    //     selectedPiece = piece;
+    //     piece.Select();
+    // }
 
     private void Awake() {
         grid = new Transform[gridSize.x, gridSize.y];
