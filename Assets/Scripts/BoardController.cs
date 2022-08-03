@@ -12,6 +12,7 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private ColorTheme colors;
     private Transform[,] grid;
     private Piece selectedPiece;
+    private Cell selectedCell;
     private Cell prefabCellComponent;
 
     /// <summary>
@@ -33,16 +34,34 @@ public class BoardController : MonoBehaviour {
 
     private void Select(Piece piece) {
         if (selectedPiece != null) {
-            selectedPiece.SetColor(colors.white);
+            Deselect(selectedPiece);
         }
         selectedPiece = piece;
         piece.SetColor(colors.redPiece);
     }
 
+    private void Deselect(Piece piece) {
+        selectedPiece.ResetColor();
+        selectedPiece = null;
+    }
+
     private void Select(Cell cell) {
-        // TODO: Select the cell.
+        if (selectedCell != null) {
+            Deselect(selectedCell);
+        }
+
+        if (selectedPiece != null) {
+            cell.MovePieceHere(selectedPiece);
+            selectedPiece = null;
+        }
+
+        selectedCell = cell;
         cell.SetColor(colors.redPiece);
-        throw new System.NotImplementedException();
+    }
+
+    private void Deselect(Cell cell) {
+        cell.ResetColor();
+        selectedCell = null;
     }
 
     public void MovePiece(Piece piece, Cell cell) {
@@ -62,16 +81,18 @@ public class BoardController : MonoBehaviour {
         for (int x = 0; x < gridSize.x; x++) {
             for (int y = 0; y < gridSize.y; y++) {
                 Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + offset;
+                
+                Color color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
                 GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
+                Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), color, null);
 
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
-                    GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);   
+                    GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(new Vector2Int(x, y), colors.white);
                 }
 
                 grid[x, y] = spawnedCell.transform;
-
-                spawnedCell.GetComponent<Cell>().renderer.material.color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
             }
         }
     }

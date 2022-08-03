@@ -1,22 +1,42 @@
 using UnityEngine;
 
 public class Piece : MonoBehaviour {
-    public Color color { get; private set; }
+    public Color defaultColor { get; private set; }
     public Vector2Int coordinates { get; private set; }
+    private new Renderer renderer;
+    private bool initialized = false;
 
-    public void Initialize(Vector2Int coordinates, Color color) {
+    public Piece Initialize(Vector2Int coordinates, Color color) {
         // TODO: Initialize everything needed for the piece.
+
         this.name = $"Piece ({coordinates.x}, {coordinates.y})";
         this.coordinates = coordinates;
-        this.color = color;
+        this.defaultColor = color;
+
+        initialized = true;
+        return this;
     }
 
-    public void MoveTo(Vector2Int coordinates) {
-        // TODO: Move the piece to the given coordinates.
+    private void Awake() {
+        renderer = GetComponentInChildren<Renderer>();
+    }
+
+    private void Start() {
+        if (!initialized) {
+            Debug.LogError("Piece not initialized!", this);
+        }
+    }
+
+    public void MoveTo(Cell cell) {
+        // TODO: Move the piece to the given cell.
         throw new System.NotImplementedException();
     }
 
     public void SetColor(Color color) {
-        GetComponentInChildren<Renderer>().material.color = color;
+        renderer.material.color = color;
+    }
+
+    public void ResetColor() {
+        renderer.material.color = this.defaultColor;
     }
 }
