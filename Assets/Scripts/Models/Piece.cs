@@ -29,12 +29,14 @@ public class Piece : MonoBehaviour {
         }
     }
 
-    public void Select() {
+    public Piece Select() {
         outline.enabled = true;
+        return this;
     }
 
-    public void Deselect() {
+    public Piece Deselect() {
         outline.enabled = false;
+        return null;
     }
 
     public void MoveTo(Cell cell) {

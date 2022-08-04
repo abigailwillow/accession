@@ -12,52 +12,27 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private ColorTheme colors;
     private Transform[,] grid;
     private Piece selectedPiece;
-    private Cell selectedCell;
     private Cell prefabCellComponent;
 
     /// <summary>
     /// Select the given cell.
     /// </summary>
     /// <param name="cell">The cell to select.</param>
-    public void SelectCell(Cell cell) {
-        // If there is already a cell selected, deselect it.
-        if (selectedCell != null) {
-            DeselectCell(selectedCell);
-        }
-
+    public void OnCellClicked(Cell cell) {
         // Select the given cell or its piece, depending on if the cell is occupied or not.
         if (cell.occupied) {
             if (selectedPiece != null) {
-                DeselectPiece(selectedPiece);
+                selectedPiece = selectedPiece.Deselect();
             }
-            SelectPiece(cell.piece);
+            selectedPiece = cell.piece.Select();
             return;
-        } else {
-            cell.SetColor(colors.redPiece);
-            selectedCell = cell;
         }
 
         // If there is a selected piece, try to move it.
         if (selectedPiece != null) {
             cell.MovePieceHere(selectedPiece);
-            DeselectPiece(selectedPiece);
-            DeselectCell(cell);
+            selectedPiece = selectedPiece.Deselect();
         }
-    }
-
-    private void SelectPiece(Piece piece) {
-        piece.Select();
-        selectedPiece = piece;
-    }
-
-    private void DeselectPiece(Piece piece) {
-        piece.Deselect();
-        selectedPiece = null;
-    }
-
-    private void DeselectCell(Cell cell) {
-        cell.ResetColor();
-        selectedCell = null;
     }
 
     public void MovePiece(Piece piece, Cell cell) {
