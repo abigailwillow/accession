@@ -29,11 +29,19 @@ public class Piece : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Selects this piece and returns a reference to itself.
+    /// </summary>
+    /// <returns>The selected piece.</returns>
     public Piece Select() {
         outline.enabled = true;
         return this;
     }
 
+    /// <summary>
+    /// Deselects this piece and returns null.
+    /// </summary>
+    /// <returns>Null.</returns>
     public Piece Deselect() {
         outline.enabled = false;
         return null;
