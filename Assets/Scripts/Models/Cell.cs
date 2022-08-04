@@ -49,9 +49,12 @@ public class Cell : MonoBehaviour {
     }
 
     public void MovePieceHere(Piece piece) {
-        piece.transform.SetParent(this.transform);
-        piece.transform.position = this.transform.position;
-        this.piece = piece;
+        if (!this.occupied) {
+            piece.GetComponentInParent<Cell>().piece = null;
+            piece.transform.SetParent(this.transform);
+            piece.transform.position = this.transform.position;
+            this.piece = piece;
+        }
     }
 
     public void SetColor(Color color) {
