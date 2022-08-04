@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
         Ray ray = camera.ScreenPointToRay(pointerPosition);
         Physics.Raycast(ray, out RaycastHit hit);
         if (hit.collider != null && hit.collider.TryGetComponent(out Cell cell)) {
-            hit.transform.GetComponentInParent<BoardController>().SelectCell(cell);
+            hit.transform.GetComponentInParent<BoardController>().OnCellClicked(cell);
         }
         Debug.DrawRay(ray.origin, ray.direction, Color.red, 0.25f);
     }
