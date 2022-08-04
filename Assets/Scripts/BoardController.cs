@@ -16,51 +16,46 @@ public class BoardController : MonoBehaviour {
     private Cell prefabCellComponent;
 
     /// <summary>
-    /// Tries to select the given GameObject. Returns false if nothing was selected.
+    /// Select the given cell.
     /// </summary>
-    /// <param name="selectedObject">The GameObject to try and select.</param>
-    /// <returns>True if either a cell or piece was selected.</returns>
-    public bool TrySelect(GameObject selectedObject) {
-        bool selected = false;
-        if (selectedObject.TryGetComponent<Cell>(out Cell cell)) {
-            Select(cell);
-            selected = true;
-        } else if (selectedObject.TryGetComponent<Piece>(out Piece piece)) {
-            Select(piece);
-            selected = true;
+    /// <param name="cell">The cell to select.</param>
+    public void SelectCell(Cell cell) {
+        // If there is already a cell selected, deselect it.
+        if (selectedCell != null) {
+            DeselectCell(selectedCell);
         }
-        return selected;
-    }
 
-    private void Select(Piece piece) {
+        // Select the given cell or its piece, depending on if the cell is occupied or not.
+        if (cell.occupied) {
+            if (selectedPiece != null) {
+                DeselectPiece(selectedPiece);
+            }
+            SelectPiece(cell.piece);
+            return;
+        } else {
+            cell.SetColor(colors.redPiece);
+            selectedCell = cell;
+        }
+
+        // If there is a selected piece, try to move it.
         if (selectedPiece != null) {
-            Deselect(selectedPiece);
+            cell.MovePieceHere(selectedPiece);
+            DeselectPiece(selectedPiece);
+            DeselectCell(cell);
         }
-        selectedPiece = piece;
-        piece.SetColor(colors.redPiece);
     }
 
-    private void Deselect(Piece piece) {
-        selectedPiece.ResetColor();
+    private void SelectPiece(Piece piece) {
+        piece.SetColor(colors.redPiece);
+        selectedPiece = piece;
+    }
+
+    private void DeselectPiece(Piece piece) {
+        piece.ResetColor();
         selectedPiece = null;
     }
 
-    private void Select(Cell cell) {
-        if (selectedCell != null) {
-            Deselect(selectedCell);
-        }
-
-        if (selectedPiece != null) {
-            cell.MovePieceHere(selectedPiece);
-            Deselect(selectedPiece);
-            Deselect(cell);
-        }
-
-        selectedCell = cell;
-        cell.SetColor(colors.redPiece);
-    }
-
-    private void Deselect(Cell cell) {
+    private void DeselectCell(Cell cell) {
         cell.ResetColor();
         selectedCell = null;
     }
