@@ -46,12 +46,12 @@ public class BoardController : MonoBehaviour {
     }
 
     private void SelectPiece(Piece piece) {
-        piece.SetColor(colors.redPiece);
+        piece.Select();
         selectedPiece = piece;
     }
 
     private void DeselectPiece(Piece piece) {
-        piece.ResetColor();
+        piece.Deselect();
         selectedPiece = null;
     }
 

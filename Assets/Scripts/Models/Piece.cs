@@ -4,6 +4,7 @@ public class Piece : MonoBehaviour {
     public Color defaultColor { get; private set; }
     public Vector2Int coordinates { get; private set; }
     private new Renderer renderer;
+    private Outline outline;
     private bool initialized = false;
 
     public Piece Initialize(Vector2Int coordinates, Color color) {
@@ -19,6 +20,7 @@ public class Piece : MonoBehaviour {
 
     private void Awake() {
         renderer = GetComponentInChildren<Renderer>();
+        outline = GetComponentInChildren<Outline>();
     }
 
     private void Start() {
@@ -27,9 +29,16 @@ public class Piece : MonoBehaviour {
         }
     }
 
+    public void Select() {
+        outline.enabled = true;
+    }
+
+    public void Deselect() {
+        outline.enabled = false;
+    }
+
     public void MoveTo(Cell cell) {
-        // TODO: Move the piece to the given cell.
-        throw new System.NotImplementedException();
+        cell.MovePieceHere(this);
     }
 
     public void SetColor(Color color) {
