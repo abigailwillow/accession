@@ -19,40 +19,45 @@ public class BoardController : MonoBehaviour {
     /// Select the given cell.
     /// </summary>
     /// <param name="cell">The cell to select.</param>
-    public void Select(Cell cell) {
+    public void SelectCell(Cell cell) {
         // If there is already a cell selected, deselect it.
         if (selectedCell != null) {
-            Deselect(selectedCell);
+            DeselectCell(selectedCell);
         }
 
         // Select the given cell or its piece, depending on if the cell is occupied or not.
         if (cell.occupied) {
-            Select(cell.piece);
+            if (selectedPiece != null) {
+                DeselectPiece(selectedPiece);
+            }
+            SelectPiece(cell.piece);
+            return;
         } else {
-            Select(cell);
+            cell.SetColor(colors.redPiece);
+            selectedCell = cell;
         }
 
         // If there is a selected piece, try to move it.
         if (selectedPiece != null) {
             cell.MovePieceHere(selectedPiece);
-            Deselect(selectedPiece);
-            Deselect(cell);
+            DeselectPiece(selectedPiece);
+            DeselectCell(cell);
         }
     }
 
-    private void Deselect(Cell cell) {
+    private void SelectPiece(Piece piece) {
+        piece.SetColor(colors.redPiece);
+        selectedPiece = piece;
+    }
+
+    private void DeselectPiece(Piece piece) {
+        piece.ResetColor();
+        selectedPiece = null;
+    }
+
+    private void DeselectCell(Cell cell) {
         cell.ResetColor();
         selectedCell = null;
-    }
-
-    private void Select(Piece piece) {
-        selectedPiece = piece;
-        piece.SetColor(colors.redPiece);
-    }
-
-    private void Deselect(Piece piece) {
-        selectedPiece.ResetColor();
-        selectedPiece = null;
     }
 
     public void MovePiece(Piece piece, Cell cell) {
