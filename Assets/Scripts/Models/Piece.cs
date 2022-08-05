@@ -33,7 +33,9 @@ public class Piece : MonoBehaviour {
     /// <returns>Whether or not the piece was successfully moved.</returns>
     /// <param name="cell">The cell to move to.</param>
     public bool Move(Cell cell) {
-        return cell.MovePieceHere(this);
+        bool moved = cell.MovePieceHere(this);
+        this.coordinates = moved ? cell.coordinates : this.coordinates;
+        return moved;
     }
 
     /// <summary>
