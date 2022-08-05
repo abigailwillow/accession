@@ -54,7 +54,16 @@ public class BoardController : MonoBehaviour {
                 validCells.Add(cell);
             }
         });
+
+        HighlightCells(validCells);
+
         return validCells;
+    }
+
+    public void HighlightCells(List<Cell> cells) {
+        cells.ForEach(cell => {
+            cell.Highlight();
+        });
     }
 
     private void Awake() {
@@ -84,12 +93,12 @@ public class BoardController : MonoBehaviour {
 
     private void OnDrawGizmosSelected() {
         prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<Cell>();
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(transform.position, BoardSize);
 
         cells.ForEach(cell => {
             Gizmos.color = cell.occupied ? Color.red : Color.green;
-            Gizmos.DrawWireCube(cell.transform.position, cell.size);
+            Gizmos.DrawWireCube(cell.transform.position, Vector3.Scale(cell.size, Vector3.up * 1.5f));
         });
     }
 }

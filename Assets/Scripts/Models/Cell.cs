@@ -65,6 +65,10 @@ public class Cell : MonoBehaviour {
         return validMove;
     }
 
+    public void Highlight() {
+        outline.enabled = true;
+    }
+
     public void SetColor(Color color) {
         renderer.material.color = color;
     }
