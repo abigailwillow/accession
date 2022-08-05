@@ -94,12 +94,12 @@ public class BoardController : MonoBehaviour {
 
     private void OnDrawGizmosSelected() {
         prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<Cell>();
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.white;
         Gizmos.DrawWireCube(transform.position, BoardSize);
 
         cells.ForEach(cell => {
             Gizmos.color = cell.occupied ? Color.red : Color.green;
-            Gizmos.DrawWireCube(cell.transform.position, Vector3.Scale(cell.size, Vector3.up * 1.5f));
+            Gizmos.DrawWireCube(cell.transform.position, prefabCellComponent.size * 0.99f + Vector3.up * 0.02f);
         });
     }
 }
