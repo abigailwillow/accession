@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
@@ -10,7 +11,7 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private GameObject piecePrefab;
     [SerializeField] private GameObject cellPrefab;
     [SerializeField] private ColorTheme colors;
-    private Transform[,] grid;
+    private List<Cell> cells = new List<Cell>();
     private Piece selectedPiece;
     private Cell prefabCellComponent;
 
@@ -35,23 +36,34 @@ public class BoardController : MonoBehaviour {
     }
 
     public void MovePiece(Piece piece, Cell cell) {
-        Vector2Int difference = cell.coordinates - piece.coordinates;
-        Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
-        if (difference.y > 0 && absoluteDifference.x == 1 && absoluteDifference.x == absoluteDifference.y) {
+        // If the list of valid moves contains this cell, then move it and deselect this piece.
+        if (GetValidMoves(piece).Contains(cell)) {
             if (piece.Move(cell)) {
                 selectedPiece = selectedPiece.Deselect();
             }
         }
     }
 
-    public void HighlightPossibleMoves(Piece piece) {
-        
+    /// <summary>
+    /// Get all cells that this piece can move to.
+    /// </summary>
+    /// <param name="piece">The piece to check valid moves for.</param>
+    /// <returns>A list of cells that this piece can move to.</returns>
+    public List<Cell> GetValidMoves(Piece piece) {
+        List<Cell> validCells = new List<Cell>();
+        cells.ForEach(cell => {
+            Vector2Int difference = cell.coordinates - piece.coordinates;
+            Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
+            if (difference.y > 0 && absoluteDifference.x == 1 && absoluteDifference.x == absoluteDifference.y) {
+                validCells.Add(cell);
+            }
+        });
+        return validCells;
     }
 
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
 
-        grid = new Transform[gridSize.x, gridSize.y];
         Vector3 cellSize = prefabCellComponent.size;
         Vector3 leftBottomCorner = transform.position - BoardSize / 2;
         Vector3 offset = cellSize / 2;
@@ -69,7 +81,7 @@ public class BoardController : MonoBehaviour {
                     cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(new Vector2Int(x, y), colors.white);
                 }
 
-                grid[x, y] = spawnedCell.transform;
+                cells.Add(cell);
             }
         }
     }
@@ -79,12 +91,9 @@ public class BoardController : MonoBehaviour {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position, BoardSize);
 
-        if (grid != null) {
-            for (int x = 0; x < grid.GetLength(0); x++) {
-                for (int y = 0; y < grid.GetLength(1); y++) {
-                    Gizmos.DrawWireCube(grid[x, y].position, new Vector3(0.1f, 0.02f, 0.1f));
-                }
-            }
-        }
+        cells.ForEach(cell => {
+            Gizmos.color = cell.occupied ? Color.red : Color.green;
+            Gizmos.DrawWireCube(cell.transform.position, cell.size);
+        });
     }
 }
