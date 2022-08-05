@@ -21,7 +21,9 @@ public class BoardController : MonoBehaviour {
     /// <param name="cell">The cell to select.</param>
     public void OnCellClicked(Cell cell) {
         // Select piece if this cell contains one.
-        if (cell.occupied) cell.piece.Select();
+        if (cell.occupied) {
+            selectedPiece = cell.piece.Select();
+        }
 
         // If a piece is selected already, move it to this cell.
         if (selectedPiece != null) {
@@ -34,9 +36,8 @@ public class BoardController : MonoBehaviour {
     public void MovePiece(Piece piece, Cell cell) {
         // If the list of valid moves contains this cell, then move it and deselect this piece.
         if (GetValidMoves(piece).Contains(cell)) {
-            if (piece.Move(cell)) {
-                selectedPiece = selectedPiece.Deselect();
-            }
+            piece.Move(cell);
+            selectedPiece = selectedPiece.Deselect();
         }
     }
 
@@ -83,7 +84,7 @@ public class BoardController : MonoBehaviour {
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
                     GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(new Vector2Int(x, y), colors.white);
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, colors.white);
                 }
 
                 cells.Add(cell);
