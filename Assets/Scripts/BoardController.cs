@@ -35,11 +35,12 @@ public class BoardController : MonoBehaviour {
     }
 
     public void MovePiece(Piece piece, Cell cell) {
-        Vector2Int coordinateDifference = piece.coordinates - cell.coordinates;
+        Vector2Int coordinateDifference = cell.coordinates - piece.coordinates;
         Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(coordinateDifference.x), Mathf.Abs(coordinateDifference.y));
         if (coordinateDifference.y > 0 && coordinateDifference.x == 1 && absoluteDifference.x == absoluteDifference.y) {
-            piece.Move(cell);
-            selectedPiece = selectedPiece.Deselect();
+            if (piece.Move(cell)) {
+                selectedPiece = selectedPiece.Deselect();
+            }
         }
     }
 
