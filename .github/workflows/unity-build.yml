@@ -48,21 +48,21 @@ jobs:
           customParameters: -Development
           buildName: Accession
           versioning: Custom
-          version: ${{ steps.version.outputs.version }}
+          version: ${{ steps.version.outputs.version_tag }}
           
       - name: Archive build
         id: archive
         uses: thedoctor0/zip-release@main
         with:
           type: zip
-          filename: ../../Accession-${{ steps.version.outputs.version }}-win64.zip
+          filename: ../../Accession-${{ steps.version.outputs.version_tag }}-win64.zip
           directory: build/StandaloneWindows64/
           
       - name: Create release
         id: release
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ steps.version.outputs.version }}
-          tag_name: ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version_tag }}
+          tag_name: ${{ steps.version.outputs.version_tag }}
           prerelease: true
-          files: Accession-${{ steps.version.outputs.version }}-win64.zip
+          files: Accession-${{ steps.version.outputs.version_tag }}-win64.zip
