@@ -20,19 +20,15 @@ public class BoardController : MonoBehaviour {
     /// </summary>
     /// <param name="cell">The cell to select.</param>
     public void OnCellClicked(Cell cell) {
-        // Select the given cell or its piece, depending on if the cell is occupied or not.
-        if (cell.occupied) {
-            if (selectedPiece != null) {
-                selectedPiece = selectedPiece.Deselect();
-            }
-            selectedPiece = cell.piece.Select();
-            return;
-        }
+        // Select piece if this cell contains one.
+        if (cell.occupied) cell.piece.Select();
 
-        // If there is a selected piece, try to move it.
+        // If a piece is selected already, move it to this cell.
         if (selectedPiece != null) {
             MovePiece(selectedPiece, cell);
+            selectedPiece = selectedPiece.Deselect();
         }
+
     }
 
     public void MovePiece(Piece piece, Cell cell) {
@@ -54,7 +50,7 @@ public class BoardController : MonoBehaviour {
         cells.ForEach(cell => {
             Vector2Int difference = cell.coordinates - piece.coordinates;
             Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
-            if (difference.y > 0 && absoluteDifference.x == 1 && absoluteDifference.x == absoluteDifference.y) {
+            if (difference.y == 1 && absoluteDifference.x == 1 && !cell.occupied) {
                 validCells.Add(cell);
             }
         });
