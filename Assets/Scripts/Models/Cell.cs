@@ -37,7 +37,6 @@ public class Cell : MonoBehaviour {
     /// <param name="coordinates">The coordinates of this cell.</param>
     /// <param name="piece">The piece that occupies this cell, or null if empty.</param>
     public Cell Initialize(Vector2Int coordinates, Color color, Piece piece) {
-        // TODO: Initialize everything needed for the cell.
         this.name = $"Cell ({coordinates.x}, {coordinates.y})";
         this.coordinates = coordinates;
         this.defaultColor = color;
@@ -48,13 +47,20 @@ public class Cell : MonoBehaviour {
         return this;
     }
 
-    public void MovePieceHere(Piece piece) {
-        if (!this.occupied) {
+    /// <summary>
+    /// Move the given piece to this cell.
+    /// </summary>
+    /// <param name="piece">The piece to move to this cell.</param>
+    /// <returns>Whether or not the piece was successfully moved.</returns>
+    public bool MovePieceHere(Piece piece) {
+        bool validMove = !this.occupied;
+        if (validMove) {
             piece.GetComponentInParent<Cell>().piece = null;
             piece.transform.SetParent(this.transform);
             piece.transform.position = this.transform.position;
             this.piece = piece;
         }
+        return validMove;
     }
 
     public void SetColor(Color color) {
