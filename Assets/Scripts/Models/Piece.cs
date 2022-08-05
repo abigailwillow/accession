@@ -58,10 +58,6 @@ public class Piece : MonoBehaviour {
         return null;
     }
 
-    public void MoveTo(Cell cell) {
-        cell.MovePieceHere(this);
-    }
-
     public void SetColor(Color color) {
         renderer.material.color = color;
     }
