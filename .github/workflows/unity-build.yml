@@ -11,14 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      # Checkout
       - name: Checkout repository
         id: checkout
         uses: actions/checkout@v2
         with:
           ref: stable
+          fetch-depth: 0
         
-      # Cache
       - name: Cache repository
         id: cache
         uses: actions/cache@v2
@@ -28,7 +27,13 @@ jobs:
           restore-keys: |
             Library-
       
-      # Build
+      - name: Generate Semantic Version
+        id: version
+        uses: paulhatch/semantic-version@v5
+        with:
+          format: "${major}.${minor}.${increment}"
+          bump_each_commit: true
+      
       - name: Build project
         id: build
         uses: game-ci/unity-builder@v2
@@ -40,22 +45,22 @@ jobs:
           targetPlatform: StandaloneWindows64
           customParameters: -Development
           buildName: Accession
+          versioning: Custom
+          version: ${{ steps.version.outputs.version }}
           
-      # Archive
       - name: Archive build
         id: archive
         uses: thedoctor0/zip-release@main
         with:
           type: zip
-          filename: ../../Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
+          filename: ../../Accession-${{ steps.version.outputs.version }}-win64.zip
           directory: build/StandaloneWindows64/
           
-      # Release
       - name: Create release
         id: release
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ steps.build.outputs.buildVersion }}
-          tag_name: ${{ steps.build.outputs.buildVersion }}
+          name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.version.outputs.version }}
           prerelease: true
-          files: Accession-${{ steps.build.outputs.buildVersion }}-win64.zip
+          files: Accession-${{ steps.version.outputs.version }}-win64.zip
