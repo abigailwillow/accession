@@ -30,16 +30,18 @@ public class BoardController : MonoBehaviour {
 
         // If there is a selected piece, try to move it.
         if (selectedPiece != null) {
-            cell.MovePieceHere(selectedPiece);
-            selectedPiece = selectedPiece.Deselect();
+            MovePiece(selectedPiece, cell);
         }
     }
 
     public void MovePiece(Piece piece, Cell cell) {
-        if (piece.coordinates == cell.coordinates) {
-            return;
+        Vector2Int difference = cell.coordinates - piece.coordinates;
+        Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
+        if (difference.y > 0 && absoluteDifference.x == 1 && absoluteDifference.x == absoluteDifference.y) {
+            if (piece.Move(cell)) {
+                selectedPiece = selectedPiece.Deselect();
+            }
         }
-        // TODO: Implement rules on where pieces can and can't move
     }
 
     private void Awake() {

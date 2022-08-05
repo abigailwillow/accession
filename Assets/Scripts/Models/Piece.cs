@@ -8,8 +8,6 @@ public class Piece : MonoBehaviour {
     private bool initialized = false;
 
     public Piece Initialize(Vector2Int coordinates, Color color) {
-        // TODO: Initialize everything needed for the piece.
-
         this.name = $"Piece ({color})";
         this.coordinates = coordinates;
         this.defaultColor = color;
@@ -27,6 +25,17 @@ public class Piece : MonoBehaviour {
         if (!initialized) {
             Debug.LogError("Piece not initialized!", this);
         }
+    }
+
+    /// <summary>
+    /// Move this piece to the given cell.
+    /// </summary>
+    /// <returns>Whether or not the piece was successfully moved.</returns>
+    /// <param name="cell">The cell to move to.</param>
+    public bool Move(Cell cell) {
+        bool moved = cell.MovePieceHere(this);
+        this.coordinates = moved ? cell.coordinates : this.coordinates;
+        return moved;
     }
 
     /// <summary>
