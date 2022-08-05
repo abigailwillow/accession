@@ -32,8 +32,8 @@ jobs:
         id: version
         uses: paulhatch/semantic-version@v4.0.3
         with:
-          version_format: "${major}.${minor}.${increment}"
-          bump_each_commit: true
+          tag_prefix: ''
+          format: "${major}.${minor}.${increment}"
       
       - name: Build project
         id: build
