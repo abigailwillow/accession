@@ -44,6 +44,10 @@ public class BoardController : MonoBehaviour {
         }
     }
 
+    public void HighlightPossibleMoves(Piece piece) {
+        
+    }
+
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
 

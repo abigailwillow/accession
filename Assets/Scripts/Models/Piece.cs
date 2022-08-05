@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Outline))]
 public class Piece : MonoBehaviour {
     public Color defaultColor { get; private set; }
     public Vector2Int coordinates { get; private set; }

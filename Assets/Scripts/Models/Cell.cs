@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Outline))]
 public class Cell : MonoBehaviour {
     [Tooltip("The size of this piece.")]
     [SerializeField] private Vector2 _size;
@@ -24,7 +25,8 @@ public class Cell : MonoBehaviour {
     /// </summary>
     public bool completed => piece.defaultColor == renderer.material.color;
     public Color defaultColor { get; private set; }
-    public new Renderer renderer { get; private set; }
+    private new Renderer renderer;
+    private Outline outline;
     private bool initialized = false;
 
     public void Awake() {
