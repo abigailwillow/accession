@@ -358,6 +358,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4200241980088239993, guid: 259b86ef91fff724f86b87121532c635, type: 3}
+      propertyPath: orthographic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200241980088239993, guid: 259b86ef91fff724f86b87121532c635, type: 3}
+      propertyPath: far clip plane
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200241980088239993, guid: 259b86ef91fff724f86b87121532c635, type: 3}
+      propertyPath: near clip plane
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200241980088239993, guid: 259b86ef91fff724f86b87121532c635, type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4200241980088239995, guid: 259b86ef91fff724f86b87121532c635, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -372,7 +388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4200241980088239998, guid: 259b86ef91fff724f86b87121532c635, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.75
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4200241980088239998, guid: 259b86ef91fff724f86b87121532c635, type: 3}
       propertyPath: m_LocalPosition.z
