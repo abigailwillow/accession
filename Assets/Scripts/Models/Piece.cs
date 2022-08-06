@@ -2,16 +2,17 @@ using UnityEngine;
 
 [RequireComponent(typeof(Outline))]
 public class Piece : MonoBehaviour {
-    public Color defaultColor { get; private set; }
-    public Vector2Int coordinates { get; private set; }
+    public Color color { get; private set; }
+    public Cell cell { get; private set; }
+    public Vector2Int coordinates => cell.coordinates;
     private new Renderer renderer;
     private Outline outline;
     private bool initialized = false;
 
-    public Piece Initialize(Vector2Int coordinates, Color color) {
+    public Piece Initialize(Cell cell, Color color) {
         this.name = $"Piece ({color})";
-        this.coordinates = coordinates;
-        this.defaultColor = color;
+        this.cell = cell;
+        this.color = color;
 
         initialized = true;
         return this;
@@ -31,12 +32,13 @@ public class Piece : MonoBehaviour {
     /// <summary>
     /// Move this piece to the given cell.
     /// </summary>
-    /// <returns>Whether or not the piece was successfully moved.</returns>
     /// <param name="cell">The cell to move to.</param>
-    public bool Move(Cell cell) {
-        bool moved = cell.MovePieceHere(this);
-        this.coordinates = moved ? cell.coordinates : this.coordinates;
-        return moved;
+    public void Move(Cell cell) {
+        cell.piece = this;
+        this.cell.piece = null;
+        this.cell = cell;
+        this.transform.SetParent(cell.transform);
+        this.transform.position = cell.transform.position;
     }
 
     /// <summary>
@@ -57,15 +59,11 @@ public class Piece : MonoBehaviour {
         return null;
     }
 
-    public void MoveTo(Cell cell) {
-        cell.MovePieceHere(this);
-    }
-
     public void SetColor(Color color) {
         renderer.material.color = color;
     }
 
     public void ResetColor() {
-        renderer.material.color = this.defaultColor;
+        renderer.material.color = this.color;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
@@ -10,7 +11,7 @@ public class BoardController : MonoBehaviour {
     [SerializeField] private GameObject piecePrefab;
     [SerializeField] private GameObject cellPrefab;
     [SerializeField] private ColorTheme colors;
-    private Transform[,] grid;
+    private List<Cell> cells = new List<Cell>();
     private Piece selectedPiece;
     private Cell prefabCellComponent;
 
@@ -19,39 +20,62 @@ public class BoardController : MonoBehaviour {
     /// </summary>
     /// <param name="cell">The cell to select.</param>
     public void OnCellClicked(Cell cell) {
-        // Select the given cell or its piece, depending on if the cell is occupied or not.
+        // Select piece if this cell contains one.
         if (cell.occupied) {
             if (selectedPiece != null) {
                 selectedPiece = selectedPiece.Deselect();
+                UnhighlightAllCells();
             }
+            HighlightCells(GetValidMoves(cell.piece));
             selectedPiece = cell.piece.Select();
-            return;
-        }
-
-        // If there is a selected piece, try to move it.
-        if (selectedPiece != null) {
-            MovePiece(selectedPiece, cell);
-        }
-    }
-
-    public void MovePiece(Piece piece, Cell cell) {
-        Vector2Int difference = cell.coordinates - piece.coordinates;
-        Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
-        if (difference.y > 0 && absoluteDifference.x == 1 && absoluteDifference.x == absoluteDifference.y) {
-            if (piece.Move(cell)) {
-                selectedPiece = selectedPiece.Deselect();
+        } else {
+            // If a piece is selected already, move it to this cell.
+            if (selectedPiece != null) {
+                // If the list of valid moves contains this cell, then move it and deselect this piece.
+                if (GetValidMoves(selectedPiece).Contains(cell)) {
+                    selectedPiece.Move(cell);
+                    selectedPiece = selectedPiece.Deselect();
+                    UnhighlightAllCells();
+                }
             }
         }
+
     }
 
-    public void HighlightPossibleMoves(Piece piece) {
-        
+    /// <summary>
+    /// Get all cells that this piece can move to.
+    /// </summary>
+    /// <param name="piece">The piece to check valid moves for.</param>
+    /// <returns>A list of cells that this piece can move to.</returns>
+    public List<Cell> GetValidMoves(Piece piece) {
+        // TODO: Show jumping over pieces as valid move
+        List<Cell> validCells = new List<Cell>();
+        cells.ForEach(cell => {
+            Vector2Int difference = cell.coordinates - piece.coordinates;
+            Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
+            if (difference.y == 1 && absoluteDifference.x == 1 && !cell.occupied) {
+                validCells.Add(cell);
+            }
+        });
+
+        return validCells;
+    }
+
+    public void HighlightCells(List<Cell> cells) {
+        cells.ForEach(cell => {
+            cell.SetHighlight(true);
+        });
+    }
+
+    public void UnhighlightAllCells() {
+        cells.ForEach(cell => {
+            cell.SetHighlight(false);
+        });
     }
 
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
 
-        grid = new Transform[gridSize.x, gridSize.y];
         Vector3 cellSize = prefabCellComponent.size;
         Vector3 leftBottomCorner = transform.position - BoardSize / 2;
         Vector3 offset = cellSize / 2;
@@ -66,25 +90,22 @@ public class BoardController : MonoBehaviour {
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
                     GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(new Vector2Int(x, y), colors.white);
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, colors.white);
                 }
 
-                grid[x, y] = spawnedCell.transform;
+                cells.Add(cell);
             }
         }
     }
 
     private void OnDrawGizmosSelected() {
         prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<Cell>();
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.white;
         Gizmos.DrawWireCube(transform.position, BoardSize);
 
-        if (grid != null) {
-            for (int x = 0; x < grid.GetLength(0); x++) {
-                for (int y = 0; y < grid.GetLength(1); y++) {
-                    Gizmos.DrawWireCube(grid[x, y].position, new Vector3(0.1f, 0.02f, 0.1f));
-                }
-            }
-        }
+        cells.ForEach(cell => {
+            Gizmos.color = cell.occupied ? Color.red : Color.green;
+            Gizmos.DrawWireCube(cell.transform.position, prefabCellComponent.size * 0.99f + Vector3.up * 0.02f);
+        });
     }
 }

@@ -23,7 +23,7 @@ public class Cell : MonoBehaviour {
     /// <summary>
     /// Whether or not this cell contains a correctly placed piece.
     /// </summary>
-    public bool completed => piece.defaultColor == renderer.material.color;
+    public bool completed => piece.color == renderer.material.color;
     public Color defaultColor { get; private set; }
     private new Renderer renderer;
     private Outline outline;
@@ -31,6 +31,7 @@ public class Cell : MonoBehaviour {
 
     public void Awake() {
         renderer = GetComponentInChildren<Renderer>();
+        outline = GetComponent<Outline>();
     }
 
     /// <summary>
@@ -49,29 +50,11 @@ public class Cell : MonoBehaviour {
         return this;
     }
 
-    /// <summary>
-    /// Move the given piece to this cell.
-    /// </summary>
-    /// <param name="piece">The piece to move to this cell.</param>
-    /// <returns>Whether or not the piece was successfully moved.</returns>
-    public bool MovePieceHere(Piece piece) {
-        bool validMove = !this.occupied;
-        if (validMove) {
-            piece.GetComponentInParent<Cell>().piece = null;
-            piece.transform.SetParent(this.transform);
-            piece.transform.position = this.transform.position;
-            this.piece = piece;
-        }
-        return validMove;
-    }
+    public void SetHighlight(bool enabled) => outline.enabled = enabled;
 
-    public void SetColor(Color color) {
-        renderer.material.color = color;
-    }
+    public void SetColor(Color color) => renderer.material.color = color;
 
-    public void ResetColor() {
-        renderer.material.color = this.defaultColor;
-    }
+    public void ResetColor() => renderer.material.color = this.defaultColor;
 
     private void Start() {
         if (!initialized) {
