@@ -50,17 +50,11 @@ public class Cell : MonoBehaviour {
         return this;
     }
 
-    public void Highlight() {
-        outline.enabled = true;
-    }
+    public void SetHighlight(bool enabled) => outline.enabled = enabled;
 
-    public void SetColor(Color color) {
-        renderer.material.color = color;
-    }
+    public void SetColor(Color color) => renderer.material.color = color;
 
-    public void ResetColor() {
-        renderer.material.color = this.defaultColor;
-    }
+    public void ResetColor() => renderer.material.color = this.defaultColor;
 
     private void Start() {
         if (!initialized) {

@@ -34,10 +34,11 @@ public class Piece : MonoBehaviour {
     /// </summary>
     /// <param name="cell">The cell to move to.</param>
     public void Move(Cell cell) {
+        cell.piece = this;
         this.cell.piece = null;
+        this.cell = cell;
         this.transform.SetParent(cell.transform);
         this.transform.position = cell.transform.position;
-        cell.piece = this;
     }
 
     /// <summary>

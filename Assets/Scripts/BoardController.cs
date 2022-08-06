@@ -22,23 +22,24 @@ public class BoardController : MonoBehaviour {
     public void OnCellClicked(Cell cell) {
         // Select piece if this cell contains one.
         if (cell.occupied) {
+            if (selectedPiece != null) {
+                selectedPiece = selectedPiece.Deselect();
+                UnhighlightAllCells();
+            }
+            HighlightCells(GetValidMoves(cell.piece));
             selectedPiece = cell.piece.Select();
+        } else {
+            // If a piece is selected already, move it to this cell.
+            if (selectedPiece != null) {
+                // If the list of valid moves contains this cell, then move it and deselect this piece.
+                if (GetValidMoves(selectedPiece).Contains(cell)) {
+                    selectedPiece.Move(cell);
+                    selectedPiece = selectedPiece.Deselect();
+                    UnhighlightAllCells();
+                }
+            }
         }
 
-        // If a piece is selected already, move it to this cell.
-        if (selectedPiece != null) {
-            MovePiece(selectedPiece, cell);
-            selectedPiece = selectedPiece.Deselect();
-        }
-
-    }
-
-    public void MovePiece(Piece piece, Cell cell) {
-        // If the list of valid moves contains this cell, then move it and deselect this piece.
-        if (GetValidMoves(piece).Contains(cell)) {
-            piece.Move(cell);
-            selectedPiece = selectedPiece.Deselect();
-        }
     }
 
     /// <summary>
@@ -56,14 +57,18 @@ public class BoardController : MonoBehaviour {
             }
         });
 
-        HighlightCells(validCells);
-
         return validCells;
     }
 
     public void HighlightCells(List<Cell> cells) {
         cells.ForEach(cell => {
-            cell.Highlight();
+            cell.SetHighlight(true);
+        });
+    }
+
+    public void UnhighlightAllCells() {
+        cells.ForEach(cell => {
+            cell.SetHighlight(false);
         });
     }
 
