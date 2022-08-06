@@ -15,8 +15,8 @@ public class Cell : MonoBehaviour {
     public Piece piece {
         get => _piece;
         set {
-            if (this.occupied && _piece.cell != this) _piece.cell = this;
             _piece = value;
+            if (value != null && value.cell != this) value.cell = this;
         }
     }
     /// <summary>
@@ -46,12 +46,12 @@ public class Cell : MonoBehaviour {
     /// </summary>
     /// <param name="coordinates">The coordinates of this cell.</param>
     /// <param name="piece">The piece that occupies this cell, or null if empty.</param>
-    public Cell Initialize(Vector2Int coordinates, Color color, Piece piece) {
+    public Cell Initialize(Vector2Int coordinates, Color color) {
         this.name = $"Cell ({coordinates.x}, {coordinates.y})";
         this.coordinates = coordinates;
         this.defaultColor = color;
+
         SetColor(color);
-        this.piece = piece;
 
         initialized = true;
         return this;

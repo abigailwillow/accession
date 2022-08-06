@@ -5,7 +5,7 @@ public class BoardController : MonoBehaviour {
     /// <summary>
     /// The size of this board.
     /// </summary>
-    public Vector3 BoardSize { get => new Vector3(prefabCellComponent.size.x * gridSize.x, 0, prefabCellComponent.size.z * gridSize.y); }
+    public Vector3 boardSize => new Vector3(prefabCellComponent.size.x * gridSize.x, 0, prefabCellComponent.size.z * gridSize.y);
     [Tooltip("The amount of rows and columns on the board.")]
     [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
     [SerializeField] private GameObject piecePrefab;
@@ -77,15 +77,14 @@ public class BoardController : MonoBehaviour {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
 
         Vector3 cellSize = prefabCellComponent.size;
-        Vector3 leftBottomCorner = transform.position - BoardSize / 2;
-        Vector3 offset = cellSize / 2;
+        Vector3 leftBottomCorner = transform.position - boardSize / 2;
         for (int x = 0; x < gridSize.x; x++) {
             for (int y = 0; y < gridSize.y; y++) {
-                Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + offset;
+                Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
                 
                 Color color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
                 GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), color, null);
+                Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), color);
 
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
@@ -101,7 +100,7 @@ public class BoardController : MonoBehaviour {
     private void OnDrawGizmosSelected() {
         prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<Cell>();
         Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(transform.position, BoardSize);
+        Gizmos.DrawWireCube(transform.position, boardSize);
 
         cells.ForEach(cell => {
             Gizmos.color = cell.occupied ? Color.red : Color.green;

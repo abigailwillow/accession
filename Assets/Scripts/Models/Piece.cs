@@ -5,13 +5,14 @@ public class Piece : MonoBehaviour {
     public Color color { get; private set; }
     private Cell _cell;
     /// <summary>
-    /// Set the cell that this piece belongs to. Automatically updates the cell's piece.
+    /// Set the cell that this piece belongs to. Automatically updates the cells' pieces.
     /// </summary>
     public Cell cell { 
         get => _cell;
         set {
-            if (_cell.piece != this) _cell.piece = this;
+            if (_cell != null) _cell.piece = null;
             _cell = value;
+            if (value != null && value.piece != this) value.piece = this;
         }
     }
     public Vector2Int coordinates => cell.coordinates;
