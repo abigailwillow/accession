@@ -7,11 +7,18 @@ public class Cell : MonoBehaviour {
     /// <summary>
     /// The size of this cell.
     /// </summary>
-    public Vector3 size { get => _size.XZ(); }
+    public Vector3 size => _size.XZ();
+    private Piece _piece;
     /// <summary>
-    /// The piece that occupies this cell, or null if empty.
+    /// The piece that occupies this cell, or null if empty. Automatically updates the piece's cell.
     /// </summary>
-    public Piece piece;
+    public Piece piece {
+        get => _piece;
+        set {
+            if (this.occupied && _piece.cell != this) _piece.cell = this;
+            _piece = value;
+        }
+    }
     /// <summary>
     /// The coordinates of this cell on the board.
     /// </summary>

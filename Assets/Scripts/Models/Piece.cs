@@ -3,7 +3,17 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class Piece : MonoBehaviour {
     public Color color { get; private set; }
-    public Cell cell { get; private set; }
+    private Cell _cell;
+    /// <summary>
+    /// Set the cell that this piece belongs to. Automatically updates the cell's piece.
+    /// </summary>
+    public Cell cell { 
+        get => _cell;
+        set {
+            if (_cell.piece != this) _cell.piece = this;
+            _cell = value;
+        }
+    }
     public Vector2Int coordinates => cell.coordinates;
     private new Renderer renderer;
     private Outline outline;
@@ -34,11 +44,9 @@ public class Piece : MonoBehaviour {
     /// </summary>
     /// <param name="cell">The cell to move to.</param>
     public void Move(Cell cell) {
-        cell.piece = this;
-        this.cell.piece = null;
         this.cell = cell;
-        this.transform.SetParent(cell.transform);
-        this.transform.position = cell.transform.position;
+        transform.SetParent(cell.transform);
+        transform.position = cell.transform.position;
     }
 
     /// <summary>
