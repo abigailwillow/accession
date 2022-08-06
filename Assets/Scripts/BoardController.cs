@@ -48,6 +48,7 @@ public class BoardController : MonoBehaviour {
     /// <param name="piece">The piece to check valid moves for.</param>
     /// <returns>A list of cells that this piece can move to.</returns>
     public List<Cell> GetValidMoves(Piece piece) {
+        // TODO: Show jumping over pieces as valid move
         List<Cell> validCells = new List<Cell>();
         cells.ForEach(cell => {
             Vector2Int difference = cell.coordinates - piece.coordinates;
