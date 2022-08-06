@@ -30,11 +30,10 @@ jobs:
       
       - name: Generate Semantic Version
         id: version
-        uses: paulhatch/semantic-version@v4.0.3
+        uses: paulhatch/semantic-version@v5.0.0-alpha2
         with:
           tag_prefix: ''
-          format: "${major}.${minor}.${increment}"
-          bump_each_commit: true
+          version_format: "${major}.${minor}.${increment}"
       
       - name: Build project
         id: build
