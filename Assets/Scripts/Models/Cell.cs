@@ -77,9 +77,13 @@ public class Cell : MonoBehaviour {
         return this;
     }
 
-    public void SetHighlight(bool enabled) => outline.enabled = enabled;
+    public void SetOutline(bool enabled) => outline.enabled = enabled;
+    public void SetOutline(bool enabled, Color color) {
+        outline.OutlineColor = color;
+        outline.enabled = enabled;
+    }
 
-    public void ResetColor() => renderer.material.color = this._defaultColor;
+public void ResetColor() => renderer.material.color = this._defaultColor;
 
     private void Start() {
         if (!initialized) {

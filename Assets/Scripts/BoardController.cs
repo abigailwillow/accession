@@ -24,15 +24,12 @@ public class BoardController : MonoBehaviour {
         if (cell.occupied) {
             if (selectedPiece != null) {
                 selectedPiece = selectedPiece.Deselect();
-                cells.ForEach(c => c.SetHighlight(false));
+                cells.ForEach(c => c.SetOutline(false));
             }
-
-            GetValidMoves(cell.piece).ForEach(c => c.SetHighlight(true));
-            GetValidJumpMoves(cell.piece).ForEach(c => {
-                // TODO: IMPLEMENT COLOR ADDITION/SUBSTRACTION
-                c.outlineColor = cell.piece.color;
-                c.SetHighlight(true);
-            });
+            
+            // TODO: IMPLEMENT COLOR ADDITION/SUBSTRACTION
+            GetValidMoves(cell.piece).ForEach(c => c.SetOutline(true, colors.validMove));
+            GetValidJumpMoves(cell.piece).ForEach(c => c.SetOutline(true, cell.piece.color));
 
             selectedPiece = cell.piece.Select();
         } else {
@@ -42,7 +39,7 @@ public class BoardController : MonoBehaviour {
                 if (GetValidMoves(selectedPiece).Contains(cell)) {
                     selectedPiece.Move(cell);
                     selectedPiece = selectedPiece.Deselect();
-                    cells.ForEach(c => c.SetHighlight(false));
+                    cells.ForEach(c => c.SetOutline(false));
                 }
             }
         }
@@ -91,7 +88,7 @@ public class BoardController : MonoBehaviour {
             for (int y = 0; y < gridSize.y; y++) {
                 Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
                 
-                Color color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
+                Color color = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
                 GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
                 Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), color);
 
