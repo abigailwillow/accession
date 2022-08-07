@@ -27,6 +27,7 @@ public class BoardController : MonoBehaviour {
                 UnhighlightAllCells();
             }
             HighlightCells(GetValidMoves(cell.piece));
+
             selectedPiece = cell.piece.Select();
         } else {
             // If a piece is selected already, move it to this cell.
@@ -48,11 +49,11 @@ public class BoardController : MonoBehaviour {
     /// <param name="piece">The piece to check valid moves for.</param>
     /// <returns>A list of cells that this piece can move to.</returns>
     public List<Cell> GetValidMoves(Piece piece) {
-        // TODO: Show jumping over pieces as valid move
         List<Cell> validCells = new List<Cell>();
         cells.ForEach(cell => {
             Vector2Int difference = cell.coordinates - piece.coordinates;
             Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
+
             if (difference.y == 1 && absoluteDifference.x == 1 && !cell.occupied) {
                 validCells.Add(cell);
             }
@@ -61,17 +62,23 @@ public class BoardController : MonoBehaviour {
         return validCells;
     }
 
-    public void HighlightCells(List<Cell> cells) {
+    public List<Cell> GetValidJumpMoves(Piece piece) {
+        List<Cell> validCells = new List<Cell>();
         cells.ForEach(cell => {
-            cell.SetHighlight(true);
+            Vector2Int difference = cell.coordinates - piece.coordinates;
+            Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
+            if (absoluteDifference.x == 2 && absoluteDifference.y == 2 && !cell.occupied) {
+                validCells.Add(cell);
+            }
         });
+        return validCells;
     }
 
-    public void UnhighlightAllCells() {
-        cells.ForEach(cell => {
-            cell.SetHighlight(false);
-        });
-    }
+    public void HighlightCells(List<Cell> cells) => cells.ForEach(cell => cell.SetHighlight(true));
+
+    public void UnhighlightAllCells() => cells.ForEach(cell => cell.SetHighlight(false));
+
+    public void GetCell(Vector2Int coordinates) => cells.Find(c => c.coordinates == coordinates);
 
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();

@@ -31,7 +31,29 @@ public class Cell : MonoBehaviour {
     /// Whether or not this cell contains a correctly placed piece.
     /// </summary>
     public bool completed => piece.color == renderer.material.color;
-    public Color defaultColor { get; private set; }
+    private Color _defaultColor;
+    /// <summary>
+    /// Sets the color of this cell, saving the default color for later.
+    /// </summary>
+    public Color color {
+        get => renderer.material.color;
+        set {
+            if (_defaultColor == null) _defaultColor = value;
+            renderer.material.color = value;
+        }
+    }
+    private Color _defaultOutlineColor;
+    private Color _outlineColor;
+    /// <summary>
+    /// Sets the color of this cell's outline, saving the default color for later.
+    /// </summary>
+    public Color outlineColor {
+        get => outline.OutlineColor;
+        set {
+            if (_defaultOutlineColor == null) _defaultOutlineColor = value;
+            outline.OutlineColor = value;
+        }
+    }
     private new Renderer renderer;
     private Outline outline;
     private bool initialized = false;
@@ -49,9 +71,7 @@ public class Cell : MonoBehaviour {
     public Cell Initialize(Vector2Int coordinates, Color color) {
         this.name = $"Cell ({coordinates.x}, {coordinates.y})";
         this.coordinates = coordinates;
-        this.defaultColor = color;
-
-        SetColor(color);
+        this.color = color;
 
         initialized = true;
         return this;
@@ -59,9 +79,7 @@ public class Cell : MonoBehaviour {
 
     public void SetHighlight(bool enabled) => outline.enabled = enabled;
 
-    public void SetColor(Color color) => renderer.material.color = color;
-
-    public void ResetColor() => renderer.material.color = this.defaultColor;
+    public void ResetColor() => renderer.material.color = this._defaultColor;
 
     private void Start() {
         if (!initialized) {
