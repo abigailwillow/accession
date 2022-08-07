@@ -24,9 +24,15 @@ public class BoardController : MonoBehaviour {
         if (cell.occupied) {
             if (selectedPiece != null) {
                 selectedPiece = selectedPiece.Deselect();
-                UnhighlightAllCells();
+                cells.ForEach(c => c.SetHighlight(false));
             }
-            HighlightCells(GetValidMoves(cell.piece));
+
+            GetValidMoves(cell.piece).ForEach(c => c.SetHighlight(true));
+            GetValidJumpMoves(cell.piece).ForEach(c => {
+                // TODO: IMPLEMENT COLOR ADDITION/SUBSTRACTION
+                c.outlineColor = cell.piece.color;
+                c.SetHighlight(true);
+            });
 
             selectedPiece = cell.piece.Select();
         } else {
@@ -36,7 +42,7 @@ public class BoardController : MonoBehaviour {
                 if (GetValidMoves(selectedPiece).Contains(cell)) {
                     selectedPiece.Move(cell);
                     selectedPiece = selectedPiece.Deselect();
-                    UnhighlightAllCells();
+                    cells.ForEach(c => c.SetHighlight(false));
                 }
             }
         }
@@ -74,10 +80,6 @@ public class BoardController : MonoBehaviour {
         return validCells;
     }
 
-    public void HighlightCells(List<Cell> cells) => cells.ForEach(cell => cell.SetHighlight(true));
-
-    public void UnhighlightAllCells() => cells.ForEach(cell => cell.SetHighlight(false));
-
     public void GetCell(Vector2Int coordinates) => cells.Find(c => c.coordinates == coordinates);
 
     private void Awake() {
@@ -96,7 +98,7 @@ public class BoardController : MonoBehaviour {
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
                     GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, colors.white);
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f)));
                 }
 
                 cells.Add(cell);
