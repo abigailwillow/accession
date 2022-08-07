@@ -2,7 +2,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(Outline))]
 public class Piece : MonoBehaviour {
-    public Color color { get; private set; }
+    public Color color {
+        get => renderer.material.color;
+        set => renderer.material.color = value;
+    }
     private Cell _cell;
     /// <summary>
     /// Set the cell that this piece belongs to. Automatically updates the cells' pieces.
