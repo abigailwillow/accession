@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
@@ -24,18 +25,25 @@ public class BoardController : MonoBehaviour {
         if (cell.occupied) {
             if (selectedPiece != null) {
                 selectedPiece = selectedPiece.Deselect();
-                UnhighlightAllCells();
+                cells.ForEach(c => c.SetOutline(false));
             }
-            HighlightCells(GetValidMoves(cell.piece));
+
+            GetValidMoves(cell.piece).ForEach(move => {
+                // Unity for some dumb reason doesn't clamp the color's components to 0..1, so lerp them halfway instead. 
+                Color color = move.isJump ? Color.Lerp(move.instigator.color, move.target.color, 0.5f) : colors.validMove;
+                move.cell.SetOutline(true, color);
+                Debug.Log($"Valid move: {move.cell.position} (color: {color})");
+            });
+
             selectedPiece = cell.piece.Select();
         } else {
             // If a piece is selected already, move it to this cell.
             if (selectedPiece != null) {
                 // If the list of valid moves contains this cell, then move it and deselect this piece.
-                if (GetValidMoves(selectedPiece).Contains(cell)) {
+                if (GetValidMoves(selectedPiece).Where(move => move.cell == cell).Any()) {
                     selectedPiece.Move(cell);
                     selectedPiece = selectedPiece.Deselect();
-                    UnhighlightAllCells();
+                    cells.ForEach(c => c.SetOutline(false));
                 }
             }
         }
@@ -46,32 +54,27 @@ public class BoardController : MonoBehaviour {
     /// Get all cells that this piece can move to.
     /// </summary>
     /// <param name="piece">The piece to check valid moves for.</param>
-    /// <returns>A list of cells that this piece can move to.</returns>
-    public List<Cell> GetValidMoves(Piece piece) {
-        // TODO: Show jumping over pieces as valid move
-        List<Cell> validCells = new List<Cell>();
+    /// <returns>A list of moves that this piece can execute.</returns>
+    public List<Move> GetValidMoves(Piece piece) {
+        List<Move> moves = new List<Move>();
         cells.ForEach(cell => {
-            Vector2Int difference = cell.coordinates - piece.coordinates;
+            Vector2Int difference = cell.position - piece.position;
             Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
-            if (difference.y == 1 && absoluteDifference.x == 1 && !cell.occupied) {
-                validCells.Add(cell);
+
+            if (absoluteDifference.x == 1 && difference.y == 1 && !cell.occupied) {
+                moves.Add(new Move(cell, piece));
+            }
+
+            Cell target = GetCell(piece.position + difference / 2);
+            if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && target.occupied) {
+                moves.Add(new Move(cell, piece, target.piece));
             }
         });
 
-        return validCells;
+        return moves;
     }
 
-    public void HighlightCells(List<Cell> cells) {
-        cells.ForEach(cell => {
-            cell.SetHighlight(true);
-        });
-    }
-
-    public void UnhighlightAllCells() {
-        cells.ForEach(cell => {
-            cell.SetHighlight(false);
-        });
-    }
+    public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
 
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
@@ -82,14 +85,14 @@ public class BoardController : MonoBehaviour {
             for (int y = 0; y < gridSize.y; y++) {
                 Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
                 
-                Color color = (x + y) % 2 == 1 ? colors.lightCell : colors.darkCell;
+                Color color = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
                 GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
                 Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), color);
 
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
                     GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, colors.white);
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, Random.Range(0f, 1f) > 0.5f ? colors.piece.red : colors.piece.blue);
                 }
 
                 cells.Add(cell);

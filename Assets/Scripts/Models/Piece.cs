@@ -2,7 +2,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(Outline))]
 public class Piece : MonoBehaviour {
-    public Color color { get; private set; }
+    public Color color {
+        get => renderer.material.color;
+        set => renderer.material.color = value;
+    }
     private Cell _cell;
     /// <summary>
     /// Set the cell that this piece belongs to. Automatically updates the cells' pieces.
@@ -15,7 +18,7 @@ public class Piece : MonoBehaviour {
             if (value != null && value.piece != this) value.piece = this;
         }
     }
-    public Vector2Int coordinates => cell.coordinates;
+    public Vector2Int position => cell.position;
     private new Renderer renderer;
     private Outline outline;
     private bool initialized = false;
