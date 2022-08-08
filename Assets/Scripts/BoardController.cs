@@ -28,8 +28,12 @@ public class BoardController : MonoBehaviour {
             }
             
             // TODO: IMPLEMENT COLOR ADDITION/SUBSTRACTION
+            GetValidJumpMoves(cell.piece).ForEach(c => {
+                Color color = GetCell(c.piece.coordinates + )
+                c.SetOutline(true);
+            });
+
             GetValidMoves(cell.piece).ForEach(c => c.SetOutline(true, colors.validMove));
-            GetValidJumpMoves(cell.piece).ForEach(c => c.SetOutline(true, cell.piece.color));
 
             selectedPiece = cell.piece.Select();
         } else {
@@ -57,7 +61,7 @@ public class BoardController : MonoBehaviour {
             Vector2Int difference = cell.coordinates - piece.coordinates;
             Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
 
-            if (difference.y == 1 && absoluteDifference.x == 1 && !cell.occupied) {
+            if (absoluteDifference.x == 1 && difference.y == 1 && !cell.occupied) {
                 validCells.Add(cell);
             }
         });
@@ -70,14 +74,14 @@ public class BoardController : MonoBehaviour {
         cells.ForEach(cell => {
             Vector2Int difference = cell.coordinates - piece.coordinates;
             Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
-            if (absoluteDifference.x == 2 && absoluteDifference.y == 2 && !cell.occupied) {
+            if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && GetCell(piece.coordinates + difference / 2).occupied) {
                 validCells.Add(cell);
             }
         });
         return validCells;
     }
 
-    public void GetCell(Vector2Int coordinates) => cells.Find(c => c.coordinates == coordinates);
+    public Cell GetCell(Vector2Int coordinates) => cells.Find(c => c.coordinates == coordinates);
 
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
