@@ -22,7 +22,7 @@ public class Cell : MonoBehaviour {
     /// <summary>
     /// The coordinates of this cell on the board.
     /// </summary>
-    public Vector2Int coordinates { get; private set; }
+    public Vector2Int position { get; private set; }
     /// <summary>
     /// Whether or not this cell is currently occupied.
     /// </summary>
@@ -70,7 +70,7 @@ public class Cell : MonoBehaviour {
     /// <param name="piece">The piece that occupies this cell, or null if empty.</param>
     public Cell Initialize(Vector2Int coordinates, Color color) {
         this.name = $"Cell ({coordinates.x}, {coordinates.y})";
-        this.coordinates = coordinates;
+        this.position = coordinates;
         this.color = color;
 
         initialized = true;

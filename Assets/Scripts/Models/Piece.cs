@@ -18,7 +18,7 @@ public class Piece : MonoBehaviour {
             if (value != null && value.piece != this) value.piece = this;
         }
     }
-    public Vector2Int coordinates => cell.coordinates;
+    public Vector2Int position => cell.position;
     private new Renderer renderer;
     private Outline outline;
     private bool initialized = false;

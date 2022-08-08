@@ -25,10 +25,5 @@ public struct Move {
     /// <summary>
     /// Executes this move.
     /// </summary>
-    public void Execute() {
-        instigator.Move(cell);
-        if (isJump) {
-            // TODO: IMPLEMENT COLOR ADDITION/SUBSTRACTION
-        }
-    }
+    public void Execute() => instigator.Move(cell);
 }

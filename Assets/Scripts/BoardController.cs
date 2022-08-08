@@ -28,7 +28,12 @@ public class BoardController : MonoBehaviour {
                 cells.ForEach(c => c.SetOutline(false));
             }
 
-            GetValidMoves(cell.piece).ForEach(move => move.cell.SetOutline(true, move.isJump ? move.instigator.color + move.target.color : colors.validMove));
+            GetValidMoves(cell.piece).ForEach(move => {
+                // Unity for some dumb reason doesn't clamp the color's components to 0..1, so lerp them halfway instead. 
+                Color color = move.isJump ? Color.Lerp(move.instigator.color, move.target.color, 0.5f) : colors.validMove;
+                move.cell.SetOutline(true, color);
+                Debug.Log($"Valid move: {move.cell.position} (color: {color})");
+            });
 
             selectedPiece = cell.piece.Select();
         } else {
@@ -53,14 +58,14 @@ public class BoardController : MonoBehaviour {
     public List<Move> GetValidMoves(Piece piece) {
         List<Move> moves = new List<Move>();
         cells.ForEach(cell => {
-            Vector2Int difference = cell.coordinates - piece.coordinates;
+            Vector2Int difference = cell.position - piece.position;
             Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
 
             if (absoluteDifference.x == 1 && difference.y == 1 && !cell.occupied) {
                 moves.Add(new Move(cell, piece));
             }
 
-            Cell target = GetCell(piece.coordinates + difference / 2);
+            Cell target = GetCell(piece.position + difference / 2);
             if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && target.occupied) {
                 moves.Add(new Move(cell, piece, target.piece));
             }
@@ -69,7 +74,7 @@ public class BoardController : MonoBehaviour {
         return moves;
     }
 
-    public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.coordinates == coordinates);
+    public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
 
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
@@ -87,7 +92,7 @@ public class BoardController : MonoBehaviour {
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
                     GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f)));
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, Random.Range(0f, 1f) > 0.5f ? colors.piece.red : colors.piece.blue);
                 }
 
                 cells.Add(cell);
