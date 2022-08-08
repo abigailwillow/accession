@@ -32,7 +32,6 @@ public class BoardController : MonoBehaviour {
                 // Unity for some dumb reason doesn't clamp the color's components to 0..1, so lerp them halfway instead. 
                 Color color = move.isJump ? Color.Lerp(move.instigator.color, move.target.color, 0.5f) : colors.validMove;
                 move.cell.SetOutline(true, color);
-                Debug.Log($"Valid move: {move.cell.position} (color: {color})");
             });
 
             selectedPiece = cell.piece.Select();
