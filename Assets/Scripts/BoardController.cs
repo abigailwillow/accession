@@ -91,7 +91,7 @@ public class BoardController : MonoBehaviour {
                 // TODO: REMOVE AFTER DEBUGGING!
                 if ((x + y) % 7 == 0) {
                     GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, Random.Range(0f, 1f) > 0.5f ? colors.piece.red : colors.piece.blue);
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f)));
                 }
 
                 cells.Add(cell);
