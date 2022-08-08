@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
@@ -26,21 +27,15 @@ public class BoardController : MonoBehaviour {
                 selectedPiece = selectedPiece.Deselect();
                 cells.ForEach(c => c.SetOutline(false));
             }
-            
-            // TODO: IMPLEMENT COLOR ADDITION/SUBSTRACTION
-            GetValidJumpMoves(cell.piece).ForEach(c => {
-                Color color = GetCell(c.piece.coordinates + )
-                c.SetOutline(true);
-            });
 
-            GetValidMoves(cell.piece).ForEach(c => c.SetOutline(true, colors.validMove));
+            GetValidMoves(cell.piece).ForEach(move => move.cell.SetOutline(true, move.isJump ? move.instigator.color + move.target.color : colors.validMove));
 
             selectedPiece = cell.piece.Select();
         } else {
             // If a piece is selected already, move it to this cell.
             if (selectedPiece != null) {
                 // If the list of valid moves contains this cell, then move it and deselect this piece.
-                if (GetValidMoves(selectedPiece).Contains(cell)) {
+                if (GetValidMoves(selectedPiece).Where(move => move.cell == cell).Any()) {
                     selectedPiece.Move(cell);
                     selectedPiece = selectedPiece.Deselect();
                     cells.ForEach(c => c.SetOutline(false));
@@ -54,34 +49,27 @@ public class BoardController : MonoBehaviour {
     /// Get all cells that this piece can move to.
     /// </summary>
     /// <param name="piece">The piece to check valid moves for.</param>
-    /// <returns>A list of cells that this piece can move to.</returns>
-    public List<Cell> GetValidMoves(Piece piece) {
-        List<Cell> validCells = new List<Cell>();
+    /// <returns>A list of moves that this piece can execute.</returns>
+    public List<Move> GetValidMoves(Piece piece) {
+        List<Move> moves = new List<Move>();
         cells.ForEach(cell => {
             Vector2Int difference = cell.coordinates - piece.coordinates;
             Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
 
             if (absoluteDifference.x == 1 && difference.y == 1 && !cell.occupied) {
-                validCells.Add(cell);
+                moves.Add(new Move(cell, piece));
+            }
+
+            Cell target = GetCell(piece.coordinates + difference / 2);
+            if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && target.occupied) {
+                moves.Add(new Move(cell, piece, target.piece));
             }
         });
 
-        return validCells;
+        return moves;
     }
 
-    public List<Cell> GetValidJumpMoves(Piece piece) {
-        List<Cell> validCells = new List<Cell>();
-        cells.ForEach(cell => {
-            Vector2Int difference = cell.coordinates - piece.coordinates;
-            Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
-            if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && GetCell(piece.coordinates + difference / 2).occupied) {
-                validCells.Add(cell);
-            }
-        });
-        return validCells;
-    }
-
-    public Cell GetCell(Vector2Int coordinates) => cells.Find(c => c.coordinates == coordinates);
+    public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.coordinates == coordinates);
 
     private void Awake() {
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
