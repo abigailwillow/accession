@@ -34,6 +34,7 @@ jobs:
         with:
           tag_prefix: ''
           version_format: "${major}.${minor}.${increment}"
+          bump_each_commit: true
       
       - name: Build project
         id: build
