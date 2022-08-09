@@ -41,6 +41,7 @@ public class BoardController : MonoBehaviour {
                 Move move = GetValidMoves(selectedPiece).Find(m => m.cell == cell);
                 if (move != null) {
                     move.Execute();
+                    move.instigator.color = move.isJump ? colors.piece.Add(move.instigator.color, move.target.color) : move.instigator.color;
                     selectedPiece = selectedPiece.Deselect();
                     cells.ForEach(c => c.SetOutline(false));
                 }
