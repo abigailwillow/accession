@@ -4,26 +4,26 @@ using UnityEngine;
 public class ColorTheme : ScriptableObject {
     [System.Serializable]
     public struct Piece {
-        public UnityEngine.Color red;
-        public UnityEngine.Color green;
-        public UnityEngine.Color blue;
-        public UnityEngine.Color magenta;
-        public UnityEngine.Color yellow;
-        public UnityEngine.Color cyan;
+        public Color red;
+        public Color green;
+        public Color blue;
+        public Color magenta;
+        public Color yellow;
+        public Color cyan;
 
         /// <summary>
         /// Converts a PieceColor to a Color.
         /// </summary>
         /// <param name="color">The PieceColor</param>
         /// <returns></returns>
-        public UnityEngine.Color GetColor(Piece.Color color) => color switch {
-            Piece.Color.Red => red,
-            Piece.Color.Green => green,
-            Piece.Color.Blue => blue,
-            Piece.Color.Magenta => magenta,
-            Piece.Color.Yellow => yellow,
-            Piece.Color.Cyan => cyan,
-            _ => UnityEngine.Color.white
+        public Color GetColor(PieceColor color) => color switch {
+            PieceColor.Red => red,
+            PieceColor.Green => green,
+            PieceColor.Blue => blue,
+            PieceColor.Magenta => magenta,
+            PieceColor.Yellow => yellow,
+            PieceColor.Cyan => cyan,
+            _ => Color.white
         };
 
         /// <summary>
@@ -32,20 +32,20 @@ public class ColorTheme : ScriptableObject {
         /// <param name="a">The instigating piece color.</param>
         /// <param name="b">The target piece color.</param>
         /// <returns>The combined color.</returns>
-        public UnityEngine.Color Add(Piece.Color a, Piece.Color b) => (a, b) switch {
-            (Piece.Color.Red, Piece.Color.Red) => red,
-            (Piece.Color.Red, Piece.Color.Green) => yellow,
-            (Piece.Color.Red, Piece.Color.Blue) => magenta,
-            (Piece.Color.Green, Piece.Color.Red) => yellow,
-            (Piece.Color.Green, Piece.Color.Green) => green,
-            (Piece.Color.Green, Piece.Color.Blue) => cyan,
-            (Piece.Color.Blue, Piece.Color.Red) => magenta,
-            (Piece.Color.Blue, Piece.Color.Green) => cyan,
-            (Piece.Color.Blue, Piece.Color.Blue) => blue,
-            _ => UnityEngine.Color.white
+        public Color Add(Color a, Color b) => (a, b) switch {
+            var _ when a == red && b == red => red,
+            var _ when a == red && b == green => yellow,
+            var _ when a == red && b == blue => magenta,
+            var _ when a == green && b == red => yellow,
+            var _ when a == green && b == green => green,
+            var _ when a == green && b == blue => cyan,
+            var _ when a == blue && b == red => magenta,
+            var _ when a == blue && b == green => cyan,
+            var _ when a == blue && b == blue => blue,
+            _ => Color.white
         };
 
-        public enum Color {
+        public enum PieceColor {
             Red,
             Green,
             Blue,
