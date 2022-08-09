@@ -84,14 +84,21 @@ public class BoardController : MonoBehaviour {
             for (int y = 0; y < gridSize.y; y++) {
                 Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
                 
-                Color color = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
+                Color cellColor = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
                 GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), color);
+                Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), cellColor);
 
                 // TODO: REMOVE AFTER DEBUGGING!
+                Color pieceColor = Random.Range(0, 3) switch {
+                    0 => colors.piece.red,
+                    1 => colors.piece.blue,
+                    2 => colors.piece.green,
+                    _ => Color.white
+                };
+
                 if ((x + y) % 7 == 0) {
                     GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f)));
+                    cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, pieceColor);
                 }
 
                 cells.Add(cell);
