@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
@@ -39,8 +38,9 @@ public class BoardController : MonoBehaviour {
             // If a piece is selected already, move it to this cell.
             if (selectedPiece != null) {
                 // If the list of valid moves contains this cell, then move it and deselect this piece.
-                if (GetValidMoves(selectedPiece).Where(move => move.cell == cell).Any()) {
-                    selectedPiece.Move(cell);
+                Move move = GetValidMoves(selectedPiece).Find(m => m.cell == cell);
+                if (move != null) {
+                    move.Execute();
                     selectedPiece = selectedPiece.Deselect();
                     cells.ForEach(c => c.SetOutline(false));
                 }

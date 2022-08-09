@@ -1,4 +1,4 @@
-public struct Move {
+public class Move {
     /// <summary>
     /// The cell to move to.
     /// </summary>
