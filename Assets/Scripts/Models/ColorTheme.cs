@@ -33,16 +33,14 @@ public class ColorTheme : ScriptableObject {
         /// <param name="b">The target piece color.</param>
         /// <returns>The combined color.</returns>
         public Color Add(Color a, Color b) => (a, b) switch {
-            var _ when a == red && b == red => red,
-            var _ when a == red && b == green => yellow,
-            var _ when a == red && b == blue => magenta,
-            var _ when a == green && b == red => yellow,
-            var _ when a == green && b == green => green,
-            var _ when a == green && b == blue => cyan,
-            var _ when a == blue && b == red => magenta,
-            var _ when a == blue && b == green => cyan,
-            var _ when a == blue && b == blue => blue,
-            _ => Color.white
+            _ when a == b => a,
+            _ when a == red && b == green => yellow,
+            _ when a == red && b == blue => magenta,
+            _ when a == green && b == red => yellow,
+            _ when a == green && b == blue => cyan,
+            _ when a == blue && b == red => magenta,
+            _ when a == blue && b == green => cyan,
+            _ => a
         };
 
         public enum PieceColor {
