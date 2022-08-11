@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
+    public static BoardController Instance { get; private set; }
     /// <summary>
     /// The size of this board.
     /// </summary>
@@ -76,14 +77,17 @@ public class BoardController : MonoBehaviour {
     public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
 
     private void Awake() {
+        Instance ??= this;
+        if (Instance != null && Instance != this) Destroy(this);
+
         prefabCellComponent = cellPrefab.GetComponent<Cell>();
 
         Vector3 cellSize = prefabCellComponent.size;
         Vector3 leftBottomCorner = transform.position - boardSize / 2;
         for (int x = 0; x < gridSize.x; x++) {
             for (int y = 0; y < gridSize.y; y++) {
-                Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x , 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
-                
+                Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x, 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
+
                 Color cellColor = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
                 GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
                 Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), cellColor);
