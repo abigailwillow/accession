@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Accession {
+namespace Accession.Models {
     [RequireComponent(typeof(Outline))]
     public class Piece : MonoBehaviour {
         public Color color {

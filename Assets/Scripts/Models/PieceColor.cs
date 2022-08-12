@@ -1,4 +1,4 @@
-namespace Accession {
+namespace Accession.Models {
     public enum PieceColor {
         Invalid,
         Red,

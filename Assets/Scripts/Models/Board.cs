@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Accession {
+namespace Accession.Models {
     public class Board {
         public Vector2Int size { get; private set; }
         public List<Piece> pieces { get; private set; } = new List<Piece>();

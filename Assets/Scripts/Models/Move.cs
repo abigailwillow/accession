@@ -1,4 +1,4 @@
-namespace Accession {
+namespace Accession.Models {
     public class Move {
         /// <summary>
         /// The cell to move to.

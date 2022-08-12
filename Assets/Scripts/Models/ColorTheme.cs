@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Accession {
+namespace Accession.Models {
     [CreateAssetMenu(fileName = "Color Theme", menuName = "Accession/Color Theme", order = 0)]
     public class ColorTheme : ScriptableObject {
         [System.Serializable]

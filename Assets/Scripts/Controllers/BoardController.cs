@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Accession.Models;
 
-namespace Accession {
+namespace Accession.Controllers {
     public class BoardController : MonoBehaviour {
         public static BoardController Instance { get; private set; }
         /// <summary>

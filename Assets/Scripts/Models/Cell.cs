@@ -1,7 +1,7 @@
 using UnityEngine;
 using Accession.Extensions;
 
-namespace Accession {
+namespace Accession.Models {
     [RequireComponent(typeof(Outline))]
     public class Cell : MonoBehaviour {
         [Tooltip("The size of this piece."), SerializeField]
