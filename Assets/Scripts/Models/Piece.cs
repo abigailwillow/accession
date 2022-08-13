@@ -3,6 +3,9 @@ using UnityEngine;
 namespace Accession.Models {
     public class Piece {
         public ColorType color { get; private set; }
+        /// <summary>
+        /// This piece's position on the board in top-down 2D space.
+        /// </summary>
         public Vector2Int position => cell.position;
         private Cell _cell;
         /// <summary>

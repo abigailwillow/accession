@@ -35,9 +35,7 @@ namespace Accession.Controllers {
                     Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x, 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
 
                     Cell cell = new Cell(new Vector2Int(x, y), ColorType.None);
-                    GameObject cellObject = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                    CellController cellController = cellObject.GetComponent<CellController>();
-                    cellController.cell = cell;
+                    CellController cellController = CellController.Instantiate(cell, position, transform);
 
                     if ((x + y) % 7 == 0) {
                         // TODO: REMOVE AFTER DEBUGGING!
@@ -49,9 +47,7 @@ namespace Accession.Controllers {
                         };
 
                         Piece piece = new Piece(cell, color);
-                        GameObject pieceObject = Instantiate(piecePrefab, cellObject.transform, false);
-                        PieceController pieceController = pieceObject.GetComponent<PieceController>();
-                        cellController.cell.piece = pieceController.piece;
+                        PieceController pieceController = PieceController.Instantiate(piece, cellController.transform);
                         board.pieces.Add(pieceController);
                     }
 

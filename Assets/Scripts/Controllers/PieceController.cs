@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Accession.Models;
 
 namespace Accession.Controllers {
     [RequireComponent(typeof(Outline))]
     public class PieceController : MonoBehaviour {
-        public readonly Piece piece;
+        private Piece _piece;
+        public Piece piece { get; private set; }
         public Color color {
             get => renderer.material.color;
             set => renderer.material.color = value;
@@ -17,6 +19,16 @@ namespace Accession.Controllers {
             outline = GetComponentInChildren<Outline>();
 
             this.name = $"Piece ({color})";
+        }
+
+        public static PieceController Instantiate(Piece piece, Transform parent) => Instantiate(piece, Vector3.zero, parent);
+
+        public static PieceController Instantiate(Piece piece, Vector3 position, Transform parent) => Instantiate(piece, position, Quaternion.identity, parent);
+
+        public static PieceController Instantiate(Piece piece, Vector3 position, Quaternion rotation, Transform parent) {
+            PieceController pieceController = Addressables.InstantiateAsync("Prefabs/Piece", position, rotation, parent).Result.GetComponent<PieceController>();
+            pieceController.piece = piece;
+            return pieceController;
         }
 
         /// <summary>

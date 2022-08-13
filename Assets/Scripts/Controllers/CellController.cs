@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Accession.Extensions;
 using Accession.Models;
 
 namespace Accession.Controllers  {
     [RequireComponent(typeof(Outline))]
     public class CellController : MonoBehaviour {
-        public readonly Cell cell;
+        private Cell _cell;
+        public Cell cell { get; private set; }
         [Tooltip("The physical dimensions of this piece."), SerializeField]
         private Vector2 _size;
         /// <summary>
@@ -36,6 +38,16 @@ namespace Accession.Controllers  {
             outline = GetComponent<Outline>();
 
             this.name = $"Cell ({cell.position.x}, {cell.position.y})";
+        }
+
+        public static CellController Instantiate(Cell cell, Transform parent) => Instantiate(cell, Vector3.zero, parent);
+
+        public static CellController Instantiate(Cell cell, Vector3 position, Transform parent) => Instantiate(cell, position, Quaternion.identity, parent);
+
+        public static CellController Instantiate(Cell cell, Vector3 position, Quaternion rotation, Transform parent) {
+            CellController cellController = Addressables.InstantiateAsync("Prefabs/Cell", position, rotation, parent).Result.GetComponent<CellController>();
+            cellController.cell = cell;
+            return cellController;
         }
 
         public void SetOutline(bool enabled) => outline.enabled = enabled;
