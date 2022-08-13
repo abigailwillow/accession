@@ -1,6 +1,7 @@
 using UnityEngine;
 
 namespace Accession.Models {
+    // TODO: Separate Piece model from PieceController class.
     [RequireComponent(typeof(Outline))]
     public class Piece : MonoBehaviour {
         public Color color {

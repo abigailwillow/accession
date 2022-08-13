@@ -4,11 +4,12 @@ using Accession.Models;
 
 namespace Accession.Controllers {
     public class BoardController : MonoBehaviour {
-        public static BoardController Instance { get; private set; }
+        public static BoardController instance { get; private set; }
+        public Board board { get; private set; }
         /// <summary>
         /// The size of this board.
         /// </summary>
-        public Vector3 boardSize => new Vector3(prefabCellComponent.size.x * gridSize.x, 0, prefabCellComponent.size.z * gridSize.y);
+        public Vector3 boardSize => new Vector3(prefabCellComponent.size.x * board.size.x, 0, prefabCellComponent.size.z * board.size.y);
         [Tooltip("The amount of rows and columns on the board.")]
         [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
         [SerializeField] private GameObject piecePrefab;
@@ -17,6 +18,44 @@ namespace Accession.Controllers {
         private List<Cell> cells = new List<Cell>();
         private Piece selectedPiece;
         private Cell prefabCellComponent;
+
+        private void Awake() {
+            instance ??= this;
+            if (instance != null && instance != this) Destroy(this);
+
+            prefabCellComponent = cellPrefab.GetComponent<Cell>();
+
+            board = new Board(gridSize);
+
+            Vector3 cellSize = prefabCellComponent.size;
+            Vector3 leftBottomCorner = transform.position - boardSize / 2;
+            for (int x = 0; x < board.size.x; x++) {
+                for (int y = 0; y < board.size.y; y++) {
+                    Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x, 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
+
+                    Color cellColor = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
+                    GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
+                    Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), cellColor);
+
+                    // TODO: REMOVE AFTER DEBUGGING!
+                    Color pieceColor = Random.Range(0, 3) switch {
+                        0 => colors.piece.red,
+                        1 => colors.piece.blue,
+                        2 => colors.piece.green,
+                        _ => Color.white
+                    };
+
+                    if ((x + y) % 7 == 0) {
+                        GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
+                        Piece piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, pieceColor);
+                        cell.piece = piece;
+                        board.pieces.Add(piece);
+                    }
+
+                    cells.Add(cell);
+                }
+            }
+        }
 
         /// <summary>
         /// Select the given cell.
@@ -77,40 +116,6 @@ namespace Accession.Controllers {
         }
 
         public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
-
-        private void Awake() {
-            Instance ??= this;
-            if (Instance != null && Instance != this) Destroy(this);
-
-            prefabCellComponent = cellPrefab.GetComponent<Cell>();
-
-            Vector3 cellSize = prefabCellComponent.size;
-            Vector3 leftBottomCorner = transform.position - boardSize / 2;
-            for (int x = 0; x < gridSize.x; x++) {
-                for (int y = 0; y < gridSize.y; y++) {
-                    Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x, 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
-
-                    Color cellColor = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
-                    GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                    Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), cellColor);
-
-                    // TODO: REMOVE AFTER DEBUGGING!
-                    Color pieceColor = Random.Range(0, 3) switch {
-                        0 => colors.piece.red,
-                        1 => colors.piece.blue,
-                        2 => colors.piece.green,
-                        _ => Color.white
-                    };
-
-                    if ((x + y) % 7 == 0) {
-                        GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                        cell.piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, pieceColor);
-                    }
-
-                    cells.Add(cell);
-                }
-            }
-        }
 
         private void OnDrawGizmosSelected() {
             prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<Cell>();

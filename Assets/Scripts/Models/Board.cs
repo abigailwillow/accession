@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace Accession.Models {
     public class Board {
-        public Vector2Int size { get; private set; }
+        public Vector2Int size { get; private set; } = new Vector2Int(8, 8);
         public List<Piece> pieces { get; private set; } = new List<Piece>();
-
         
-        public Board(Vector2Int size, List<Piece> pieces = null) {
-            this.size = size; 
-            this.pieces = pieces;        
+        public Board(Vector2Int size, List<Piece> pieces) {
+            this.size = size;
+            this.pieces = pieces;
+        }
+
+        public Board(Vector2Int size) {
+            this.size = size;
         }
 
         /// <summary>

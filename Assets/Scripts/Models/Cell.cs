@@ -2,6 +2,7 @@ using UnityEngine;
 using Accession.Extensions;
 
 namespace Accession.Models {
+    // TODO: Separate Cell model from CelController class.
     [RequireComponent(typeof(Outline))]
     public class Cell : MonoBehaviour {
         [Tooltip("The size of this piece."), SerializeField]
