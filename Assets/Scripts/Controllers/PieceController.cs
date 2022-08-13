@@ -1,18 +1,18 @@
 using UnityEngine;
 
-namespace Accession.Models {
+namespace Accession.Controllers {
     // TODO: Separate Piece model from PieceController class.
     [RequireComponent(typeof(Outline))]
-    public class Piece : MonoBehaviour {
+    public class PieceController : MonoBehaviour {
         public Color color {
             get => renderer.material.color;
             set => renderer.material.color = value;
         }
-        private Cell _cell;
+        private CellController _cell;
         /// <summary>
         /// Set the cell that this piece belongs to. Automatically updates the cells' pieces.
         /// </summary>
-        public Cell cell {
+        public CellController cell {
             get => _cell;
             set {
                 if (_cell != null) _cell.piece = null;
@@ -25,7 +25,7 @@ namespace Accession.Models {
         private Outline outline;
         private bool initialized = false;
 
-        public Piece Initialize(Cell cell, Color color) {
+        public PieceController Initialize(CellController cell, Color color) {
             this.name = $"Piece ({color})";
             this.cell = cell;
             this.color = color;
@@ -49,7 +49,7 @@ namespace Accession.Models {
         /// Move this piece to the given cell.
         /// </summary>
         /// <param name="cell">The cell to move to.</param>
-        public void Move(Cell cell) {
+        public void Move(CellController cell) {
             this.cell = cell;
             transform.SetParent(cell.transform);
             transform.position = cell.transform.position;
@@ -59,7 +59,7 @@ namespace Accession.Models {
         /// Selects this piece and returns a reference to itself.
         /// </summary>
         /// <returns>The selected piece.</returns>
-        public Piece Select() {
+        public PieceController Select() {
             outline.enabled = true;
             return this;
         }
@@ -68,7 +68,7 @@ namespace Accession.Models {
         /// Deselects this piece and returns null.
         /// </summary>
         /// <returns>Null.</returns>
-        public Piece Deselect() {
+        public PieceController Deselect() {
             outline.enabled = false;
             return null;
         }

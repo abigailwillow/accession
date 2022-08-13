@@ -1,21 +1,21 @@
 using UnityEngine;
 using Accession.Extensions;
 
-namespace Accession.Models {
+namespace Accession.Controllers {
     // TODO: Separate Cell model from CelController class.
     [RequireComponent(typeof(Outline))]
-    public class Cell : MonoBehaviour {
+    public class CellController : MonoBehaviour {
         [Tooltip("The size of this piece."), SerializeField]
         private Vector2 _size;
         /// <summary>
         /// The size of this cell.
         /// </summary>
         public Vector3 size => _size.XZ();
-        private Piece _piece;
+        private PieceController _piece;
         /// <summary>
         /// The piece that occupies this cell, or null if empty. Automatically updates the piece's cell.
         /// </summary>
-        public Piece piece {
+        public PieceController piece {
             get => _piece;
             set {
                 _piece = value;
@@ -71,7 +71,7 @@ namespace Accession.Models {
         /// </summary>
         /// <param name="coordinates">The coordinates of this cell.</param>
         /// <param name="piece">The piece that occupies this cell, or null if empty.</param>
-        public Cell Initialize(Vector2Int coordinates, Color color) {
+        public CellController Initialize(Vector2Int coordinates, Color color) {
             this.name = $"Cell ({coordinates.x}, {coordinates.y})";
             this.position = coordinates;
             this.color = color;

@@ -15,15 +15,15 @@ namespace Accession.Controllers {
         [SerializeField] private GameObject piecePrefab;
         [SerializeField] private GameObject cellPrefab;
         [SerializeField] private ColorTheme colors;
-        private List<Cell> cells = new List<Cell>();
-        private Piece selectedPiece;
-        private Cell prefabCellComponent;
+        private List<CellController> cells = new List<CellController>();
+        private PieceController selectedPiece;
+        private CellController prefabCellComponent;
 
         private void Awake() {
             instance ??= this;
             if (instance != null && instance != this) Destroy(this);
 
-            prefabCellComponent = cellPrefab.GetComponent<Cell>();
+            prefabCellComponent = cellPrefab.GetComponent<CellController>();
 
             board = new Board(gridSize);
 
@@ -35,7 +35,7 @@ namespace Accession.Controllers {
 
                     Color cellColor = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
                     GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                    Cell cell = spawnedCell.GetComponent<Cell>().Initialize(new Vector2Int(x, y), cellColor);
+                    CellController cell = spawnedCell.GetComponent<CellController>().Initialize(new Vector2Int(x, y), cellColor);
 
                     // TODO: REMOVE AFTER DEBUGGING!
                     Color pieceColor = Random.Range(0, 3) switch {
@@ -47,7 +47,7 @@ namespace Accession.Controllers {
 
                     if ((x + y) % 7 == 0) {
                         GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                        Piece piece = spawnedPiece.GetComponent<Piece>().Initialize(cell, pieceColor);
+                        PieceController piece = spawnedPiece.GetComponent<PieceController>().Initialize(cell, pieceColor);
                         cell.piece = piece;
                         board.pieces.Add(piece);
                     }
@@ -61,7 +61,7 @@ namespace Accession.Controllers {
         /// Select the given cell.
         /// </summary>
         /// <param name="cell">The cell to select.</param>
-        public void OnCellClicked(Cell cell) {
+        public void OnCellClicked(CellController cell) {
             // Select piece if this cell contains one.
             if (cell.occupied) {
                 if (selectedPiece != null) {
@@ -96,7 +96,7 @@ namespace Accession.Controllers {
         /// </summary>
         /// <param name="piece">The piece to check valid moves for.</param>
         /// <returns>A list of moves that this piece can execute.</returns>
-        public List<Move> GetValidMoves(Piece piece) {
+        public List<Move> GetValidMoves(PieceController piece) {
             List<Move> moves = new List<Move>();
             cells.ForEach(cell => {
                 Vector2Int difference = cell.position - piece.position;
@@ -106,7 +106,7 @@ namespace Accession.Controllers {
                     moves.Add(new Move(cell, piece));
                 }
 
-                Cell target = GetCell(piece.position + difference / 2);
+                CellController target = GetCell(piece.position + difference / 2);
                 if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && target.occupied) {
                     moves.Add(new Move(cell, piece, target.piece));
                 }
@@ -115,10 +115,10 @@ namespace Accession.Controllers {
             return moves;
         }
 
-        public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
+        public CellController GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
 
         private void OnDrawGizmosSelected() {
-            prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<Cell>();
+            prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<CellController>();
             Gizmos.color = Color.white;
             Gizmos.DrawWireCube(transform.position, boardSize);
 

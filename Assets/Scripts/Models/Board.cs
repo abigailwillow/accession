@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Accession.Controllers;
 
 namespace Accession.Models {
     public class Board {
         public Vector2Int size { get; private set; } = new Vector2Int(8, 8);
-        public List<Piece> pieces { get; private set; } = new List<Piece>();
+        public List<PieceController> pieces { get; private set; } = new List<PieceController>();
         
-        public Board(Vector2Int size, List<Piece> pieces) {
+        public Board(Vector2Int size, List<PieceController> pieces) {
             this.size = size;
             this.pieces = pieces;
         }
