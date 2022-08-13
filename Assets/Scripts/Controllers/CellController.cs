@@ -7,7 +7,13 @@ namespace Accession.Controllers  {
     [RequireComponent(typeof(Outline))]
     public class CellController : MonoBehaviour {
         private Cell _cell;
-        public Cell cell { get; private set; }
+        public Cell cell {
+            get => _cell;
+            set {
+                _cell = value;
+                if (value != null && value.controller != this) value.controller = this;
+            } 
+        }
         [Tooltip("The physical dimensions of this piece."), SerializeField]
         private Vector2 _size;
         /// <summary>

@@ -18,6 +18,30 @@ namespace Accession.Models {
         }
 
         /// <summary>
+        /// Get all cells that this piece can move to.
+        /// </summary>
+        /// <param name="piece">The piece to check valid moves for.</param>
+        /// <returns>A list of moves that this piece can execute.</returns>
+        public List<Move> GetValidMoves(Piece piece) {
+            List<Move> moves = new List<Move>();
+            BoardController.instance.cells.ForEach(cell => {
+                Vector2Int difference = cell.position - piece.position;
+                Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
+
+                if (absoluteDifference.x == 1 && difference.y == 1 && !cell.occupied) {
+                    moves.Add(new Move(cell, piece));
+                }
+
+                Cell target = BoardController.instance.GetCell(piece.position + difference / 2);
+                if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && target.occupied) {
+                    moves.Add(new Move(cell, piece, target.piece));
+                }
+            });
+
+            return moves;
+        }
+
+        /// <summary>
         /// Serializes this board to a string.
         /// </summary>
         /// <returns>This board as a serialized string.</returns>

@@ -16,8 +16,8 @@ namespace Accession.Controllers {
         [SerializeField] private GameObject piecePrefab;
         [SerializeField] private GameObject cellPrefab;
         public ColorTheme colors;
-        private List<CellController> cells = new List<CellController>();
-        private PieceController selectedPiece;
+        public List<Cell> cells { get; private set; } = new List<Cell>();
+        private Piece selectedPiece;
         private CellController prefabCellComponent;
 
         private void Awake() {
@@ -51,7 +51,7 @@ namespace Accession.Controllers {
                         board.pieces.Add(pieceController);
                     }
 
-                    cells.Add(cellController);
+                    cells.Add(cell);
                 }
             }
         }
@@ -65,57 +65,33 @@ namespace Accession.Controllers {
             // Select piece if this cell contains one.
             if (cell.occupied) {
                 if (selectedPiece != null) {
-                    selectedPiece = selectedPiece.Deselect();
-                    cells.ForEach(c => c.SetOutline(false));
+                    DeselectPiece();
+                    cells.ForEach(c => c.controller.SetOutline(false));
                 }
 
-                GetValidMoves(cell.piece).ForEach(move => {
-                    Color color = move.isJump ? move.instigator.color.Add(move.target.color) : colors.validMove;
-                    move.cell.SetOutline(true, color);
+                board.GetValidMoves(cell.piece).ForEach(move => {
+                    Color color = move.isJump ? move.instigator.color.Add(move.target.color).ToColor() : colors.validMove;
+                    move.cell.controller.SetOutline(true, color);
                 });
 
-                selectedPiece = cellController.piece.Select();
+                SelectPiece(cellController.cell.piece);
             } else {
                 // If a piece is selected already, move it to this cell.
                 if (selectedPiece != null) {
                     // If the list of valid moves contains this cell, then move it and deselect this piece.
-                    Move move = GetValidMoves(selectedPiece).Find(m => m.cell == cellController);
+                    Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cellController);
                     if (move != null) {
                         move.Execute();
-                        move.instigator.color = move.isJump ? colors.piece.Add(move.instigator.color, move.target.color) : move.instigator.color;
+                        move.instigator.color = move.isJump ? move.instigator.color.Add(move.target.color) : move.instigator.color;
                         DeselectPiece();
-                        cells.ForEach(c => c.SetOutline(false));
+                        cells.ForEach(c => c.controller.SetOutline(false));
                     }
                 }
             }
 
         }
 
-        /// <summary>
-        /// Get all cells that this piece can move to.
-        /// </summary>
-        /// <param name="piece">The piece to check valid moves for.</param>
-        /// <returns>A list of moves that this piece can execute.</returns>
-        public List<Move> GetValidMoves(PieceController piece) {
-            List<Move> moves = new List<Move>();
-            cells.ForEach(cell => {
-                Vector2Int difference = cell.position - piece.position;
-                Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
-
-                if (absoluteDifference.x == 1 && difference.y == 1 && !cell.occupied) {
-                    moves.Add(new Move(cell, piece));
-                }
-
-                CellController target = GetCell(piece.position + difference / 2);
-                if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && target.occupied) {
-                    moves.Add(new Move(cell, piece, target.piece));
-                }
-            });
-
-            return moves;
-        }
-
-        public CellController GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
+        public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
 
         private void OnDrawGizmosSelected() {
             prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<CellController>();
@@ -124,13 +100,13 @@ namespace Accession.Controllers {
 
             cells.ForEach(cell => {
                 Gizmos.color = cell.occupied ? Color.red : Color.green;
-                Gizmos.DrawWireCube(cell.transform.position, prefabCellComponent.size * 0.99f + Vector3.up * 0.02f);
+                Gizmos.DrawWireCube(cell.controller.transform.position, prefabCellComponent.size * 0.99f + Vector3.up * 0.02f);
             });
         }
 
-        private void SelectPiece(PieceController piece) {
+        private void SelectPiece(Piece piece) {
             DeselectPiece();
-            piece.Select();
+            piece.controller.Select();
             selectedPiece = piece;
         }
 

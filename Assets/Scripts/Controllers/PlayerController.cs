@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Accession.Models;
 
 namespace Accession.Controllers {
     [RequireComponent(typeof(PlayerInput))]

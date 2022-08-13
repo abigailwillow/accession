@@ -6,7 +6,13 @@ namespace Accession.Controllers {
     [RequireComponent(typeof(Outline))]
     public class PieceController : MonoBehaviour {
         private Piece _piece;
-        public Piece piece { get; private set; }
+        public Piece piece {
+            get => _piece;
+            set {
+                _piece = value;
+                if (value != null && value.controller != this) value.controller = this;
+            } 
+        }
         public Color color {
             get => renderer.material.color;
             set => renderer.material.color = value;
@@ -34,9 +40,10 @@ namespace Accession.Controllers {
         /// <summary>
         /// Move this piece to the given cell.
         /// </summary>
-        /// <param name="cellController">The cell to move to.</param>
-        public void Move(CellController cellController) {
-            this.piece.cell = cellController.cell;
+        /// <param name="cell">The cell to move to.</param>
+        public void Move(Cell cell) {
+            CellController cellController = cell.controller;
+            this.piece.cell = cell;
             transform.SetParent(cellController.transform);
             transform.position = cellController.transform.position;
         }

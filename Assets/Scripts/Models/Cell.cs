@@ -1,7 +1,16 @@
 using UnityEngine;
+using Accession.Controllers;
 
 namespace Accession.Models {
     public class Cell {
+        private CellController _controller;
+        public CellController controller {
+            get => _controller;
+            set {
+                _controller = value;
+                if (value != null && value.cell != this) value.cell = this;
+            } 
+        }
         public Vector2Int position { get; private set; }
         private Piece _piece;
         /// <summary>
@@ -39,6 +48,7 @@ namespace Accession.Models {
         public bool occupied => piece != null;
 
         public Cell(Vector2Int position, ColorType color, Piece piece = null) {
+            this.controller = controller;
             this.position = position;
             this.color = color;
             this.piece = piece;
