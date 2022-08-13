@@ -1,5 +1,6 @@
 using UnityEngine;
 using Accession.Controllers;
+using Accession.Extensions;
 
 namespace Accession.Models {
     public class Piece {
@@ -11,7 +12,14 @@ namespace Accession.Models {
                 if (value != null && value.piece != this) value.piece = this;
             } 
         }
-        public ColorType color { get; set; }
+        private ColorType _color;
+        public ColorType color {
+            get => _color;
+            set {
+                _color = value;
+                if (controller != null) controller.color = value.ToColor();
+            }
+        }
         /// <summary>
         /// This piece's position on the board in top-down 2D space.
         /// </summary>

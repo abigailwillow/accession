@@ -12,12 +12,15 @@ namespace Accession.Controllers {
             set {
                 _piece = value;
                 if (value != null && value.controller != this) value.controller = this;
-            } 
+            }
         }
-
+        private Color _color;
         public Color color {
-            get => renderer.material.color;
-            set => renderer.material.color = value;
+            get => _color;
+            set {
+                if (renderer != null) renderer.material.color = value;
+                _color = value;
+            }
         }
         private new Renderer renderer;
         private Outline outline;

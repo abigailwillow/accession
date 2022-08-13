@@ -13,7 +13,6 @@ namespace Accession.Controllers {
         public Vector3 boardSize => new Vector3(prefabCellComponent.size.x * board.size.x, 0, prefabCellComponent.size.z * board.size.y);
         [Tooltip("The amount of rows and columns on the board.")]
         [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
-        [SerializeField] private GameObject piecePrefab;
         [SerializeField] private GameObject cellPrefab;
         public ColorTheme colors;
         public List<Cell> cells { get; private set; } = new List<Cell>();
