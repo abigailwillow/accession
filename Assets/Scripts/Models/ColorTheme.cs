@@ -17,13 +17,13 @@ namespace Accession.Models {
             /// </summary>
             /// <param name="color">The PieceColor</param>
             /// <returns></returns>
-            public Color GetColor(PieceColor color) => color switch {
-                PieceColor.Red => red,
-                PieceColor.Green => green,
-                PieceColor.Blue => blue,
-                PieceColor.Magenta => magenta,
-                PieceColor.Yellow => yellow,
-                PieceColor.Cyan => cyan,
+            public Color GetColor(ColorType color) => color switch {
+                ColorType.Red => red,
+                ColorType.Green => green,
+                ColorType.Blue => blue,
+                ColorType.Magenta => magenta,
+                ColorType.Yellow => yellow,
+                ColorType.Cyan => cyan,
                 _ => Color.white
             };
 
