@@ -11,38 +11,6 @@ namespace Accession.Models {
             public Color magenta;
             public Color yellow;
             public Color cyan;
-
-            /// <summary>
-            /// Converts a PieceColor to a Color.
-            /// </summary>
-            /// <param name="color">The PieceColor</param>
-            /// <returns></returns>
-            public Color GetColor(ColorType color) => color switch {
-                ColorType.Red => red,
-                ColorType.Green => green,
-                ColorType.Blue => blue,
-                ColorType.Magenta => magenta,
-                ColorType.Yellow => yellow,
-                ColorType.Cyan => cyan,
-                _ => Color.white
-            };
-
-            /// <summary>
-            /// Statically adds the two colors together and returns the result as a color.
-            /// </summary>
-            /// <param name="a">The instigating piece color.</param>
-            /// <param name="b">The target piece color.</param>
-            /// <returns>The combined color.</returns>
-            public Color Add(Color a, Color b) => (a, b) switch {
-                _ when a == b => a,
-                _ when a == red && b == green => yellow,
-                _ when a == red && b == blue => magenta,
-                _ when a == green && b == red => yellow,
-                _ when a == green && b == blue => cyan,
-                _ when a == blue && b == red => magenta,
-                _ when a == blue && b == green => cyan,
-                _ => a
-            };
         }
 
         [System.Serializable]
