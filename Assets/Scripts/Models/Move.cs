@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using UnityEngine;
+using Accession.Extensions;
 
 namespace Accession.Models {
     public class Move {
@@ -29,6 +28,9 @@ namespace Accession.Models {
         /// <summary>
         /// Executes this move.
         /// </summary>
-        public void Execute() => instigator.controller.Move(cell);
+        public void Execute() {
+            instigator.controller.Move(cell);
+            instigator.color = this.isJump ? instigator.color.Add(target.color) : instigator.color;
+        }
     }
 }

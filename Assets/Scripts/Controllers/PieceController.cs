@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Accession.Models;
+using Accession.Extensions;
 
 namespace Accession.Controllers {
     [RequireComponent(typeof(Outline))]
@@ -13,6 +14,7 @@ namespace Accession.Controllers {
                 if (value != null && value.controller != this) value.controller = this;
             } 
         }
+
         public Color color {
             get => renderer.material.color;
             set => renderer.material.color = value;
@@ -23,17 +25,13 @@ namespace Accession.Controllers {
         private void Awake() {
             renderer = GetComponentInChildren<Renderer>();
             outline = GetComponentInChildren<Outline>();
-
-            this.name = $"Piece ({color})";
         }
 
-        public static PieceController Instantiate(Piece piece, Transform parent) => Instantiate(piece, Vector3.zero, parent);
-
-        public static PieceController Instantiate(Piece piece, Vector3 position, Transform parent) => Instantiate(piece, position, Quaternion.identity, parent);
-
-        public static PieceController Instantiate(Piece piece, Vector3 position, Quaternion rotation, Transform parent) {
-            PieceController pieceController = Addressables.InstantiateAsync("Prefabs/Piece", position, rotation, parent).Result.GetComponent<PieceController>();
+        public static PieceController Instantiate(Piece piece, Transform parent, bool instantiateInWorldSpace) {
+            PieceController pieceController = Addressables.InstantiateAsync("Prefabs/Piece", parent, instantiateInWorldSpace).WaitForCompletion().GetComponent<PieceController>();
             pieceController.piece = piece;
+            pieceController.name = $"Piece ({piece.color})";
+            pieceController.color = piece.color.ToColor();
             return pieceController;
         }
 

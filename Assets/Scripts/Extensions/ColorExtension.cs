@@ -40,13 +40,12 @@ namespace Accession.Extensions {
             /// <param name="b">The color to add to this color.</param>
             /// <returns>The combined color.</returns>
         public static ColorType Add(this ColorType a, ColorType b) => (a, b) switch {
-                _ when a == b => a,
-                _ when a == ColorType.Red && b == ColorType.Green => ColorType.Yellow,
-                _ when a == ColorType.Red && b == ColorType.Blue => ColorType.Magenta,
-                _ when a == ColorType.Green && b == ColorType.Red => ColorType.Yellow,
-                _ when a == ColorType.Green && b == ColorType.Blue => ColorType.Cyan,
-                _ when a == ColorType.Blue && b == ColorType.Red => ColorType.Magenta,
-                _ when a == ColorType.Blue && b == ColorType.Green => ColorType.Cyan,
+                (ColorType.Red, ColorType.Green) => ColorType.Yellow,
+                (ColorType.Red, ColorType.Blue) => ColorType.Magenta,
+                (ColorType.Green, ColorType.Red) => ColorType.Yellow,
+                (ColorType.Green, ColorType.Blue) => ColorType.Cyan,
+                (ColorType.Blue, ColorType.Red) => ColorType.Magenta,
+                (ColorType.Blue, ColorType.Green) => ColorType.Cyan,
                 _ => a
             };
     }

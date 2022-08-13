@@ -42,8 +42,6 @@ namespace Accession.Controllers  {
         public void Awake() {
             renderer = GetComponentInChildren<Renderer>();
             outline = GetComponent<Outline>();
-
-            this.name = $"Cell ({cell.position.x}, {cell.position.y})";
         }
 
         public static CellController Instantiate(Cell cell, Transform parent) => Instantiate(cell, Vector3.zero, parent);
@@ -51,8 +49,10 @@ namespace Accession.Controllers  {
         public static CellController Instantiate(Cell cell, Vector3 position, Transform parent) => Instantiate(cell, position, Quaternion.identity, parent);
 
         public static CellController Instantiate(Cell cell, Vector3 position, Quaternion rotation, Transform parent) {
-            CellController cellController = Addressables.InstantiateAsync("Prefabs/Cell", position, rotation, parent).Result.GetComponent<CellController>();
+            CellController cellController = Addressables.InstantiateAsync("Prefabs/Cell", position, rotation, parent).WaitForCompletion().GetComponent<CellController>();
             cellController.cell = cell;
+            cellController.name = $"Cell ({cell.position.x}, {cell.position.y})";
+            cellController.renderer.material.color = cell.dark ? BoardController.instance.colors.cell.dark : BoardController.instance.colors.cell.light;
             return cellController;
         }
 

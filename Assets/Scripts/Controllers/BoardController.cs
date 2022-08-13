@@ -47,7 +47,7 @@ namespace Accession.Controllers {
                         };
 
                         Piece piece = new Piece(cell, color);
-                        PieceController pieceController = PieceController.Instantiate(piece, cellController.transform);
+                        PieceController pieceController = PieceController.Instantiate(piece, cellController.transform, false);
                         board.pieces.Add(pieceController);
                     }
 
@@ -82,7 +82,6 @@ namespace Accession.Controllers {
                     Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cell);
                     if (move != null) {
                         move.Execute();
-                        move.instigator.color = move.isJump ? move.instigator.color.Add(move.target.color) : move.instigator.color;
                         DeselectPiece();
                         cells.ForEach(c => c.controller.SetOutline(false));
                     }
@@ -105,7 +104,6 @@ namespace Accession.Controllers {
         }
 
         private void SelectPiece(Piece piece) {
-            DeselectPiece();
             piece.controller.Select();
             selectedPiece = piece;
         }
