@@ -29,13 +29,13 @@ namespace Accession.Controllers {
             board = new Board(gridSize);
 
             Vector3 cellSize = prefabCellComponent.size;
-            Vector3 leftBottomCorner = transform.position - boardSize / 2;
+            Vector3 bottomLeft = this.transform.position - boardSize / 2;
             for (int x = 0; x < board.size.x; x++) {
                 for (int y = 0; y < board.size.y; y++) {
-                    Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x, 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
+                    Vector3 position = new Vector3(bottomLeft.x + cellSize.x * x, 0, bottomLeft.z + cellSize.z * y) + cellSize / 2;
 
                     Cell cell = new Cell(new Vector2Int(x, y), ColorType.None);
-                    CellController cellController = CellController.Instantiate(cell, position, transform);
+                    CellController cellController = CellController.Instantiate(cell, position, this.transform);
 
                     if ((x + y) % 7 == 0) {
                         // TODO: REMOVE AFTER DEBUGGING!
@@ -79,7 +79,7 @@ namespace Accession.Controllers {
                 // If a piece is selected already, move it to this cell.
                 if (selectedPiece != null) {
                     // If the list of valid moves contains this cell, then move it and deselect this piece.
-                    Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cellController);
+                    Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cell);
                     if (move != null) {
                         move.Execute();
                         move.instigator.color = move.isJump ? move.instigator.color.Add(move.target.color) : move.instigator.color;
@@ -111,7 +111,7 @@ namespace Accession.Controllers {
         }
 
         private void DeselectPiece() {
-            selectedPiece.Deselect();
+            selectedPiece.controller.Deselect();
             selectedPiece = null;
         }
     }

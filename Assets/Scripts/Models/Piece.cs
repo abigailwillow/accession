@@ -11,7 +11,7 @@ namespace Accession.Models {
                 if (value != null && value.piece != this) value.piece = this;
             } 
         }
-        public ColorType color { get; private set; }
+        public ColorType color { get; set; }
         /// <summary>
         /// This piece's position on the board in top-down 2D space.
         /// </summary>
