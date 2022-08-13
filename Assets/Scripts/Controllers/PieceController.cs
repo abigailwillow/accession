@@ -4,7 +4,7 @@ using Accession.Models;
 namespace Accession.Controllers {
     [RequireComponent(typeof(Outline))]
     public class PieceController : MonoBehaviour {
-        public Piece piece { get; private set; }
+        public readonly Piece piece;
         public Color color {
             get => renderer.material.color;
             set => renderer.material.color = value;
@@ -30,7 +30,7 @@ namespace Accession.Controllers {
         }
 
         public void Select() => outline.enabled = true;
-        
+
         public void Deselect() => outline.enabled = false;
     }
 }

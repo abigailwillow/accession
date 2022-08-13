@@ -29,12 +29,18 @@ namespace Accession.Models {
         }
 
         /// <summary>
+        /// Whether this cell is dark or light.
+        /// </summary>
+        public bool dark => (position.x + position.y) % 2 == 0;
+
+        /// <summary>
         /// Whether or not this cell is currently occupied.
         /// </summary>
         public bool occupied => piece != null;
 
-        public Cell(Vector2Int position, Piece piece = null) {
+        public Cell(Vector2Int position, ColorType color, Piece piece = null) {
             this.position = position;
+            this.color = color;
             this.piece = piece;
         }
     }

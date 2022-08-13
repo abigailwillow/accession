@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Accession.Models;
+using Accession.Extensions;
 
 namespace Accession.Controllers {
     public class BoardController : MonoBehaviour {
@@ -14,7 +15,7 @@ namespace Accession.Controllers {
         [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
         [SerializeField] private GameObject piecePrefab;
         [SerializeField] private GameObject cellPrefab;
-        [SerializeField] private ColorTheme colors;
+        public ColorTheme colors;
         private List<CellController> cells = new List<CellController>();
         private PieceController selectedPiece;
         private CellController prefabCellComponent;
@@ -33,26 +34,28 @@ namespace Accession.Controllers {
                 for (int y = 0; y < board.size.y; y++) {
                     Vector3 position = new Vector3(leftBottomCorner.x + cellSize.x * x, 0, leftBottomCorner.z + cellSize.z * y) + cellSize / 2;
 
-                    Color cellColor = (x + y) % 2 == 0 ? colors.cell.dark : colors.cell.light;
-                    GameObject spawnedCell = Instantiate(cellPrefab, position, Quaternion.identity, transform);
-                    CellController cell = spawnedCell.GetComponent<CellController>().Initialize(new Vector2Int(x, y), cellColor);
-
-                    // TODO: REMOVE AFTER DEBUGGING!
-                    Color pieceColor = Random.Range(0, 3) switch {
-                        0 => colors.piece.red,
-                        1 => colors.piece.blue,
-                        2 => colors.piece.green,
-                        _ => Color.white
-                    };
+                    Cell cell = new Cell(new Vector2Int(x, y), ColorType.None);
+                    GameObject cellObject = Instantiate(cellPrefab, position, Quaternion.identity, transform);
+                    CellController cellController = cellObject.GetComponent<CellController>();
+                    cellController.cell = cell;
 
                     if ((x + y) % 7 == 0) {
-                        GameObject spawnedPiece = Instantiate(piecePrefab, spawnedCell.transform, false);
-                        PieceController piece = spawnedPiece.GetComponent<PieceController>().Initialize(cell, pieceColor);
-                        cell.piece = piece;
-                        board.pieces.Add(piece);
+                        // TODO: REMOVE AFTER DEBUGGING!
+                        ColorType color = Random.Range(0, 3) switch {
+                            0 => ColorType.Red,
+                            1 => ColorType.Blue,
+                            2 => ColorType.Green,
+                            _ => ColorType.None
+                        };
+
+                        Piece piece = new Piece(cell, color);
+                        GameObject pieceObject = Instantiate(piecePrefab, cellObject.transform, false);
+                        PieceController pieceController = pieceObject.GetComponent<PieceController>();
+                        cellController.cell.piece = pieceController.piece;
+                        board.pieces.Add(pieceController);
                     }
 
-                    cells.Add(cell);
+                    cells.Add(cellController);
                 }
             }
         }
@@ -60,8 +63,9 @@ namespace Accession.Controllers {
         /// <summary>
         /// Select the given cell.
         /// </summary>
-        /// <param name="cell">The cell to select.</param>
-        public void OnCellClicked(CellController cell) {
+        /// <param name="cellController">The cell to select.</param>
+        public void OnCellClicked(CellController cellController) {
+            Cell cell = cellController.cell;
             // Select piece if this cell contains one.
             if (cell.occupied) {
                 if (selectedPiece != null) {
@@ -70,20 +74,20 @@ namespace Accession.Controllers {
                 }
 
                 GetValidMoves(cell.piece).ForEach(move => {
-                    Color color = move.isJump ? colors.piece.Add(move.instigator.color, move.target.color) : colors.validMove;
+                    Color color = move.isJump ? move.instigator.color.Add(move.target.color) : colors.validMove;
                     move.cell.SetOutline(true, color);
                 });
 
-                selectedPiece = cell.piece.Select();
+                selectedPiece = cellController.piece.Select();
             } else {
                 // If a piece is selected already, move it to this cell.
                 if (selectedPiece != null) {
                     // If the list of valid moves contains this cell, then move it and deselect this piece.
-                    Move move = GetValidMoves(selectedPiece).Find(m => m.cell == cell);
+                    Move move = GetValidMoves(selectedPiece).Find(m => m.cell == cellController);
                     if (move != null) {
                         move.Execute();
                         move.instigator.color = move.isJump ? colors.piece.Add(move.instigator.color, move.target.color) : move.instigator.color;
-                        selectedPiece = selectedPiece.Deselect();
+                        DeselectPiece();
                         cells.ForEach(c => c.SetOutline(false));
                     }
                 }
@@ -126,6 +130,17 @@ namespace Accession.Controllers {
                 Gizmos.color = cell.occupied ? Color.red : Color.green;
                 Gizmos.DrawWireCube(cell.transform.position, prefabCellComponent.size * 0.99f + Vector3.up * 0.02f);
             });
+        }
+
+        private void SelectPiece(PieceController piece) {
+            DeselectPiece();
+            piece.Select();
+            selectedPiece = piece;
+        }
+
+        private void DeselectPiece() {
+            selectedPiece.Deselect();
+            selectedPiece = null;
         }
     }
 }

@@ -5,7 +5,7 @@ using Accession.Models;
 namespace Accession.Controllers  {
     [RequireComponent(typeof(Outline))]
     public class CellController : MonoBehaviour {
-        public Cell cell { get; private set; }
+        public readonly Cell cell;
         [Tooltip("The physical dimensions of this piece."), SerializeField]
         private Vector2 _size;
         /// <summary>
@@ -39,12 +39,13 @@ namespace Accession.Controllers  {
         }
 
         public void SetOutline(bool enabled) => outline.enabled = enabled;
+        
         public void SetOutline(bool enabled, Color color) {
             outline.OutlineColor = color;
             outline.enabled = enabled;
         }
 
-        public void ResetColor() => renderer.material.color = this.cell.defaultColor;
+        // public void ResetColor() => renderer.material.color = this.cell.defaultColor;
 
         private void OnDrawGizmosSelected() {
             Gizmos.color = Color.red;
