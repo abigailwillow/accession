@@ -25,5 +25,28 @@
                 "y": 0
             }
         }
+    ],
+    "cells": [
+        {
+            "color": "red",
+            "position": {
+                "x": 2,
+                "y": 2
+            }
+        },
+        {
+            "color": "blue",
+            "position": {
+                "x": 1,
+                "y": 2
+            }
+        },
+        {
+            "color": "green",
+            "position": {
+                "x": 0,
+                "y": 2
+            }
+        }
     ]
 }
