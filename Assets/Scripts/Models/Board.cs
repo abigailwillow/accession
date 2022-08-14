@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using UnityEngine;
+using Accession.Converters;
 
 namespace Accession.Models {
     [System.Serializable]
@@ -54,7 +56,10 @@ namespace Accession.Models {
         /// </summary>
         /// <returns>This board as a serialized string.</returns>
         public string Serialize() {
-            return JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            return JsonSerializer.Serialize(this,new JsonSerializerOptions {
+                Converters = { new BoardConverter() },
+                WriteIndented = true
+            });
         }
 
         /// <summary>
