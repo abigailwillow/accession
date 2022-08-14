@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Accession.Models;
 using Accession.Extensions;
 
@@ -10,23 +10,27 @@ namespace Accession.Controllers {
         /// <summary>
         /// The size of this board.
         /// </summary>
-        public Vector3 boardSize => new Vector3(prefabCellComponent.size.x * board.size.x, 0, prefabCellComponent.size.z * board.size.y);
+        public Vector3 boardSize {
+            get {
+                cellController ??= GetCellController();
+                return new Vector3(cellController.size.x * gridSize.x, 0, cellController.size.z * gridSize.y);
+            }
+        }
         [Tooltip("The amount of rows and columns on the board.")]
         [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
-        [SerializeField] private GameObject cellPrefab;
         public ColorTheme colors;
+        private CellController cellController;
         private Piece selectedPiece;
-        private CellController prefabCellComponent;
 
         private void Awake() {
             instance ??= this;
             if (instance != null && instance != this) Destroy(this);
 
-            prefabCellComponent = cellPrefab.GetComponent<CellController>();
+            cellController ??= GetCellController();
 
             board = new Board(gridSize);
 
-            Vector3 cellSize = prefabCellComponent.size;
+            Vector3 cellSize = cellController.size;
             Vector3 bottomLeft = this.transform.position - boardSize / 2;
             for (int x = 0; x < board.size.x; x++) {
                 for (int y = 0; y < board.size.y; y++) {
@@ -89,14 +93,16 @@ namespace Accession.Controllers {
         }
 
         private void OnDrawGizmosSelected() {
-            prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<CellController>();
+            cellController ??= this.GetCellController();
             Gizmos.color = Color.white;
             Gizmos.DrawWireCube(transform.position, boardSize);
 
-            board.cells.ForEach(cell => {
-                Gizmos.color = cell.occupied ? Color.red : Color.green;
-                Gizmos.DrawWireCube(cell.controller.transform.position, prefabCellComponent.size * 0.99f + Vector3.up * 0.02f);
-            });
+            if (board != null) {
+                board.cells.ForEach(cell => {
+                    Gizmos.color = cell.occupied ? Color.red : Color.green;
+                    Gizmos.DrawWireCube(cell.controller.transform.position, cellController.size * 0.99f + Vector3.up * 0.02f);
+                });
+            }
         }
 
         private void SelectPiece(Piece piece) {
@@ -107,6 +113,14 @@ namespace Accession.Controllers {
         private void DeselectPiece() {
             selectedPiece.controller.Deselect();
             selectedPiece = null;
+        }
+
+        private CellController GetCellController() {
+            if (Application.isPlaying) {
+                return Addressables.LoadAssetAsync<GameObject>("Prefabs/Cell").WaitForCompletion().GetComponent<CellController>();
+            } else {
+                return UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Cell.prefab").GetComponent<CellController>();
+            }
         }
     }
 }

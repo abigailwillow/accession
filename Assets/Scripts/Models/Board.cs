@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Accession.Controllers;
 
 namespace Accession.Models {
     public class Board {

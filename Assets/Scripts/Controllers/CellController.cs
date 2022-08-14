@@ -17,7 +17,7 @@ namespace Accession.Controllers  {
         [Tooltip("The physical dimensions of this piece."), SerializeField]
         private Vector2 _size;
         /// <summary>
-        /// The size of this cell.
+        /// The physical size of this cell.
         /// </summary>
         public Vector3 size => _size.XZ();
         /// <summary>
