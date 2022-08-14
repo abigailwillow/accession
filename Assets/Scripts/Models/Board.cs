@@ -8,13 +8,10 @@ namespace Accession.Models {
         public List<Piece> pieces { get; private set; } = new List<Piece>();
         public List<Cell> cells { get; private set; } = new List<Cell>();
         
-        public Board(Vector2Int size, List<Piece> pieces) {
+        public Board(Vector2Int size, List<Cell> cells, List<Piece> pieces) {
             this.size = size;
+            this.cells = cells;
             this.pieces = pieces;
-        }
-
-        public Board(Vector2Int size) {
-            this.size = size;
         }
 
         /// <summary>
