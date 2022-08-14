@@ -62,10 +62,24 @@ namespace Accession.Models {
         }
 
         /// <summary>
-        /// Creates a new board from the given file.
+        /// Creates a new board from the given json string.
         /// </summary>
-        /// <param name="path">The path to the file to deserialize.</param>
-        /// <returns>A new board object.</returns>
-        public static Board Deserialize(string path) => JsonUtility.FromJson<Board>(File.ReadAllText(path));
+        /// <param name="json">The json string to deserialize from.</param>
+        /// <returns>A new board object created from the json string.</returns>
+        public static Board Deserialize(string json) => JsonUtility.FromJson<Board>(File.ReadAllText(json));
+
+        /// <summary>
+        /// Write this board to a file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public void Write(string path) => File.WriteAllText(path, this.Serialize());
+
+        /// <summary>
+        /// Read a board from a file.
+        /// </summary>
+        /// <param name="path">The file to read from.</param>
+        /// <returns>A new board object created from the file.</returns>
+        public static Board Read(string path) => Board.Deserialize(File.ReadAllText(path));
     }
 }
