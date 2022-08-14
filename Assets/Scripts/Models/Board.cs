@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using UnityEngine;
 using Accession.Converters;
 
 namespace Accession.Models {
-    [System.Serializable]
+    [JsonConverter(typeof(BoardConverter))]
     public class Board {
         public Vector2Int size { get; private set; } = new Vector2Int(8, 8);
         public List<Cell> cells { get; private set; } = new List<Cell>();
@@ -54,19 +55,14 @@ namespace Accession.Models {
         /// Serializes this board to a string.
         /// </summary>
         /// <returns>This board as a serialized string.</returns>
-        public string Serialize() {
-            return JsonSerializer.Serialize(this,new JsonSerializerOptions {
-                Converters = { new BoardConverter() },
-                WriteIndented = true
-            });
-        }
+        public string Serialize() => JsonSerializer.Serialize(this);
 
         /// <summary>
         /// Creates a new board from the given json string.
         /// </summary>
         /// <param name="json">The json string to deserialize from.</param>
         /// <returns>A new board object created from the json string.</returns>
-        public static Board Deserialize(string json) => JsonUtility.FromJson<Board>(File.ReadAllText(json));
+        public static Board Deserialize(string json) => JsonSerializer.Deserialize<Board>(json);
 
         /// <summary>
         /// Write this board to a file.

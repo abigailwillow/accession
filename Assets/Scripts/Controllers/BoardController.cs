@@ -60,6 +60,8 @@ namespace Accession.Controllers {
                 }
             }
             board = new Board(gridSize, cells, pieces);
+
+            board.Write("Assets/Resources/Levels/Output.json");
         }
 
         /// <summary>
@@ -100,7 +102,7 @@ namespace Accession.Controllers {
         /// </summary>
         /// <param name="path">A path to a json file containing board data.</param>
         public void LoadBoard(string path) {
-            Board board = Board.Deserialize(path);
+            Board board = Board.Read(path);
             Debug.Log(board);
         }
 
