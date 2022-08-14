@@ -60,8 +60,6 @@ namespace Accession.Controllers {
                 }
             }
             board = new Board(gridSize, cells, pieces);
-            string boardJson = board.Serialize();
-            Debug.Log(boardJson);
         }
 
         /// <summary>
