@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using UnityEngine;
 
 namespace Accession.Models {
@@ -13,6 +14,8 @@ namespace Accession.Models {
             this.size = size;
             this.cells = cells;
             this.pieces = pieces;
+
+            
         }
 
         /// <summary>
@@ -50,7 +53,9 @@ namespace Accession.Models {
         /// Serializes this board to a string.
         /// </summary>
         /// <returns>This board as a serialized string.</returns>
-        public string Serialize() => JsonUtility.ToJson(this, true);
+        public string Serialize() {
+            return JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+        }
 
         /// <summary>
         /// Creates a new board from the given file.
