@@ -1,3 +1,4 @@
+using System.Text;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -8,15 +9,33 @@ using Accession.Models;
 namespace Accession.Converters {
     public class BoardConverter : JsonConverter<Board> {
         public override Board Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions options) {
+            StringBuilder log = new StringBuilder();
             while (reader.Read()) {
-                if (reader.TokenType == JsonTokenType.PropertyName) {
-                    Debug.Log($"{reader.TokenType}: {reader.GetString()}");
+                switch (reader.TokenType){
+                    case JsonTokenType.StartObject:
+                    case JsonTokenType.EndObject:
+                    case JsonTokenType.StartArray:
+                    case JsonTokenType.EndArray:
+                        log.Append($"{reader.TokenType}\n");
+                        break;
+                    case JsonTokenType.True:
+                    case JsonTokenType.False:
+                        log.Append($"{reader.TokenType}: {reader.GetBoolean()}\n");
+                        break;
+                    case JsonTokenType.String:
+                        log.Append($"{reader.TokenType}: {reader.GetString()}\n");
+                        break;
+                    case JsonTokenType.Number:
+                        log.Append($"{reader.TokenType}: {reader.GetInt32()}\n");
+                        break;
+                    case JsonTokenType.PropertyName:
+                        log.Append($"{reader.TokenType}: {reader.GetString()}\n");
+                        break;
                 }
-                Debug.Log($"{reader.TokenType}: ()");
             }
-            Vector2Int size = new Vector2Int(reader.GetInt32(), reader.GetInt32());
+            Debug.Log(log.ToString());
 
-            return new Board(size, new List<Cell>(), new List<Piece>());
+            return new Board(new Vector2Int(8, 8), new List<Cell>(), new List<Piece>());
         }
 
         public override void Write(Utf8JsonWriter writer, Board board, JsonSerializerOptions options) {
