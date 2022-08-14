@@ -3,10 +3,11 @@ using System.IO;
 using UnityEngine;
 
 namespace Accession.Models {
+    [System.Serializable]
     public class Board {
         public Vector2Int size { get; private set; } = new Vector2Int(8, 8);
-        public List<Piece> pieces { get; private set; } = new List<Piece>();
         public List<Cell> cells { get; private set; } = new List<Cell>();
+        public List<Piece> pieces { get; private set; } = new List<Piece>();
         
         public Board(Vector2Int size, List<Cell> cells, List<Piece> pieces) {
             this.size = size;

@@ -29,6 +29,8 @@ namespace Accession.Controllers {
 
             cellController ??= GetCellController();
 
+            this.LoadBoard("Assets/Resources/Levels/Sample.json");
+
             List<Cell> cells = new List<Cell>();
             List<Piece> pieces = new List<Piece>();
 
@@ -58,6 +60,8 @@ namespace Accession.Controllers {
                 }
             }
             board = new Board(gridSize, cells, pieces);
+            string boardJson = board.Serialize();
+            Debug.Log(JsonUtility.ToJson(board));
         }
 
         /// <summary>
@@ -91,10 +95,18 @@ namespace Accession.Controllers {
                     }
                 }
             }
-
         }
 
-        private void SelectPiece(Piece piece) {
+        /// <summary>
+        /// Load a json file containing the board data, and convert initialize this board using the data.
+        /// </summary>
+        /// <param name="path">A path to a json file containing board data.</param>
+        public void LoadBoard(string path) {
+            Board board = Board.Deserialize(path);
+            Debug.Log(board);
+        }
+
+    private void SelectPiece(Piece piece) {
             piece.controller.Select();
             selectedPiece = piece;
         }
