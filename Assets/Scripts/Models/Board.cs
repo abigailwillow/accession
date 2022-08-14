@@ -6,9 +6,10 @@ using Accession.Controllers;
 namespace Accession.Models {
     public class Board {
         public Vector2Int size { get; private set; } = new Vector2Int(8, 8);
-        public List<PieceController> pieces { get; private set; } = new List<PieceController>();
+        public List<Piece> pieces { get; private set; } = new List<Piece>();
+        public List<Cell> cells { get; private set; } = new List<Cell>();
         
-        public Board(Vector2Int size, List<PieceController> pieces) {
+        public Board(Vector2Int size, List<Piece> pieces) {
             this.size = size;
             this.pieces = pieces;
         }
@@ -24,7 +25,7 @@ namespace Accession.Models {
         /// <returns>A list of moves that this piece can execute.</returns>
         public List<Move> GetValidMoves(Piece piece) {
             List<Move> moves = new List<Move>();
-            BoardController.instance.cells.ForEach(cell => {
+            this.cells.ForEach(cell => {
                 Vector2Int difference = cell.position - piece.position;
                 Vector2Int absoluteDifference = new Vector2Int(Mathf.Abs(difference.x), Mathf.Abs(difference.y));
 
@@ -32,7 +33,7 @@ namespace Accession.Models {
                     moves.Add(new Move(cell, piece));
                 }
 
-                Cell target = BoardController.instance.GetCell(piece.position + difference / 2);
+                Cell target = this.GetCell(piece.position + difference / 2);
                 if (absoluteDifference.x == 2 && difference.y == 2 && !cell.occupied && target.occupied) {
                     moves.Add(new Move(cell, piece, target.piece));
                 }
@@ -40,6 +41,13 @@ namespace Accession.Models {
 
             return moves;
         }
+
+        /// <summary>
+        /// Get the cell at the given coordinates.
+        /// </summary>
+        /// <param name="coordinates">The coordinates to find the cell for.</param>
+        /// <returns>The cell corresponding to the given coordinates.</returns>
+        public Cell GetCell(Vector2Int coordinates) => this.cells.Find(cell => cell.position == coordinates);
 
         /// <summary>
         /// Serializes this board to a string.

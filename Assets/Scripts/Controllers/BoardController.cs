@@ -15,7 +15,6 @@ namespace Accession.Controllers {
         [SerializeField] private Vector2Int gridSize = new Vector2Int(8, 8);
         [SerializeField] private GameObject cellPrefab;
         public ColorTheme colors;
-        public List<Cell> cells { get; private set; } = new List<Cell>();
         private Piece selectedPiece;
         private CellController prefabCellComponent;
 
@@ -47,10 +46,10 @@ namespace Accession.Controllers {
 
                         Piece piece = new Piece(cell, color);
                         PieceController pieceController = PieceController.Instantiate(piece, cellController.transform, false);
-                        board.pieces.Add(pieceController);
+                        board.pieces.Add(piece);
                     }
 
-                    cells.Add(cell);
+                    board.cells.Add(cell);
                 }
             }
         }
@@ -65,7 +64,7 @@ namespace Accession.Controllers {
             if (cell.occupied) {
                 if (selectedPiece != null) {
                     DeselectPiece();
-                    cells.ForEach(c => c.controller.SetOutline(false));
+                    board.cells.ForEach(c => c.controller.SetOutline(false));
                 }
 
                 board.GetValidMoves(cell.piece).ForEach(move => {
@@ -82,21 +81,19 @@ namespace Accession.Controllers {
                     if (move != null) {
                         move.Execute();
                         DeselectPiece();
-                        cells.ForEach(c => c.controller.SetOutline(false));
+                        board.cells.ForEach(c => c.controller.SetOutline(false));
                     }
                 }
             }
 
         }
 
-        public Cell GetCell(Vector2Int coordinates) => cells.Find(cell => cell.position == coordinates);
-
         private void OnDrawGizmosSelected() {
             prefabCellComponent = prefabCellComponent ?? cellPrefab.GetComponent<CellController>();
             Gizmos.color = Color.white;
             Gizmos.DrawWireCube(transform.position, boardSize);
 
-            cells.ForEach(cell => {
+            board.cells.ForEach(cell => {
                 Gizmos.color = cell.occupied ? Color.red : Color.green;
                 Gizmos.DrawWireCube(cell.controller.transform.position, prefabCellComponent.size * 0.99f + Vector3.up * 0.02f);
             });
