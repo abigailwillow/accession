@@ -94,11 +94,11 @@ namespace Accession.Controllers {
         }
 
         private CellController GetCellController() {
-            if (Application.isPlaying) {
-                return Addressables.LoadAssetAsync<GameObject>("Prefabs/Cell").WaitForCompletion().GetComponent<CellController>();
-            } else {
+            #if UNITY_EDITOR
                 return UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Cell.prefab").GetComponent<CellController>();
-            }
+            #else 
+                return Addressables.LoadAssetAsync<GameObject>("Prefabs/Cell").WaitForCompletion().GetComponent<CellController>();
+            #endif
         }
 
         private void OnDrawGizmosSelected() {
