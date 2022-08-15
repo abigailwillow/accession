@@ -35,7 +35,6 @@ namespace Accession.Controllers {
         /// <param name="cellController">The cell to select.</param>
         public void OnCellClicked(CellController cellController) {
             Cell cell = cellController.cell;
-            // Select piece if this cell contains one.
             if (cell.occupied) {
                 if (selectedPiece != null) {
                     selectedPiece = null;
@@ -49,14 +48,14 @@ namespace Accession.Controllers {
 
                 SelectPiece(cellController.cell.piece);
             } else {
-                // If a piece is selected already, move it to this cell.
                 if (selectedPiece != null) {
-                    // If the list of valid moves contains this cell, then move it and deselect this piece.
                     Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cell);
                     if (move != null) {
                         move.Execute();
                         selectedPiece = null;
                         board.cells.ForEach(c => c.controller.SetOutline(false));
+
+                        if (board.completed) Debug.Log("Board completed");
                     }
                 }
             }

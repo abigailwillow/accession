@@ -11,13 +11,12 @@ namespace Accession.Models {
         public Vector2Int size { get; private set; } = new Vector2Int(8, 8);
         public List<Cell> cells { get; private set; } = new List<Cell>();
         public List<Piece> pieces { get; private set; } = new List<Piece>();
+        public bool completed => cells.TrueForAll(cell => cell.completed);
         
         public Board(Vector2Int size, List<Cell> cells, List<Piece> pieces) {
             this.size = size;
             this.cells = cells;
             this.pieces = pieces;
-
-            
         }
 
         /// <summary>
