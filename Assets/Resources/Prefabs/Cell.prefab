@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 0.1, y: 0.1}
-  piece: {fileID: 0}
 --- !u!65 &5556510965748606841
 BoxCollider:
   m_ObjectHideFlags: 0

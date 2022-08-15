@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Accession.Extensions;
@@ -49,7 +50,7 @@ namespace Accession.Controllers  {
         public static CellController Instantiate(Cell cell, Vector3 position, Transform parent) => Instantiate(cell, position, Quaternion.identity, parent);
 
         public static CellController Instantiate(Cell cell, Vector3 position, Quaternion rotation, Transform parent) {
-            CellController cellController = Addressables.InstantiateAsync("Prefabs/Cell", position, rotation, parent).WaitForCompletion().GetComponent<CellController>();
+            CellController cellController = Instantiate(Resources.Load<GameObject>("Prefabs/Cell"), position, rotation, parent).GetComponent<CellController>();
             cellController.cell = cell;
             cellController.name = $"Cell ({cell.position.x}, {cell.position.y})";
             cellController.renderer.material.color = cell.dark ? BoardController.instance.colors.cell.dark : BoardController.instance.colors.cell.light;

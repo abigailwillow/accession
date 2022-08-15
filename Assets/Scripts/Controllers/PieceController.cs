@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Accession.Models;
@@ -31,7 +32,7 @@ namespace Accession.Controllers {
         }
 
         public static PieceController Instantiate(Piece piece, Transform parent, bool instantiateInWorldSpace) {
-            PieceController pieceController = Addressables.InstantiateAsync("Prefabs/Piece", parent, instantiateInWorldSpace).WaitForCompletion().GetComponent<PieceController>();
+            PieceController pieceController = Instantiate(Resources.Load<GameObject>("Prefabs/Piece"), parent, instantiateInWorldSpace).GetComponent<PieceController>();
             pieceController.piece = piece;
             pieceController.name = $"Piece ({piece.color})";
             pieceController.color = piece.color.ToColor();
