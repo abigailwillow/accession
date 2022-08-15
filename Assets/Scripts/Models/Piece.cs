@@ -37,9 +37,9 @@ namespace Accession.Models {
             } 
         }
 
-        public Piece(Cell cell, ColorType color) {
-            this.cell = cell;
+        public Piece(ColorType color, Cell cell = null) {
             this.color = color;
+            this.cell = cell;
         }
     }
 }
