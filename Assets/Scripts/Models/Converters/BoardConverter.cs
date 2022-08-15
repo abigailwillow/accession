@@ -42,7 +42,17 @@ namespace Accession.Converters {
                                 if (reader.TokenType != JsonTokenType.StartArray) break;
 
                                 while (reader.Read()) {
-                                    if (reader.TokenType == JsonTokenType.EndArray || reader.TokenType != JsonTokenType.StartObject) break;
+                                    if (reader.TokenType == JsonTokenType.EndArray || reader.TokenType != JsonTokenType.StartObject) {
+                                        for (int x = 0; x < boardSize.x; x++) {
+                                            for (int y = 0; y < boardSize.y; y++) {
+                                                Vector2Int index = new Vector2Int(x, y);
+                                                if (cells.Find(cell => cell.position == index) == null) {
+                                                    cells.Add(new Cell(index, ColorType.None));
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
 
                                     Vector2Int position = new Vector2Int();
                                     ColorType color = ColorType.None;
@@ -133,16 +143,6 @@ namespace Accession.Converters {
                         break;
                 }
             }
-            
-            for (int x = 0; x < boardSize.x; x++) {
-                for (int y = 0; y < boardSize.y; y++) {
-                    Vector2Int position = new Vector2Int(x, y);
-                    if (cells.Find(cell => cell.position == position) == null) {
-                        cells.Add(new Cell(position, ColorType.None));
-                    }
-                }
-            }
-
             return new Board(boardSize, cells, pieces);
         }
 
