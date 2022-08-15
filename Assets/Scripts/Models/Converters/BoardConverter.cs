@@ -75,7 +75,7 @@ namespace Accession.Converters {
                                                     }
                                                     break;
                                                 case "color":
-                                                    color = Enum.Parse<ColorType>(reader.GetString());
+                                                    color = Enum.Parse<ColorType>(reader.GetString(), true);
                                                     break;
                                             }
                                         }
@@ -107,7 +107,7 @@ namespace Accession.Converters {
                                                     }
                                                     break;
                                                 case "color":
-                                                    color = Enum.Parse<ColorType>(reader.GetString());
+                                                    color = Enum.Parse<ColorType>(reader.GetString(), true);
                                                     break;
                                             }
                                             pieces.Add(new Piece(color));

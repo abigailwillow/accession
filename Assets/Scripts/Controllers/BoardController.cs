@@ -52,7 +52,7 @@ namespace Accession.Controllers {
                             _ => ColorType.None
                         };
 
-                        Piece piece = new Piece(cell, color);
+                        Piece piece = new Piece(color, cell);
                         PieceController pieceController = PieceController.Instantiate(piece, cellController.transform, false);
                         pieces.Add(piece);
                     }
