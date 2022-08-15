@@ -45,11 +45,10 @@ namespace Accession.Models {
         /// </summary>
         public bool dark => (position.x + position.y) % 2 == 0;
 
-        public Cell(Vector2Int position, ColorType color, Piece piece = null) {
+        public Cell(Vector2Int position, ColorType color) {
             this.controller = controller;
             this.position = position;
             this.color = color;
-            this.piece = piece;
         }
     }
 }

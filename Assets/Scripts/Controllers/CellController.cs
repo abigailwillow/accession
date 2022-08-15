@@ -22,27 +22,36 @@ namespace Accession.Controllers  {
         /// <summary>
         /// Sets the color of this cell's outline.
         /// </summary>
-        private new Renderer renderer;
         public Outline outline { get; private set; }
-
-        public void Awake() {
-            renderer = GetComponentInChildren<Renderer>();
-            outline = GetComponent<Outline>();
-        }
+        private new Renderer renderer;
+        private BoardController boardController;
 
         public static CellController Instantiate(Cell cell, Transform parent) => Instantiate(cell, Vector3.zero, parent);
 
         public static CellController Instantiate(Cell cell, Vector3 position, Transform parent) => Instantiate(cell, position, Quaternion.identity, parent);
 
         public static CellController Instantiate(Cell cell, Vector3 position, Quaternion rotation, Transform parent) {
+            BoardController boardController = BoardController.instance;
+
             CellController cellController = Instantiate(Resources.Load<GameObject>("Prefabs/Cell"), position, rotation, parent).GetComponent<CellController>();
             cellController.cell = cell;
             cellController.name = $"Cell ({cell.position.x}, {cell.position.y})";
-            cellController.renderer.material.color = cell.dark ? BoardController.instance.colors.cell.dark : BoardController.instance.colors.cell.light;
+            cellController.renderer.material.color = cell.dark ? boardController.colors.cell.dark : boardController.colors.cell.light;
+
+            if (cell.color != ColorType.None) {
+                cellController.renderer.material.color = cell.color.ToColor();
+            }
+
             return cellController;
         }
 
-        public void SetOutline(bool enabled) => this.SetOutline(true, this.outline.OutlineColor);
+        public void Awake() {
+            boardController = BoardController.instance;
+            renderer = GetComponentInChildren<Renderer>();
+            outline = GetComponent<Outline>();
+        }
+
+        public void SetOutline(bool enabled) => this.SetOutline(enabled, this.outline.OutlineColor);
         
         public void SetOutline(bool enabled, Color color) {
             outline.OutlineColor = color;

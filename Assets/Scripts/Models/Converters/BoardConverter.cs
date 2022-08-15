@@ -52,8 +52,7 @@ namespace Accession.Converters {
                                                 }
                                             }
                                         }
-
-                                        cells.Sort((a, b) => (a.position.x - b.position.x) / (a.position.y - b.position.y));
+                                        cells.Sort((a, b) => a.position.x - b.position.x != 0 ? a.position.x - b.position.x : a.position.y - b.position.y);
                                         break;
                                     }
 
@@ -92,7 +91,7 @@ namespace Accession.Converters {
                                                     break;
                                             }
                                         }
-                                        cells.Sort((a, b) => a.position.x - b.position.x != 0 ? a.position.x - b.position.x : a.position.y - b.position.y);
+                                        cells.Add(new Cell(position, color));
                                     }
                                 }
                                 break;
