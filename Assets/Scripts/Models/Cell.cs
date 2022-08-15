@@ -11,7 +11,6 @@ namespace Accession.Models {
                 if (value != null && value.cell != this) value.cell = this;
             } 
         }
-        public Vector2Int position { get; private set; }
         private Piece _piece;
         /// <summary>
         /// The piece that occupies this cell, or null if empty. Automatically updates the piece's cell.
@@ -23,29 +22,28 @@ namespace Accession.Models {
                 if (value != null && value.cell != this) value.cell = this;
             }
         }
-
-        public ColorType defaultColor { get; private set; }
-        /// <summary>
-        /// Sets the color of this cell, saving the default color for later.
-        /// </summary>
-        private ColorType _color;
-        public ColorType color {
-            get => _color;
-            set {
-                if (defaultColor == ColorType.None) defaultColor = value;
-                _color = value;
-            }
-        }
+        
+        public Vector2Int position { get; private set; }
 
         /// <summary>
-        /// Whether this cell is dark or light.
+        /// Sets the color of this cell.
         /// </summary>
-        public bool dark => (position.x + position.y) % 2 == 0;
+        public ColorType color;
 
         /// <summary>
         /// Whether or not this cell is currently occupied.
         /// </summary>
         public bool occupied => piece != null;
+
+        /// <summary>
+        /// Whether or not this cell contains a correctly placed piece.
+        /// </summary>
+        public bool completed => piece != null && piece.color == this.color;
+
+        /// <summary>
+        /// Whether this cell is dark or light.
+        /// </summary>
+        public bool dark => (position.x + position.y) % 2 == 0;
 
         public Cell(Vector2Int position, ColorType color, Piece piece = null) {
             this.controller = controller;

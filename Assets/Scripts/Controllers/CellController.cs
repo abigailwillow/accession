@@ -20,23 +20,10 @@ namespace Accession.Controllers  {
         /// </summary>
         public Vector3 size => _size.XZ();
         /// <summary>
-        /// Whether or not this cell contains a correctly placed piece.
+        /// Sets the color of this cell's outline.
         /// </summary>
-        public bool completed => throw new System.NotImplementedException();
-        private Color _defaultOutlineColor;
-        private Color _outlineColor;
-        /// <summary>
-        /// Sets the color of this cell's outline, saving the default color for later.
-        /// </summary>
-        public Color outlineColor {
-            get => outline.OutlineColor;
-            set {
-                if (_defaultOutlineColor == null) _defaultOutlineColor = value;
-                outline.OutlineColor = value;
-            }
-        }
         private new Renderer renderer;
-        private Outline outline;
+        public Outline outline { get; private set; }
 
         public void Awake() {
             renderer = GetComponentInChildren<Renderer>();
@@ -55,14 +42,12 @@ namespace Accession.Controllers  {
             return cellController;
         }
 
-        public void SetOutline(bool enabled) => outline.enabled = enabled;
+        public void SetOutline(bool enabled) => this.SetOutline(true, this.outline.OutlineColor);
         
         public void SetOutline(bool enabled, Color color) {
             outline.OutlineColor = color;
             outline.enabled = enabled;
         }
-
-        // public void ResetColor() => renderer.material.color = this.cell.defaultColor;
 
         private void OnDrawGizmosSelected() {
             Gizmos.color = Color.red;
