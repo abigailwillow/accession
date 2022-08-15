@@ -44,10 +44,10 @@ namespace Accession.Converters {
                                 while (reader.Read()) {
                                     if (reader.TokenType == JsonTokenType.EndArray || reader.TokenType != JsonTokenType.StartObject) break;
 
-                                    if (reader.TokenType == JsonTokenType.StartObject) {
-                                        Vector2Int position = new Vector2Int();
-                                        ColorType color = ColorType.None;
+                                    Vector2Int position = new Vector2Int();
+                                    ColorType color = ColorType.None;
 
+                                    if (reader.TokenType == JsonTokenType.StartObject) {
                                         while (reader.Read()) {
                                             if (reader.TokenType == JsonTokenType.EndObject) break;
 
@@ -89,11 +89,12 @@ namespace Accession.Converters {
                                 while (reader.Read()) {
                                     if (reader.TokenType == JsonTokenType.EndArray || reader.TokenType != JsonTokenType.StartObject) break;
 
+                                    ColorType color = ColorType.None;
+
                                     if (reader.TokenType == JsonTokenType.StartObject) {
                                         while (reader.Read()) {
-                                            ColorType color = ColorType.None;
-
                                             if (reader.TokenType == JsonTokenType.EndObject) break;
+
 
                                             string piecePropertyName = reader.GetString();
                                             reader.Read();
@@ -110,8 +111,8 @@ namespace Accession.Converters {
                                                     color = Enum.Parse<ColorType>(reader.GetString(), true);
                                                     break;
                                             }
-                                            pieces.Add(new Piece(color));
                                         }
+                                        pieces.Add(new Piece(color));
                                     }
                                 }
                                 break;
