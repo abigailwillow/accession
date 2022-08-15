@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Accession.Models;
 using Accession.Extensions;
 
@@ -27,7 +26,7 @@ namespace Accession.Controllers {
 
             cellController ??= GetCellController();
 
-            this.LoadBoard("Assets/Resources/Levels/Sample.json");
+            this.LoadBoard("Levels/Sample");
         }
 
         /// <summary>

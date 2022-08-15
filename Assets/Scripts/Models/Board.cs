@@ -76,6 +76,6 @@ namespace Accession.Models {
         /// </summary>
         /// <param name="path">The file to read from.</param>
         /// <returns>A new board object created from the file.</returns>
-        public static Board Read(string path) => Board.Deserialize(File.ReadAllText(path));
+        public static Board Read(string path) => Board.Deserialize(Resources.Load<TextAsset>(path).text);
     }
 }
