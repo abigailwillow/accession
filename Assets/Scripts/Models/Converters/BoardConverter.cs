@@ -89,6 +89,7 @@ namespace Accession.Converters {
                                 while (reader.Read()) {
                                     if (reader.TokenType == JsonTokenType.EndArray || reader.TokenType != JsonTokenType.StartObject) break;
 
+                                    Vector2Int position = new Vector2Int();
                                     ColorType color = ColorType.None;
 
                                     if (reader.TokenType == JsonTokenType.StartObject) {
@@ -105,6 +106,18 @@ namespace Accession.Converters {
 
                                                     while (reader.Read()) {
                                                         if (reader.TokenType == JsonTokenType.EndObject) break;
+
+                                                        string positionPropertyName = reader.GetString();
+                                                        reader.Read();
+
+                                                        switch (positionPropertyName) {
+                                                            case "x":
+                                                                position.x = reader.GetInt32();
+                                                                break;
+                                                            case "y":
+                                                                position.y = reader.GetInt32();
+                                                                break;
+                                                        }
                                                     }
                                                     break;
                                                 case "color":
@@ -112,7 +125,7 @@ namespace Accession.Converters {
                                                     break;
                                             }
                                         }
-                                        pieces.Add(new Piece(color));
+                                        pieces.Add(new Piece(cells.Find(cell => cell.position == position), color));
                                     }
                                 }
                                 break;
@@ -120,6 +133,16 @@ namespace Accession.Converters {
                         break;
                 }
             }
+            
+            for (int x = 0; x < boardSize.x; x++) {
+                for (int y = 0; y < boardSize.y; y++) {
+                    Vector2Int position = new Vector2Int(x, y);
+                    if (cells.Find(cell => cell.position == position) == null) {
+                        cells.Add(new Cell(position, ColorType.None));
+                    }
+                }
+            }
+
             return new Board(boardSize, cells, pieces);
         }
 

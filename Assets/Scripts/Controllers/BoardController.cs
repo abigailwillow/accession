@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Accession.Models;
@@ -31,37 +30,37 @@ namespace Accession.Controllers {
 
             this.LoadBoard("Assets/Resources/Levels/Sample.json");
 
-            List<Cell> cells = new List<Cell>();
-            List<Piece> pieces = new List<Piece>();
+            // List<Cell> cells = new List<Cell>();
+            // List<Piece> pieces = new List<Piece>();
 
-            Vector3 cellSize = cellController.size;
-            Vector3 bottomLeft = this.transform.position - boardSize / 2;
-            for (int x = 0; x < gridSize.x; x++) {
-                for (int y = 0; y < gridSize.y; y++) {
-                    Vector3 position = new Vector3(bottomLeft.x + cellSize.x * x, 0, bottomLeft.z + cellSize.z * y) + cellSize / 2;
+            // Vector3 cellSize = cellController.size;
+            // Vector3 bottomLeft = this.transform.position - boardSize / 2;
+            // for (int x = 0; x < gridSize.x; x++) {
+            //     for (int y = 0; y < gridSize.y; y++) {
+            //         Vector3 position = new Vector3(bottomLeft.x + cellSize.x * x, 0, bottomLeft.z + cellSize.z * y) + cellSize / 2;
 
-                    Cell cell = new Cell(new Vector2Int(x, y), ColorType.None);
-                    CellController cellController = CellController.Instantiate(cell, position, this.transform);
+            //         Cell cell = new Cell(new Vector2Int(x, y), ColorType.None);
+            //         CellController cellController = CellController.Instantiate(cell, position, this.transform);
 
-                    if ((x + y) % 7 == 0) {
-                        // TODO: REMOVE AFTER DEBUGGING!
-                        ColorType color = Random.Range(0, 3) switch {
-                            0 => ColorType.Red,
-                            1 => ColorType.Blue,
-                            2 => ColorType.Green,
-                            _ => ColorType.None
-                        };
+            //         if ((x + y) % 7 == 0) {
+            //             // TODO: REMOVE AFTER DEBUGGING!
+            //             ColorType color = Random.Range(0, 3) switch {
+            //                 0 => ColorType.Red,
+            //                 1 => ColorType.Blue,
+            //                 2 => ColorType.Green,
+            //                 _ => ColorType.None
+            //             };
 
-                        Piece piece = new Piece(color, cell);
-                        PieceController pieceController = PieceController.Instantiate(piece, cellController.transform, false);
-                        pieces.Add(piece);
-                    }
-                    cells.Add(cell);
-                }
-            }
-            board = new Board(gridSize, cells, pieces);
+            //             Piece piece = new Piece(color, cell);
+            //             PieceController pieceController = PieceController.Instantiate(piece, cellController.transform, false);
+            //             pieces.Add(piece);
+            //         }
+            //         cells.Add(cell);
+            //     }
+            // }
+            // board = new Board(gridSize, cells, pieces);
 
-            board.Write("Assets/Resources/Levels/Output.json");
+            // board.Write("Assets/Resources/Levels/Output.json");
         }
 
         /// <summary>
@@ -103,7 +102,17 @@ namespace Accession.Controllers {
         /// <param name="path">A path to a json file containing board data.</param>
         public void LoadBoard(string path) {
             Board board = Board.Read(path);
-            Debug.Log(board);
+            Vector3 cellSize = cellController.size;
+            Vector3 bottomLeft = this.transform.position - boardSize / 2;
+
+            board.cells.ForEach(cell => {
+                Vector3 position = new Vector3(bottomLeft.x + cellSize.x * cell.position.x, 0, bottomLeft.z + cellSize.z * cell.position.y) + cellSize / 2;
+                CellController.Instantiate(cell, position, this.transform);
+            });
+
+            board.pieces.ForEach(piece => {
+                PieceController.Instantiate(piece, board.GetCell(piece.position).controller.transform, false);
+            });
         }
 
     private void SelectPiece(Piece piece) {
