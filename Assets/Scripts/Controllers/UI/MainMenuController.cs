@@ -4,17 +4,16 @@ using TMPro;
 
 public class MainMenuController : MonoBehaviour {
     [SerializeField]
-    private TextMeshProUGUI titleText;
+    private TextMeshProUGUI titleLabel;
     [SerializeField]
-    private TextMeshProUGUI versionText;
+    private TextMeshProUGUI versionLabel;
     private void Awake() {
-        titleText.text = Application.productName;
-        #if UNITY_EDITOR
-            versionText.text = "Development";
-        #else
-            versionText.text = Application.version;
-        #endif
-        versionText.text = Application.version;
+        titleLabel.text = Application.productName;
+        if (Application.isEditor) {
+            versionLabel.text = "Development";
+        } else {
+            versionLabel.text = Application.version;
+        }
     }
 
     public void OnLevelSelectClicked() {
@@ -26,6 +25,10 @@ public class MainMenuController : MonoBehaviour {
     }
 
     public void OnQuitButtonClicked() {
-        Application.Quit();
-    }
+        if (Application.isEditor) {
+            UnityEditor.EditorApplication.ExitPlaymode();
+        } else {
+            Application.Quit();
+        }
+}
 }

@@ -5,11 +5,12 @@ namespace Accession {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class GameInfoController : MonoBehaviour {
         void Awake() {
-            #if UNITY_EDITOR
-                GetComponent<TextMeshProUGUI>().text = $"{Application.productName} Development";
-            #else
-                GetComponent<TextMeshProUGUI>().text = $"{Application.productName} {Application.version}";
-            #endif
+            TextMeshProUGUI versionLabel = GetComponent<TextMeshProUGUI>();
+            if (Application.isEditor) {
+                versionLabel.text = $"{Application.productName} Development";
+            } else {
+                versionLabel.text = $"{Application.productName} {Application.version}";
+            }
         }
     }
 }
