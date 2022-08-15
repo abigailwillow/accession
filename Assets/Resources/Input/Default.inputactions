@@ -278,17 +278,6 @@
                     "action": "Secondary Click",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "32786626-3bca-475e-9d2a-c7bd631080ff",
-                    "path": "<Touchscreen>/touch*/Press",
-                    "interactions": "MultiTap",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "Secondary Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
