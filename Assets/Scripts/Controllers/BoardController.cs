@@ -75,10 +75,11 @@ namespace Accession.Controllers {
             board.cells.ForEach(cell => {
                 Vector3 position = new Vector3(bottomLeft.x + cellSize.x * cell.position.x, 0, bottomLeft.z + cellSize.z * cell.position.y) + cellSize / 2;
                 CellController.Instantiate(cell, position, this.transform);
-            });
 
-            board.pieces.ForEach(piece => {
-                PieceController.Instantiate(piece, board.GetCell(piece.position).controller.transform, false);
+                Piece piece = board.pieces.Find(piece => piece.position == cell.position);
+                if (piece != null) {
+                    PieceController.Instantiate(piece, cell.controller.transform, false);
+                }
             });
         }
 
