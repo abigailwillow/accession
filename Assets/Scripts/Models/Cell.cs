@@ -38,7 +38,7 @@ namespace Accession.Models {
         /// <summary>
         /// Whether or not this cell contains a correctly placed piece.
         /// </summary>
-        public bool completed => piece != null && piece.color == this.color;
+        public bool completed => (occupied && this.color == piece.color) || (!occupied && this.color == ColorType.None);
 
         /// <summary>
         /// Whether this cell is dark or light.
