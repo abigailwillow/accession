@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Accession.Models;
 using Accession.Extensions;
 
@@ -93,16 +92,7 @@ namespace Accession.Controllers {
             selectedPiece = null;
         }
 
-        private CellController GetCellController() {
-            CellController cellController;
-            #if UNITY_EDITOR
-                cellController = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Cell.prefab").GetComponent<CellController>();
-            #else
-                cellController = Addressables.LoadAssetAsync<GameObject>("Prefabs/Cell").WaitForCompletion().GetComponent<CellController>();
-
-            #endif
-            return cellController;
-        }
+        private CellController GetCellController() => Resources.Load<GameObject>("Prefabs/Cell").GetComponent<CellController>();
 
         private void OnDrawGizmosSelected() {
             if (board != null) {
