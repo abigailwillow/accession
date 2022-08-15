@@ -19,10 +19,8 @@ namespace Accession.Controllers  {
         /// The physical size of this cell.
         /// </summary>
         public Vector3 size => _size.XZ();
-        /// <summary>
-        /// Sets the color of this cell's outline.
-        /// </summary>
-        public Outline outline { get; private set; }
+        [HideInInspector]
+        public Outline outline;
         private new Renderer renderer;
         private BoardController boardController;
 

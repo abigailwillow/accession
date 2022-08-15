@@ -29,8 +29,9 @@ namespace Accession.Models {
         /// Executes this move.
         /// </summary>
         public void Execute() {
+            instigator.controller.outline.enabled = false;
+            instigator.color = isJump ? instigator.color.Add(target.color) : instigator.color;
             instigator.controller.Move(cell);
-            instigator.color = this.isJump ? instigator.color.Add(target.color) : instigator.color;
         }
     }
 }

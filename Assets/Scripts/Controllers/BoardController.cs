@@ -38,7 +38,7 @@ namespace Accession.Controllers {
             // Select piece if this cell contains one.
             if (cell.occupied) {
                 if (selectedPiece != null) {
-                    DeselectPiece();
+                    selectedPiece = null;
                     board.cells.ForEach(c => c.controller.SetOutline(false));
                 }
 
@@ -55,7 +55,7 @@ namespace Accession.Controllers {
                     Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cell);
                     if (move != null) {
                         move.Execute();
-                        DeselectPiece();
+                        selectedPiece = null;
                         board.cells.ForEach(c => c.controller.SetOutline(false));
                     }
                 }
@@ -85,11 +85,6 @@ namespace Accession.Controllers {
     private void SelectPiece(Piece piece) {
             piece.controller.Select();
             selectedPiece = piece;
-        }
-
-        private void DeselectPiece() {
-            selectedPiece.controller.Deselect();
-            selectedPiece = null;
         }
 
         private CellController GetCellController() => Resources.Load<GameObject>("Prefabs/Cell").GetComponent<CellController>();

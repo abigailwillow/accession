@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Accession.Models;
 using Accession.Extensions;
@@ -22,7 +23,8 @@ namespace Accession.Controllers {
             }
         }
         private new Renderer renderer;
-        private Outline outline;
+        [HideInInspector]
+        public Outline outline;
 
         private void Awake() {
             renderer = GetComponentInChildren<Renderer>();
@@ -46,10 +48,16 @@ namespace Accession.Controllers {
             this.piece.cell = cell;
             transform.SetParent(cellController.transform);
             transform.position = cellController.transform.position;
+
+            if (cell.completed) {
+                Color.RGBToHSV(this.color, out float h, out float s, out float v);
+                this.outline.enabled = true;
+                this.outline.OutlineColor = Color.HSVToRGB(h, s - 0.5f, v);
+            }
         }
 
-        public void Select() => outline.enabled = true;
+        public void Select() => this.outline.enabled = true;
 
-        public void Deselect() => outline.enabled = false;
+        public void Deselect() => this.outline.enabled = false;
     }
 }
