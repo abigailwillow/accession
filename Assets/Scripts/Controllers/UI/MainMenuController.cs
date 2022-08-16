@@ -1,3 +1,4 @@
+using System.Data;
 using UnityEngine;
 using TMPro;
 
@@ -10,16 +11,17 @@ namespace Accession.Controllers {
 
         private void Awake() {
             titleLabel.text = Application.productName;
-            if (Application.isEditor) {
-                versionLabel.text = "Development";
-            } else {
-                versionLabel.text = Application.version;
-            }
+            versionLabel.text = (Application.version != "" ? Application.version : "Development");
+
+            #if UNITY_WEBGL
+                // TODO: Remove quit button as WebGL doesn't support it.
+            #endif
         }
 
         public void SwitchPanel(GameObject panel) {
             this.gameObject.SetActive(false);
             panel.SetActive(true);
+
         }
 
         public void OnQuitButtonClicked() {

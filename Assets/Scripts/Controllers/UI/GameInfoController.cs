@@ -6,11 +6,7 @@ namespace Accession {
     public class GameInfoController : MonoBehaviour {
         void Awake() {
             TextMeshProUGUI versionLabel = GetComponent<TextMeshProUGUI>();
-            if (Application.isEditor) {
-                versionLabel.text = $"{Application.productName} Development";
-            } else {
-                versionLabel.text = $"{Application.productName} {Application.version}";
-            }
+            versionLabel.text = $"{Application.productName} {(Application.version != "" ? Application.version : "Development")}";
         }
     }
 }
