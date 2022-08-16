@@ -23,11 +23,11 @@ namespace Accession.Controllers {
         }
 
         public void OnQuitButtonClicked() {
-            if (Application.isEditor) {
+            #if UNITY_EDITOR
                 UnityEditor.EditorApplication.ExitPlaymode();
-            } else {
+            #else
                 Application.Quit();
-            }
+            #endif
         }
     }
 }

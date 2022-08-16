@@ -22,13 +22,5 @@ namespace Accession.Managers {
             };
             SceneManager.LoadScene("Board Scene");
         }
-
-        // private IEnumerator LoadLevelAsync(string path) {
-        //     SceneManager.LoadScene("Board Scene");
-            
-        //     while(SceneManager.Active)
-
-        //     SceneManager.GetActiveScene().GetRootGameObjects().ToList().Find(gameObject => gameObject.GetComponent<BoardController>() != null).GetComponent<BoardController>().LoadBoard(path);
-        // }
     }
 }
