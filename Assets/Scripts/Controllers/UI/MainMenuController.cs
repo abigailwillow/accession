@@ -1,4 +1,3 @@
-using System.Data;
 using UnityEngine;
 using TMPro;
 
@@ -8,13 +7,14 @@ namespace Accession.Controllers {
         [SerializeField] private TextMeshProUGUI versionLabel;
         [SerializeField] private GameObject levelSelectPanel;
         [SerializeField] private GameObject settingsPanel;
+        [SerializeField] private GameObject quitButton;
 
         private void Awake() {
             titleLabel.text = Application.productName;
-            versionLabel.text = (Application.version != "" ? Application.version : "Development");
+            versionLabel.text = (Application.version != "" ? Application.version : "Development Build");
 
             #if UNITY_WEBGL
-                // TODO: Remove quit button as WebGL doesn't support it.
+                quitButton.SetActive(false);
             #endif
         }
 
