@@ -1339,16 +1339,12 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: English (Simplified)
-      m_Image: {fileID: 0}
-    - m_Text: Nederlands
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2024318689291886931}
-        m_TargetAssemblyTypeName: SettingsController, Assembly-CSharp
+        m_TargetAssemblyTypeName: Accession.Controllers.SettingsController, Assembly-CSharp
         m_MethodName: OnLocaleChanged
         m_Mode: 2
         m_Arguments:
@@ -1633,6 +1629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543207d673c27a244ac450a06f1a5a87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropdown: {fileID: 0}
 --- !u!1 &7767792407570490506
 GameObject:
   m_ObjectHideFlags: 0

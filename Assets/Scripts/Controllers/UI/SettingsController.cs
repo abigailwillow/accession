@@ -7,15 +7,18 @@ using TMPro;
 namespace Accession.Controllers {
     public class SettingsController : MonoBehaviour {
         [SerializeField] private TMP_Dropdown dropdown;
-        private List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
+        private List<Locale> locales;
         private void Awake() {
+            locales = LocalizationSettings.AvailableLocales.Locales;
+
             this.locales.ForEach(locale => {
                 dropdown.options.Add(new TMP_Dropdown.OptionData(locale.LocaleName));
             });
         }
 
-        public void OnLocaleChanged(int option) {
-            Debug.Log($"Locale changed to {locales[option].LocaleName}");
+        public void OnLocaleChanged(TMP_Dropdown dropdown) {
+            LocalizationSettings.SelectedLocale = locales[dropdown.value];
+            Debug.Log($"Locale changed to {locales[dropdown.value].LocaleName}");
         }
 
         public void SwitchPanel(GameObject panel) {
