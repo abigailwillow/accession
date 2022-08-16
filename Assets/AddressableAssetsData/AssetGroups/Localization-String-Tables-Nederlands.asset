@@ -10,16 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Localization-String-Tables-Dutch (nl)
+  m_Name: Localization-String-Tables-Nederlands
   m_EditorClassIdentifier: 
-  m_GroupName: Localization-String-Tables-Dutch (nl)
+  m_GroupName: Localization-String-Tables-Nederlands
   m_Data:
     m_SerializedData: []
-  m_GUID: 14ff6d248ce5fc74d8ae8f233fa5c52d
-  m_SerializeEntries: []
+  m_GUID: bf1f23ce8a2fe51448c5f3897172a97f
+  m_SerializeEntries:
+  - m_GUID: 708b2b9f9ad473d4a868257dff15beb9
+    m_Address: UI_nl
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl
+    - Preload
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 7cd21fff1b7f4fc418ca8e8379fa5d2d, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 73c82d78d375d5b49a5e1ff52a24acd8, type: 2}
-    - {fileID: 11400000, guid: de568b347ef205141a46dda262b6fb4c, type: 2}
+    - {fileID: 11400000, guid: abcd230ac9e649b41b9fe1f97a9f71dd, type: 2}
+    - {fileID: 11400000, guid: 6ad630323131a2642af949f51dca2614, type: 2}
