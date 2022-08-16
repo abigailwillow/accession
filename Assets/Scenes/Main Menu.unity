@@ -420,6 +420,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2792860590834005069, guid: 2f4aa7eef078a2543bc37d6810648a61, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 9cbc31d72cffb30489842183922d4434, type: 2}
+    - target: {fileID: 2792860590834005069, guid: 2f4aa7eef078a2543bc37d6810648a61, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8607196662321290856, guid: 9cbc31d72cffb30489842183922d4434, type: 2}
     - target: {fileID: 3895566566290269587, guid: 2f4aa7eef078a2543bc37d6810648a61, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
