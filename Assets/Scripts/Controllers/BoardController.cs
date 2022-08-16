@@ -25,8 +25,6 @@ namespace Accession.Controllers {
             if (instance != null && instance != this) Destroy(this);
 
             cellController ??= GetCellController();
-
-            this.LoadBoard("Levels/Sample");
         }
 
         /// <summary>

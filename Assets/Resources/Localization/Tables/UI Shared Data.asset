@@ -19,6 +19,22 @@ MonoBehaviour:
     m_Key: DEBUG_LOCALIZATION
     m_Metadata:
       m_Items: []
+  - m_Id: 22797320483074048
+    m_Key: MENU_LEVEL_SELECT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22797320520822784
+    m_Key: MENU_SETTINGS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22797320520822785
+    m_Key: MENU_QUIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22800741730709504
+    m_Key: MENU_BACK
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

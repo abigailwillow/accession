@@ -22,6 +22,22 @@ MonoBehaviour:
     m_Localized: Als je deze tekst kunt lezen, is lokalisatie correct ingesteld
     m_Metadata:
       m_Items: []
+  - m_Id: 22797320483074048
+    m_Localized: Level Selectie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22797320520822784
+    m_Localized: Instellingen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22797320520822785
+    m_Localized: Afsluiten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22800741730709504
+    m_Localized: Terug
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

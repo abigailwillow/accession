@@ -22,6 +22,22 @@ MonoBehaviour:
     m_Localized: If you can read this text, localization has been set up correctly
     m_Metadata:
       m_Items: []
+  - m_Id: 22797320483074048
+    m_Localized: Level Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22797320520822784
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22797320520822785
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22800741730709504
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
