@@ -13,7 +13,7 @@ namespace Accession.Controllers {
             titleLabel.text = Application.productName;
             versionLabel.text = (Application.version != "" ? Application.version : "Development Build");
 
-            #if UNITY_WEBGL
+            #if UNITY_WEBGL && !UNITY_EDITOR
                 quitButton.SetActive(false);
             #endif
         }

@@ -1047,6 +1047,7 @@ MonoBehaviour:
   versionLabel: {fileID: 6282643464219762360}
   levelSelectPanel: {fileID: 0}
   settingsPanel: {fileID: 0}
+  quitButton: {fileID: 2122787513533695362}
 --- !u!1 &8291372518510647720
 GameObject:
   m_ObjectHideFlags: 0

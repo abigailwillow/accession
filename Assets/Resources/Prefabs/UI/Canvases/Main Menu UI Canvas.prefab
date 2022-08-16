@@ -118,6 +118,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 2871740118207907813}
+    - target: {fileID: 6349064531351641338, guid: 21a85a319e510ab4a9e9b265ac8901cd, type: 3}
+      propertyPath: settingsPanel
+      value: 
+      objectReference: {fileID: 2871740118207907813}
+    - target: {fileID: 6349064531351641338, guid: 21a85a319e510ab4a9e9b265ac8901cd, type: 3}
+      propertyPath: levelSelectPanel
+      value: 
+      objectReference: {fileID: 85558862507148875}
     - target: {fileID: 8094197111288812437, guid: 21a85a319e510ab4a9e9b265ac8901cd, type: 3}
       propertyPath: m_Name
       value: Main Menu Panel
