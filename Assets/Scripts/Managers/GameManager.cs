@@ -16,7 +16,6 @@ namespace Accession.Managers {
         }
 
         public void LoadLevel(string path) {
-            //StartCoroutine(this.LoadLevelAsync(path));
             SceneManager.activeSceneChanged += (_, _) => {
                 BoardController.instance.LoadBoard(path);
             };

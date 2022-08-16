@@ -354,9 +354,17 @@ PrefabInstance:
       value: Level Select Panel
       objectReference: {fileID: 0}
     - target: {fileID: 3779928280845342431, guid: 008285b9bde005a46a1d822ba1466fe2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8158757163001650142}
+    - target: {fileID: 3779928280845342431, guid: 008285b9bde005a46a1d822ba1466fe2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Accession.Controllers.LevelSelectController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3779928280845342431, guid: 008285b9bde005a46a1d822ba1466fe2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9128949969727691619}
     - target: {fileID: 7445133451438265934, guid: 008285b9bde005a46a1d822ba1466fe2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -389,6 +397,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1670823617232729654, guid: 008285b9bde005a46a1d822ba1466fe2, type: 3}
   m_PrefabInstance: {fileID: 3631169512496508496}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8158757163001650142 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4854100876286375310, guid: 008285b9bde005a46a1d822ba1466fe2, type: 3}
+  m_PrefabInstance: {fileID: 3631169512496508496}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85558862507148875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bddb30dc2d41c2840868bbaa67d2fce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8915741274766578913
 PrefabInstance:
   m_ObjectHideFlags: 0

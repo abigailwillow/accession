@@ -20,5 +20,10 @@ namespace Accession.Controllers {
                 }
             });
         }
+
+        public void SwitchPanel(GameObject panel) {
+            this.gameObject.SetActive(false);
+            panel.SetActive(true);
+        }
     }
 }
