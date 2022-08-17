@@ -12,9 +12,7 @@ namespace Accession.Controllers {
 
         private void OnBoardCompleted() => this.panel.SetActive(true);
 
-        public void OnNextLevelClicked() {
-            // TODO: Save progress to retrieve latest completed level and get next level;
-            GameManager.instance.LoadLevel("Levels/Level2");
-        }
+        // TODO: Check if there is actually a next level before loading it
+        public void OnNextLevelClicked() => GameManager.instance.LoadLevel($"Levels/Level{++GameManager.instance.level}");
     }
 }

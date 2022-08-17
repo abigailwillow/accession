@@ -14,10 +14,14 @@ namespace Accession.Controllers {
             this.locales.ForEach(locale => {
                 dropdown.options.Add(new TMP_Dropdown.OptionData(locale.LocaleName));
             });
+
+            dropdown.value = locales.IndexOf(LocalizationSettings.SelectedLocale);
         }
 
         public void OnLocaleChanged(TMP_Dropdown dropdown) {
             LocalizationSettings.SelectedLocale = locales[dropdown.value];
+            PlayerPrefs.SetInt("locale", dropdown.value);
+            PlayerPrefs.Save();
             Debug.Log($"Locale changed to {locales[dropdown.value].LocaleName}");
         }
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 using Accession.Models;
 using Accession.Extensions;
+using Accession.Managers;
 
 namespace Accession.Controllers {
     public class BoardController : MonoBehaviour {
@@ -30,6 +31,8 @@ namespace Accession.Controllers {
             }
 
             cellController ??= GetCellController();
+
+            this.onBoardCompleted += GameManager.instance.SaveLevel;
         }
 
         /// <summary>
