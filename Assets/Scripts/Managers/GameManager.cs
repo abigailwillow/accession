@@ -7,7 +7,7 @@ using Accession.Controllers;
 namespace Accession.Managers {
     public class GameManager : MonoBehaviour {
         public static GameManager instance { get; private set; }
-        private int level;
+        public int level;
 
         private void Awake() {
             if (instance != null && instance != this) {
