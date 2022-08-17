@@ -19,10 +19,15 @@ namespace Accession.Controllers {
         public ColorTheme colors;
         private CellController cellController;
         private Piece selectedPiece;
+        public delegate void OnBoardCompleted();
+        public OnBoardCompleted onBoardCompleted;
 
         private void Awake() {
-            instance ??= this;
-            if (instance != null && instance != this) Destroy(this);
+            if (instance != null && instance != this) {
+                Destroy(this);
+            } else {
+                instance = this;
+            }
 
             cellController ??= GetCellController();
         }
@@ -53,7 +58,7 @@ namespace Accession.Controllers {
                         selectedPiece = null;
                         board.cells.ForEach(c => c.controller.SetOutline(false));
 
-                        if (board.completed) Debug.Log("Board completed");
+                        if (board.completed) onBoardCompleted?.Invoke();
                     }
                 }
             }

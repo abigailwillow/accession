@@ -38,6 +38,18 @@ MonoBehaviour:
     m_Localized: Back
     m_Metadata:
       m_Items: []
+  - m_Id: 23134226307166208
+    m_Localized: Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23134226344914944
+    m_Localized: Next Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23134415185063936
+    m_Localized: Level Complete
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -35,6 +35,18 @@ MonoBehaviour:
     m_Key: MENU_BACK
     m_Metadata:
       m_Items: []
+  - m_Id: 23134226307166208
+    m_Key: MENU_MENU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23134226344914944
+    m_Key: MENU_NEXT_LEVEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23134415185063936
+    m_Key: MENU_LEVEL_COMPLETE
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
