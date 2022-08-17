@@ -7,6 +7,7 @@ using Accession.Controllers;
 namespace Accession.Managers {
     public class GameManager : MonoBehaviour {
         public static GameManager instance { get; private set; }
+        private int level;
 
         private void Awake() {
             if (instance != null && instance != this) {
@@ -15,7 +16,9 @@ namespace Accession.Managers {
                 instance = this;
             }
 
-            LocalizationSettings.InitializationOperation.Completed += (_) => LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[PlayerPrefs.GetInt("locale", 0)];
+            LocalizationSettings.InitializationOperation.Completed += _ => LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[PlayerPrefs.GetInt("locale", 0)];
+
+            this.level = PlayerPrefs.GetInt("level", 1);
         }
 
         public void LoadLevel(string path) {
@@ -23,9 +26,12 @@ namespace Accession.Managers {
             SceneManager.LoadScene("Board Scene");
         }
 
-        public void SaveLevel(int level) => PlayerPrefs.SetInt("level", level);
+        public void SaveLevel() {
+            PlayerPrefs.SetInt("level", level);
+            PlayerPrefs.Save();
+        }
 
-        private UnityAction<Scene, LoadSceneMode> SceneLoadedEventListener(string path) {
+    private UnityAction<Scene, LoadSceneMode> SceneLoadedEventListener(string path) {
             return (_, _) => {
                 BoardController.instance.LoadBoard(path);
                 SceneManager.sceneLoaded -= SceneLoadedEventListener(path);
