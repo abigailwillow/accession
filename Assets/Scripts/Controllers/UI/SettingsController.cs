@@ -14,6 +14,8 @@ namespace Accession.Controllers {
             this.locales.ForEach(locale => {
                 dropdown.options.Add(new TMP_Dropdown.OptionData(locale.LocaleName));
             });
+
+            dropdown.value = locales.IndexOf(LocalizationSettings.SelectedLocale);
         }
 
         public void OnLocaleChanged(TMP_Dropdown dropdown) {
