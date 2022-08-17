@@ -21,8 +21,11 @@ namespace Accession.Controllers {
         private Piece selectedPiece;
 
         private void Awake() {
-            instance ??= this;
-            if (instance != null && instance != this) Destroy(this);
+            if (instance != null && instance != this) {
+                Destroy(this);
+            } else {
+                instance = this;
+            }
 
             cellController ??= GetCellController();
         }
