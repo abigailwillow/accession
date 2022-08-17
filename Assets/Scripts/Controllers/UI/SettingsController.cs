@@ -18,6 +18,8 @@ namespace Accession.Controllers {
 
         public void OnLocaleChanged(TMP_Dropdown dropdown) {
             LocalizationSettings.SelectedLocale = locales[dropdown.value];
+            PlayerPrefs.SetInt("locale", dropdown.value);
+            PlayerPrefs.Save();
             Debug.Log($"Locale changed to {locales[dropdown.value].LocaleName}");
         }
 
