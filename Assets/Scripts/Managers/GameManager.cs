@@ -8,10 +8,12 @@ namespace Accession.Managers {
     public class GameManager : MonoBehaviour {
         public static GameManager instance { get; private set; }
         public int level;
+        private string path;
 
         private void Awake() {
             if (instance != null && instance != this) {
                 Destroy(this.gameObject);
+                return;
             } else {
                 instance = this;
             }
@@ -19,10 +21,12 @@ namespace Accession.Managers {
             LocalizationSettings.InitializationOperation.Completed += _ => LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[PlayerPrefs.GetInt("locale", 0)];
 
             this.level = PlayerPrefs.GetInt("level", 1);
+
+            SceneManager.sceneLoaded += OnSceneLoaded();
         }
 
         public void LoadLevel(string path) {
-            SceneManager.sceneLoaded += SceneLoadedEventListener(path);
+            this.path = path;
             SceneManager.LoadScene("Board Scene");
         }
 
@@ -31,11 +35,11 @@ namespace Accession.Managers {
             PlayerPrefs.Save();
         }
 
-    private UnityAction<Scene, LoadSceneMode> SceneLoadedEventListener(string path) {
-            return (_, _) => {
-                BoardController.instance.LoadBoard(path);
-                SceneManager.sceneLoaded -= SceneLoadedEventListener(path);
-            };
-        }
+        private UnityAction<Scene, LoadSceneMode> OnSceneLoaded() => (_, _) => {
+            if (BoardController.instance != null) {
+                BoardController.instance.LoadBoard(this.path);
+                Debug.Log($"Board loaded ({this.path})");
+            }
+        };
     }
 }

@@ -13,14 +13,13 @@ namespace Accession.Controllers {
         private void OnBoardCompleted() {
             this.panel.SetActive(true);
 
-            if (Resources.Load($"Levels/Level{GameManager.instance.level}") != null) {
+            if (Resources.Load($"Levels/Level{GameManager.instance.level + 1}") == null) {
                 this.gameObject.SetActive(false);
             }
         }
 
-    // TODO: Check if there is actually a next level before loading it
-    public void OnNextLevelClicked() { 
-            GameManager.instance.LoadLevel($"Levels/Level{++GameManager.instance.level}");
+        public void OnNextLevelClicked() { 
+                GameManager.instance.LoadLevel($"Levels/Level{++GameManager.instance.level}");
         }
     }
 }

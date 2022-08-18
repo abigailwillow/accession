@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using Accession.Models;
 using Accession.Extensions;
@@ -33,6 +34,8 @@ namespace Accession.Controllers {
         }
         public delegate void OnBoardCompleted();
         public OnBoardCompleted onBoardCompleted;
+        public delegate void OnBoardFailed();
+        public OnBoardFailed onBoardFailed;
 
         private void Awake() {
             if (instance != null && instance != this) {
@@ -73,6 +76,10 @@ namespace Accession.Controllers {
                         board.cells.ForEach(c => c.controller.SetOutline(false));
 
                         if (board.completed) onBoardCompleted?.Invoke();
+
+                        if (this.board.pieces.TrueForAll(piece => board.GetValidMoves(piece).Count == 0) && !this.board.completed) {
+                            onBoardFailed?.Invoke();
+                        }
                     }
                 }
             }

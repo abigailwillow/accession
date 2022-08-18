@@ -47,6 +47,14 @@ MonoBehaviour:
     m_Key: MENU_LEVEL_COMPLETE
     m_Metadata:
       m_Items: []
+  - m_Id: 23463181300625408
+    m_Key: MENU_NO_MOVES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23463181329985536
+    m_Key: MENU_RETRY
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
