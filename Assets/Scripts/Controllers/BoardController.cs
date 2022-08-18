@@ -19,7 +19,18 @@ namespace Accession.Controllers {
         [Tooltip("The amount of rows and columns on the board.")]
         public ColorTheme colors;
         private CellController cellController;
-        private Piece selectedPiece;
+        private Piece _selectedPiece;
+        private Piece selectedPiece {
+            get => _selectedPiece;
+            set {
+                if (value == null) {
+                    _selectedPiece.controller.Deselect();
+                } else {
+                    value.controller.Select();
+                }
+                _selectedPiece = value;
+            }
+        }
         public delegate void OnBoardCompleted();
         public OnBoardCompleted onBoardCompleted;
 
@@ -52,7 +63,7 @@ namespace Accession.Controllers {
                     move.cell.controller.SetOutline(true, color);
                 });
 
-                SelectPiece(cellController.cell.piece);
+                selectedPiece = cellController.cell.piece;
             } else {
                 if (selectedPiece != null) {
                     Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cell);
@@ -85,11 +96,6 @@ namespace Accession.Controllers {
                     PieceController.Instantiate(piece, cell.controller.transform, false);
                 }
             });
-        }
-
-    private void SelectPiece(Piece piece) {
-            piece.controller.Select();
-            selectedPiece = piece;
         }
 
         private CellController GetCellController() => Resources.Load<GameObject>("Prefabs/Cell").GetComponent<CellController>();
