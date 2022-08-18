@@ -1,0 +1,52 @@
+{
+    "size": {
+        "x": 4,
+        "y": 4
+    },
+    "cells": [
+        {
+            "color": "blue",
+            "position": {
+                "x": 3,
+                "y": 2
+            }
+        },
+        {
+            "color": "magenta",
+            "position": {
+                "x": 0,
+                "y": 3
+            }
+        },
+        {
+            "color": "magenta",
+            "position": {
+                "x": 2,
+                "y": 3
+            }
+        }
+    ],
+    "pieces": [
+        {
+            "color": "red",
+            "position": {
+                "x": 1,
+                "y": 0
+            }
+        },
+        {
+            "color": "red",
+            "position": {
+                "x": 3,
+                "y": 0
+            }
+        },
+        {
+            "color": "blue",
+            "position": {
+                "x": 2,
+                "y": 1
+            }
+        }
+    ]
+}
