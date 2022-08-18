@@ -11,6 +11,13 @@ jobs:
     name: Build project
     runs-on: ubuntu-latest
     environment: production
+    env:
+      projectName: Accession
+    strategy:
+        matrix:
+          targetPlatform:
+            - StandaloneWindows64
+            - WebGL
     steps:
       - name: Checkout repository
         id: checkout
@@ -24,9 +31,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
       
       - name: Generate Semantic Version
         id: version
@@ -44,9 +50,8 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneWindows64
-          customParameters: -Development
-          buildName: Accession
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ${{ env.projectName }}
           versioning: Custom
           version: ${{ steps.version.outputs.version_tag }}
           
@@ -55,8 +60,8 @@ jobs:
         uses: thedoctor0/zip-release@main
         with:
           type: zip
-          filename: ../../Accession-${{ steps.version.outputs.version_tag }}-win64.zip
-          directory: build/StandaloneWindows64/
+          filename: ../../${{ env.projectName }}-${{ steps.version.outputs.version_tag }}-${{ matrix.targetPlatform }}.zip
+          directory: build/${{ matrix.targetPlatform }}/
           
       - name: Create release
         id: release
@@ -64,5 +69,18 @@ jobs:
         with:
           name: ${{ steps.version.outputs.version_tag }}
           tag_name: ${{ steps.version.outputs.version_tag }}
-          prerelease: true
-          files: Accession-${{ steps.version.outputs.version_tag }}-win64.zip
+          prerelease: false
+          files: ${{ env.projectName }}-${{ steps.version.outputs.version_tag }}-${{ matrix.targetPlatform }}.zip
+      
+      - name: Upload artifacts
+        id: artifact
+        uses: actions/upload-artifact@v2
+        if: matrix.targetPlatform == WebGL
+        with:
+          name: github-pages
+          path: build/${{ env.projectName }}-WebGL.zip
+          
+      - name: Publish
+        id: publish
+        uses: actions/deploy-pages@v1
+        
