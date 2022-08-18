@@ -21,7 +21,7 @@ namespace Accession.Controllers {
         public ColorTheme colors;
         private CellController cellController;
         private Piece _selectedPiece;
-        private Piece selectedPiece {
+        public Piece selectedPiece {
             get => _selectedPiece;
             set {
                 if (value == null) {
@@ -72,7 +72,6 @@ namespace Accession.Controllers {
                     Move move = board.GetValidMoves(selectedPiece).Find(m => m.cell == cell);
                     if (move != null) {
                         move.Execute();
-                        selectedPiece = null;
                         board.cells.ForEach(c => c.controller.SetOutline(false));
 
                         if (board.completed) onBoardCompleted?.Invoke();

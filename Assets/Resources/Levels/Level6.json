@@ -1,40 +1,40 @@
 {
     "size": {
-        "x": 3,
-        "y": 3
+        "x": 5,
+        "y": 5
     },
     "cells": [
         {
-            "color": "blue",
+            "color": "red",
             "position": {
-                "x": 0,
-                "y": 2
+                "x": 3,
+                "y": 3
             }
         },
         {
             "color": "green",
             "position": {
                 "x": 1,
-                "y": 2
+                "y": 4
             }
         },
         {
-            "color": "red",
+            "color": "cyan",
             "position": {
                 "x": 2,
-                "y": 2
+                "y": 4
+            }
+        },
+        {
+            "color": "magenta",
+            "position": {
+                "x": 4,
+                "y": 4
             }
         }
     ],
     "pieces": [
         {
-            "color": "red",
-            "position": {
-                "x": 0,
-                "y": 0
-            }
-        },
-        {
             "color": "green",
             "position": {
                 "x": 1,
@@ -42,10 +42,24 @@
             }
         },
         {
+            "color": "green",
+            "position": {
+                "x": 1,
+                "y": 1
+            }
+        },
+        {
+            "color": "red",
+            "position": {
+                "x": 3,
+                "y": 1
+            }
+        },
+        {
             "color": "blue",
             "position": {
                 "x": 2,
-                "y": 0
+                "y": 2
             }
         }
     ]

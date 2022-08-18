@@ -1,4 +1,5 @@
 using Accession.Extensions;
+using Accession.Controllers;
 
 namespace Accession.Models {
     public class Move {
@@ -29,6 +30,7 @@ namespace Accession.Models {
         /// Executes this move.
         /// </summary>
         public void Execute() {
+            BoardController.instance.selectedPiece = null;
             instigator.controller.outline.enabled = false;
             instigator.color = isJump ? instigator.color.Add(target.color) : instigator.color;
             instigator.controller.Move(cell);

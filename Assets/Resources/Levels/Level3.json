@@ -5,23 +5,23 @@
     },
     "cells": [
         {
-            "color": "blue",
-            "position": {
-                "x": 0,
-                "y": 2
-            }
-        },
-        {
-            "color": "green",
-            "position": {
-                "x": 1,
-                "y": 2
-            }
-        },
-        {
             "color": "red",
             "position": {
                 "x": 2,
+                "y": 2
+            }
+        },
+        {
+            "color": "magenta",
+            "position": {
+                "x": 1,
+                "y": 1
+            }
+        },
+        {
+            "color": "blue",
+            "position": {
+                "x": 0,
                 "y": 2
             }
         }
@@ -35,17 +35,17 @@
             }
         },
         {
-            "color": "green",
-            "position": {
-                "x": 1,
-                "y": 0
-            }
-        },
-        {
             "color": "blue",
             "position": {
                 "x": 2,
                 "y": 0
+            }
+        },
+        {
+            "color": "magenta",
+            "position": {
+                "x": 1,
+                "y": 1
             }
         }
     ]

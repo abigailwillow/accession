@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
@@ -20,18 +21,19 @@ namespace Accession.Managers {
 
             LocalizationSettings.InitializationOperation.Completed += _ => LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[PlayerPrefs.GetInt("locale", 0)];
 
-            this.level = PlayerPrefs.GetInt("level", 1);
+            // this.level = PlayerPrefs.GetInt("level", 1);
 
             SceneManager.sceneLoaded += OnSceneLoaded();
         }
 
         public void LoadLevel(string path) {
             this.path = path;
+            this.level = int.Parse(Regex.Match(path, @"\d+").Value);
             SceneManager.LoadScene("Board Scene");
         }
 
         public void SaveLevel() {
-            PlayerPrefs.SetInt("level", level);
+            PlayerPrefs.SetInt("level", this.level);
             PlayerPrefs.Save();
         }
 
