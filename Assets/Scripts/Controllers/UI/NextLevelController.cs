@@ -10,9 +10,17 @@ namespace Accession.Controllers {
             this.panel.SetActive(false);
         }
 
-        private void OnBoardCompleted() => this.panel.SetActive(true);
+        private void OnBoardCompleted() {
+            this.panel.SetActive(true);
 
-        // TODO: Check if there is actually a next level before loading it
-        public void OnNextLevelClicked() => GameManager.instance.LoadLevel($"Levels/Level{++GameManager.instance.level}");
+            if (Resources.Load($"Levels/Level{GameManager.instance.level}") != null) {
+                this.gameObject.SetActive(false);
+            }
+        }
+
+    // TODO: Check if there is actually a next level before loading it
+    public void OnNextLevelClicked() { 
+            GameManager.instance.LoadLevel($"Levels/Level{++GameManager.instance.level}");
+        }
     }
 }
