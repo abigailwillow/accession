@@ -83,4 +83,5 @@ jobs:
       - name: Publish
         id: publish
         uses: actions/deploy-pages@v1
+        if: matrix.targetPlatform == 'WebGL'
         
