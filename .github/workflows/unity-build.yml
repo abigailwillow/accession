@@ -1,6 +1,5 @@
 name: Unity - Build
-permissions: 
-  id-token: write
+permissions: read-all|write-all
 on: 
   workflow_dispatch:
   push:
