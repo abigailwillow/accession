@@ -75,7 +75,7 @@ jobs:
       - name: Upload artifacts
         id: artifact
         uses: actions/upload-artifact@v2
-        if: matrix.targetPlatform == WebGL
+        if: matrix.targetPlatform == 'WebGL'
         with:
           name: github-pages
           path: build/${{ env.projectName }}-WebGL.zip
