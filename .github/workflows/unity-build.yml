@@ -10,7 +10,7 @@ jobs:
     name: Build project
     runs-on: ubuntu-latest
     environment: production
-    permissions: read-all|write-all
+    permissions: write-all
     env:
       projectName: Accession
     strategy:
