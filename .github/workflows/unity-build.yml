@@ -71,17 +71,11 @@ jobs:
           tag_name: ${{ steps.version.outputs.version_tag }}
           prerelease: false
           files: ${{ env.projectName }}-${{ steps.version.outputs.version_tag }}-${{ matrix.targetPlatform }}.zip
-      
-      - name: Upload artifacts
-        id: artifact
-        uses: actions/upload-artifact@v2
-        if: matrix.targetPlatform == 'WebGL'
-        with:
-          name: github-pages
-          path: build/WebGL/${{ env.projectName }}/
+    
           
       - name: Publish
         id: publish
-        uses: actions/deploy-pages@v1
+        uses: JamesIves/github-pages-deploy-action@v4
         if: matrix.targetPlatform == 'WebGL'
-        
+        with:
+          folder: build/WebGL/${{ env.projectName }}/  
