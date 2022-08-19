@@ -1,5 +1,4 @@
 name: Unity - Build
-permissions: read-all|write-all
 on: 
   workflow_dispatch:
   push:
@@ -11,6 +10,7 @@ jobs:
     name: Build project
     runs-on: ubuntu-latest
     environment: production
+    permissions: read-all|write-all
     env:
       projectName: Accession
     strategy:
