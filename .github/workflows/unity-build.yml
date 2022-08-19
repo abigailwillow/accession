@@ -78,7 +78,7 @@ jobs:
         if: matrix.targetPlatform == 'WebGL'
         with:
           name: github-pages
-          path: build/WebGL/
+          path: build/WebGL/${{ env.projectName }}/
           
       - name: Publish
         id: publish
