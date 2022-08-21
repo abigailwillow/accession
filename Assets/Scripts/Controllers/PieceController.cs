@@ -36,6 +36,11 @@ namespace Accession.Controllers {
             pieceController.piece = piece;
             pieceController.name = $"Piece ({piece.color})";
             pieceController.color = piece.color.ToColor();
+
+            if (piece.cell.occupied && piece.cell.completed) {
+                pieceController.Complete();
+            }
+
             return pieceController;
         }
 
@@ -50,10 +55,14 @@ namespace Accession.Controllers {
             transform.position = cellController.transform.position;
 
             if (cell.completed) {
-                Color.RGBToHSV(this.color, out float h, out float s, out float v);
-                this.outline.enabled = true;
-                this.outline.OutlineColor = Color.HSVToRGB(h, s - 0.5f, v);
+                this.Complete();
             }
+        }
+
+        public void Complete() {
+            Color.RGBToHSV(this.color, out float h, out float s, out float v);
+            this.outline.enabled = true;
+            this.outline.OutlineColor = Color.HSVToRGB(h, s - 0.5f, v);
         }
 
         public void Select() => this.outline.enabled = true;
