@@ -22,16 +22,19 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a3814de972d0ef24e907dfcfbc8ed9c3
     m_Address: Nederlands
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bd58db432d857cc4396f7dfb03eb3fda
     m_Address: "Fran\xE7ais"
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 7cd21fff1b7f4fc418ca8e8379fa5d2d, type: 2}
   m_SchemaSet:
