@@ -1,4 +1,4 @@
-name: Unity - Build
+name: Build and Publish
 on: 
   workflow_dispatch:
   push:
@@ -22,14 +22,14 @@ jobs:
     steps:
       - name: Checkout repository
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: stable
           fetch-depth: 0
         
       - name: Cache repository
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: Library
           key: Library-${{ matrix.targetPlatform }}
